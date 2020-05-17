@@ -6,6 +6,7 @@ public class Reserva {
 	private int idReserva;
 	private Date fechaReserva;
 	private boolean entregada;
+	private Socio socio;
 	
 	public int getIdReserva() {
 		return idReserva;
@@ -24,5 +25,11 @@ public class Reserva {
 	}
 	public void setEntregada(boolean entregada) {
 		this.entregada = entregada;
+	}
+	public Socio getSocio() {
+		return socio;
+	}
+	public void setSocio(Socio socio) {
+		this.socio = socio;
 	}
 }

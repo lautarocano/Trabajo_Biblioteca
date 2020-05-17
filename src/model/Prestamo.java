@@ -7,6 +7,7 @@ public class Prestamo {
 	private Date fechaPrestamo;
 	private int diasPrestamo;
 	private String estado;
+	private Socio socio;
 	
 	public int getIdPrestamo() {
 		return idPrestamo;
@@ -31,5 +32,11 @@ public class Prestamo {
 	}
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	public Socio getSocio() {
+		return socio;
+	}
+	public void setSocio(Socio socio) {
+		this.socio = socio;
 	}
 }

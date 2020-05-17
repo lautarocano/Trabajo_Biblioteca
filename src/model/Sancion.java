@@ -6,6 +6,7 @@ public class Sancion {
 private int idSancion;
 private Date fechaSancion;
 private int diasSancion;
+private Socio socio;
 
 public int getIdSancion() {
 	return idSancion;
@@ -24,6 +25,12 @@ public int getDiasSancion() {
 }
 public void setDiasSancion(int diasSancion) {
 	this.diasSancion = diasSancion;
+}
+public Socio getSocio() {
+	return socio;
+}
+public void setSocio(Socio socio) {
+	this.socio = socio;
 }
 
 }
