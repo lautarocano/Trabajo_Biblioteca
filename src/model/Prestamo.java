@@ -7,6 +7,7 @@ public class Prestamo {
 	private Date fechaPrestamo;
 	private int diasPrestamo;
 	private estadoPrestamo estado;
+	private Socio socio;
 	
 	public enum estadoPrestamo{
 		EnCurso,
@@ -37,5 +38,11 @@ public class Prestamo {
 	}
 	public void setEstado(estadoPrestamo estado) {
 		this.estado = estado;
+	}
+	public Socio getSocio() {
+		return socio;
+	}
+	public void setSocio(Socio socio) {
+		this.socio = socio;
 	}
 }

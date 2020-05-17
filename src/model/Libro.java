@@ -9,6 +9,7 @@ private String titulo;
 private String nroEdicion;
 private Date fechaEdicion;
 private int cantDiasMaxPrestamo;
+private Genero genero;
 public int getIdLibro() {
 	return idLibro;
 }
@@ -44,6 +45,12 @@ public int getCantDiasMaxPrestamo() {
 }
 public void setCantDiasMaxPrestamo(int cantDiasMaxPrestamo) {
 	this.cantDiasMaxPrestamo = cantDiasMaxPrestamo;
+}
+public Genero getGenero() {
+	return genero;
+}
+public void setGenero(Genero genero) {
+	this.genero = genero;
 }
 
 
