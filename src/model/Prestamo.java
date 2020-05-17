@@ -6,7 +6,13 @@ public class Prestamo {
 	private int idPrestamo;
 	private Date fechaPrestamo;
 	private int diasPrestamo;
-	private String estado;
+	private estadoPrestamo estado;
+	
+	public enum estadoPrestamo{
+		EnCurso,
+		Atrasado,
+		Finalizado;
+	}
 	
 	public int getIdPrestamo() {
 		return idPrestamo;
@@ -26,10 +32,10 @@ public class Prestamo {
 	public void setDiasPrestamo(int diasPrestamo) {
 		this.diasPrestamo = diasPrestamo;
 	}
-	public String getEstado() {
+	public estadoPrestamo getEstado() {
 		return estado;
 	}
-	public void setEstado(String estado) {
+	public void setEstado(estadoPrestamo estado) {
 		this.estado = estado;
 	}
 }

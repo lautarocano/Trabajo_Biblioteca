@@ -5,7 +5,14 @@ private int idUsuario;
 private String nombreUsuario;
 private String password;
 private Boolean estado;
-private int tipo;
+private tipoUsuario tipo;
+
+public enum tipoUsuario{
+	Socio,
+	Bibliotecario,
+	Administrador;
+}
+
 public int getIdUsuario() {
 	return idUsuario;
 }
@@ -30,11 +37,10 @@ public Boolean getEstado() {
 public void setEstado(Boolean estado) {
 	this.estado = estado;
 }
-public int getTipo() {
+public tipoUsuario getTipo() {
 	return tipo;
 }
-public void setTipo(int tipo) {
+public void setTipo(tipoUsuario tipo) {
 	this.tipo = tipo;
-}
-	
+}	
 }
