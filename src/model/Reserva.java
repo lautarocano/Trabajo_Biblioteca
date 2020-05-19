@@ -2,34 +2,27 @@ package model;
 
 import java.util.Date;
 
-public class Reserva {
-	private int idReserva;
-	private Date fechaReserva;
-	private boolean entregada;
-	private Socio socio;
+public class Reserva extends Entidad {
+	private Date _fechaReserva;
+	private boolean _entregada;
+	private Socio _socio;
 	
-	public int getIdReserva() {
-		return idReserva;
-	}
-	public void setIdReserva(int idReserva) {
-		this.idReserva = idReserva;
-	}
 	public Date getFechaReserva() {
-		return fechaReserva;
+		return _fechaReserva;
 	}
 	public void setFechaReserva(Date fechaReserva) {
-		this.fechaReserva = fechaReserva;
+		this._fechaReserva = fechaReserva;
 	}
 	public boolean isEntregada() {
-		return entregada;
+		return _entregada;
 	}
 	public void setEntregada(boolean entregada) {
-		this.entregada = entregada;
+		this._entregada = entregada;
 	}
 	public Socio getSocio() {
-		return socio;
+		return _socio;
 	}
 	public void setSocio(Socio socio) {
-		this.socio = socio;
+		this._socio = socio;
 	}
 }

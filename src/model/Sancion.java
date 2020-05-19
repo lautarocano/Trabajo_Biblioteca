@@ -2,35 +2,34 @@ package model;
 
 import java.util.Date;
 
-public class Sancion {
-private int idSancion;
-private Date fechaSancion;
-private int diasSancion;
-private Socio socio;
-
-public int getIdSancion() {
-	return idSancion;
-}
-public void setIdSancion(int idSancion) {
-	this.idSancion = idSancion;
-}
-public Date getFechaSancion() {
-	return fechaSancion;
-}
-public void setFechaSancion(Date fechaSancion) {
-	this.fechaSancion = fechaSancion;
-}
-public int getDiasSancion() {
-	return diasSancion;
-}
-public void setDiasSancion(int diasSancion) {
-	this.diasSancion = diasSancion;
-}
-public Socio getSocio() {
-	return socio;
-}
-public void setSocio(Socio socio) {
-	this.socio = socio;
-}
-
+public class Sancion extends Entidad {
+	private int _idSancion;
+	private Date _fechaSancion;
+	private int _diasSancion;
+	private Socio _socio;
+	
+	public int getIdSancion() {
+		return _idSancion;
+	}
+	public void setIdSancion(int idSancion) {
+		this._idSancion = idSancion;
+	}
+	public Date getFechaSancion() {
+		return _fechaSancion;
+	}
+	public void setFechaSancion(Date fechaSancion) {
+		this._fechaSancion = fechaSancion;
+	}
+	public int getDiasSancion() {
+		return _diasSancion;
+	}
+	public void setDiasSancion(int diasSancion) {
+		this._diasSancion = diasSancion;
+	}
+	public Socio getSocio() {
+		return _socio;
+	}
+	public void setSocio(Socio socio) {
+		this._socio = socio;
+	}
 }

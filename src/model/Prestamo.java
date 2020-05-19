@@ -2,12 +2,11 @@ package model;
 
 import java.util.Date;
 
-public class Prestamo {
-	private int idPrestamo;
-	private Date fechaPrestamo;
-	private int diasPrestamo;
-	private estadoPrestamo estado;
-	private Socio socio;
+public class Prestamo extends Entidad {
+	private Date _fechaPrestamo;
+	private int _diasPrestamo;
+	private estadoPrestamo _estado;
+	private Socio _socio;
 	
 	public enum estadoPrestamo{
 		EnCurso,
@@ -15,34 +14,28 @@ public class Prestamo {
 		Finalizado;
 	}
 	
-	public int getIdPrestamo() {
-		return idPrestamo;
-	}
-	public void setIdPrestamo(int idPrestamo) {
-		this.idPrestamo = idPrestamo;
-	}
 	public Date getFechaPrestamo() {
-		return fechaPrestamo;
+		return _fechaPrestamo;
 	}
 	public void setFechaPrestamo(Date fechaPrestamo) {
-		this.fechaPrestamo = fechaPrestamo;
+		this._fechaPrestamo = fechaPrestamo;
 	}
 	public int getDiasPrestamo() {
-		return diasPrestamo;
+		return _diasPrestamo;
 	}
 	public void setDiasPrestamo(int diasPrestamo) {
-		this.diasPrestamo = diasPrestamo;
+		this._diasPrestamo = diasPrestamo;
 	}
 	public estadoPrestamo getEstado() {
-		return estado;
+		return _estado;
 	}
 	public void setEstado(estadoPrestamo estado) {
-		this.estado = estado;
+		this._estado = estado;
 	}
 	public Socio getSocio() {
-		return socio;
+		return _socio;
 	}
 	public void setSocio(Socio socio) {
-		this.socio = socio;
+		this._socio = socio;
 	}
 }

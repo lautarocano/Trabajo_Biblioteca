@@ -2,56 +2,48 @@ package model;
 
 import java.util.Date;
 
-public class Libro {
-private int idLibro;
-private String autor;
-private String titulo;
-private String nroEdicion;
-private Date fechaEdicion;
-private int cantDiasMaxPrestamo;
-private Genero genero;
-public int getIdLibro() {
-	return idLibro;
-}
-public void setIdLibro(int idLibro) {
-	this.idLibro = idLibro;
-}
-public String getAutor() {
-	return autor;
-}
-public void setAutor(String autor) {
-	this.autor = autor;
-}
-public String getTitulo() {
-	return titulo;
-}
-public void setTitulo(String titulo) {
-	this.titulo = titulo;
-}
-public String getNroEdicion() {
-	return nroEdicion;
-}
-public void setNroEdicion(String nroEdicion) {
-	this.nroEdicion = nroEdicion;
-}
-public Date getFechaEdicion() {
-	return fechaEdicion;
-}
-public void setFechaEdicion(Date fechaEdicion) {
-	this.fechaEdicion = fechaEdicion;
-}
-public int getCantDiasMaxPrestamo() {
-	return cantDiasMaxPrestamo;
-}
-public void setCantDiasMaxPrestamo(int cantDiasMaxPrestamo) {
-	this.cantDiasMaxPrestamo = cantDiasMaxPrestamo;
-}
-public Genero getGenero() {
-	return genero;
-}
-public void setGenero(Genero genero) {
-	this.genero = genero;
-}
+public class Libro extends Entidad {
+	private String _autor;
+	private String _titulo;
+	private String _nroEdicion;
+	private Date _fechaEdicion;
+	private int _cantDiasMaxPrestamo;
+	private Genero _genero;
 
-
+	public String getAutor() {
+		return _autor;
+	}
+	public void setAutor(String autor) {
+		this._autor = autor;
+	}
+	public String getTitulo() {
+		return _titulo;
+	}
+	public void setTitulo(String titulo) {
+		this._titulo = titulo;
+	}
+	public String getNroEdicion() {
+		return _nroEdicion;
+	}
+	public void setNroEdicion(String nroEdicion) {
+		this._nroEdicion = nroEdicion;
+	}
+	public Date getFechaEdicion() {
+		return _fechaEdicion;
+	}
+	public void setFechaEdicion(Date fechaEdicion) {
+		this._fechaEdicion = fechaEdicion;
+	}
+	public int getCantDiasMaxPrestamo() {
+		return _cantDiasMaxPrestamo;
+	}
+	public void setCantDiasMaxPrestamo(int cantDiasMaxPrestamo) {
+		this._cantDiasMaxPrestamo = cantDiasMaxPrestamo;
+	}
+	public Genero getGenero() {
+		return _genero;
+	}
+	public void setGenero(Genero genero) {
+		this._genero = genero;
+	}
 }

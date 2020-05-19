@@ -1,21 +1,12 @@
 package model;
 
-public class Genero {
-private int idGenero;
-private String descripcion;
-
-public int getIdGenero() {
-	return idGenero;
-}
-public void setIdGenero(int idGenero) {
-	this.idGenero = idGenero;
-}
-public String getDescripcion() {
-	return descripcion;
-}
-public void setDescripcion(String descripcion) {
-	this.descripcion = descripcion;
-}
-
+public class Genero extends Entidad {
+	private String _descripcion;
 	
+	public String getDescripcion() {
+		return _descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this._descripcion = descripcion;
+	}
 }

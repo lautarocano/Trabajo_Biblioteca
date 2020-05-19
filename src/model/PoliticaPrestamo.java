@@ -1,13 +1,13 @@
 package model;
 
-public class PoliticaPrestamo {
-	private int cantMaxLibrosPend;
+public class PoliticaPrestamo extends Entidad {
+	private int _cantMaxLibrosPend;
 
 	public int getCantMaxLibrosPend() {
-		return cantMaxLibrosPend;
+		return _cantMaxLibrosPend;
 	}
 
 	public void setCantMaxLibrosPend(int cantMaxLibrosPend) {
-		this.cantMaxLibrosPend = cantMaxLibrosPend;
+		this._cantMaxLibrosPend = cantMaxLibrosPend;
 	}
 }

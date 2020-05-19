@@ -1,67 +1,61 @@
 package model;
 
-public class Socio {
-	private int idSocio;
-	private String nombre;
-	private String apellido;
-	private String email;
-	private String domicilio;
-	private String telefono;
-	private int dni;
-	private Boolean estado;
-	private Usuario usuario;
-	public int getIdSocio() {
-		return idSocio;
-	}
-	public void setIdSocio(int idSocio) {
-		this.idSocio = idSocio;
-	}
+public class Socio extends Entidad {
+	private String _nombre;
+	private String _apellido;
+	private String _email;
+	private String _domicilio;
+	private String _telefono;
+	private int _dni;
+	private Boolean _estado;
+	private Usuario _usuario;
+
 	public String getNombre() {
-		return nombre;
+		return _nombre;
 	}
 	public void setNombre(String nombre) {
-		this.nombre = nombre;
+		this._nombre = nombre;
 	}
 	public String getApellido() {
-		return apellido;
+		return _apellido;
 	}
 	public void setApellido(String apellido) {
-		this.apellido = apellido;
+		this._apellido = apellido;
 	}
 	public String getEmail() {
-		return email;
+		return _email;
 	}
 	public void setEmail(String email) {
-		this.email = email;
+		this._email = email;
 	}
 	public String getDomicilio() {
-		return domicilio;
+		return _domicilio;
 	}
 	public void setDomicilio(String domicilio) {
-		this.domicilio = domicilio;
+		this._domicilio = domicilio;
 	}
 	public String getTelefono() {
-		return telefono;
+		return _telefono;
 	}
 	public void setTelefono(String telefono) {
-		this.telefono = telefono;
+		this._telefono = telefono;
 	}
 	public int getDni() {
-		return dni;
+		return _dni;
 	}
 	public void setDni(int dni) {
-		this.dni = dni;
+		this._dni = dni;
 	}
 	public Boolean getEstado() {
-		return estado;
+		return _estado;
 	}
 	public void setEstado(Boolean estado) {
-		this.estado = estado;
+		this._estado = estado;
 	}
 	public Usuario getUsuario() {
-		return usuario;
+		return _usuario;
 	}
 	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+		this._usuario = usuario;
 	}
 }

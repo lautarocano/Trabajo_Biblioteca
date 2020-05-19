@@ -2,41 +2,34 @@ package model;
 
 import java.util.Date;
 
-public class LineaDePrestamo {
-	private int idLineaDePrestamo;
-	private Date fechaDevolucion;
-	private Boolean devuelto;
-	private Ejemplar ejemplar;
-	private Prestamo prestamo;
-	
-	public int getIdLineaDePrestamo() {
-		return idLineaDePrestamo;
-	}
-	public void setIdLineaDePrestamo(int idLineaDePrestamo) {
-		this.idLineaDePrestamo = idLineaDePrestamo;
-	}
+public class LineaDePrestamo extends Entidad {
+	private Date _fechaDevolucion;
+	private Boolean _devuelto;
+	private Ejemplar _ejemplar;
+	private Prestamo _prestamo;
+
 	public Date getFechaDevolucion() {
-		return fechaDevolucion;
+		return _fechaDevolucion;
 	}
 	public void setFechaDevolucion(Date fechaDevolucion) {
-		this.fechaDevolucion = fechaDevolucion;
+		this._fechaDevolucion = fechaDevolucion;
 	}
 	public Boolean getDevuelto() {
-		return devuelto;
+		return _devuelto;
 	}
 	public void setDevuelto(Boolean devuelto) {
-		this.devuelto = devuelto;
+		this._devuelto = devuelto;
 	}
 	public Ejemplar getEjemplar() {
-		return ejemplar;
+		return _ejemplar;
 	}
 	public void setEjemplar(Ejemplar ejemplar) {
-		this.ejemplar = ejemplar;
+		this._ejemplar = ejemplar;
 	}
 	public Prestamo getPrestamo() {
-		return prestamo;
+		return _prestamo;
 	}
 	public void setPrestamo(Prestamo prestamo) {
-		this.prestamo = prestamo;
+		this._prestamo = prestamo;
 	}
 }

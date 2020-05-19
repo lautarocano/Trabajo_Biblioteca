@@ -1,22 +1,13 @@
 package model;
 
-public class Ejemplar {
-	private int idEjemplar;
-	private Libro libro;
-
-	public int getIdEjemplar() {
-		return idEjemplar;
-	}
-
-	public void setIdEjemplar(int idEjemplar) {
-		this.idEjemplar = idEjemplar;
-	}
+public class Ejemplar extends Entidad {
+	private Libro _libro;
 
 	public Libro getLibro() {
-		return libro;
+		return _libro;
 	}
 
 	public void setLibro(Libro libro) {
-		this.libro = libro;
+		this._libro = libro;
 	}
 }
