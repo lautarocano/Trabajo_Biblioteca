@@ -25,11 +25,11 @@ DROP TABLE IF EXISTS `ejemplar`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `ejemplar` (
-  `idejemplar` int(11) NOT NULL,
-  `idLibro` int(11) NOT NULL,
-  PRIMARY KEY (`idejemplar`,`idLibro`),
-  KEY `idLibro_idx` (`idLibro`),
-  CONSTRAINT `idLibro` FOREIGN KEY (`idLibro`) REFERENCES `libro` (`idLibro`) ON DELETE RESTRICT ON UPDATE CASCADE
+  `id_ejemplar` int(11) NOT NULL,
+  `id_libro` int(11) NOT NULL,
+  PRIMARY KEY (`id_ejemplar`,`id_libro`),
+  KEY `idLibro_idx` (`id_libro`),
+  CONSTRAINT `fk_libro_ejemplar` FOREIGN KEY (`id_libro`) REFERENCES `libro` (`id_libro`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -50,9 +50,9 @@ DROP TABLE IF EXISTS `genero`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `genero` (
-  `idgenero` int(11) NOT NULL,
-  `descripcion` varchar(125) DEFAULT NULL,
-  PRIMARY KEY (`idgenero`)
+  `id_genero` int(11) NOT NULL,
+  `descripcion` varchar(125) NOT NULL,
+  PRIMARY KEY (`id_genero`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -73,16 +73,16 @@ DROP TABLE IF EXISTS `libro`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `libro` (
-  `idLibro` int(11) NOT NULL,
-  `autor` varchar(125) DEFAULT NULL,
+  `id_libro` int(11) NOT NULL,
+  `autor` varchar(125) NOT NULL,
   `titulo` varchar(125) NOT NULL,
   `nro_edicion` int(11) NOT NULL,
   `fecha_edicion` date NOT NULL,
   `cant_dias_max` int(11) NOT NULL,
-  `idgenero` int(11) NOT NULL,
-  PRIMARY KEY (`idLibro`),
-  KEY `idGenero_idx` (`idgenero`),
-  CONSTRAINT `fk_libro_genero` FOREIGN KEY (`idgenero`) REFERENCES `genero` (`idgenero`) ON DELETE RESTRICT ON UPDATE CASCADE
+  `id_genero` int(11) NOT NULL,
+  PRIMARY KEY (`id_libro`),
+  KEY `idGenero_idx` (`id_genero`),
+  CONSTRAINT `fk_genero_libro` FOREIGN KEY (`id_genero`) REFERENCES `genero` (`id_genero`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -96,6 +96,34 @@ LOCK TABLES `libro` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `libro_reserva`
+--
+
+DROP TABLE IF EXISTS `libro_reserva`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `libro_reserva` (
+  `id_libro_reserva` int(11) NOT NULL,
+  `id_libro` int(11) NOT NULL,
+  `id_reserva` int(11) NOT NULL,
+  PRIMARY KEY (`id_libro_reserva`),
+  KEY `fk_reserva_libroreserva_idx` (`id_reserva`),
+  KEY `fk_libro_libroreserva_idx` (`id_libro`),
+  CONSTRAINT `fk_libro_libroreserva` FOREIGN KEY (`id_libro`) REFERENCES `libro` (`id_libro`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_reserva_libroreserva` FOREIGN KEY (`id_reserva`) REFERENCES `reserva` (`id_reserva`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `libro_reserva`
+--
+
+LOCK TABLES `libro_reserva` WRITE;
+/*!40000 ALTER TABLE `libro_reserva` DISABLE KEYS */;
+/*!40000 ALTER TABLE `libro_reserva` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `lineadeprestamo`
 --
 
@@ -103,17 +131,17 @@ DROP TABLE IF EXISTS `lineadeprestamo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `lineadeprestamo` (
-  `idlineadeprestamo` int(11) NOT NULL,
-  `idejemplar` int(11) NOT NULL,
-  `idlibro` int(11) NOT NULL,
-  `idprestamo` int(11) NOT NULL,
-  `fecha_devolucion` date DEFAULT NULL,
-  `devuelto` int(11) DEFAULT NULL,
-  PRIMARY KEY (`idlineadeprestamo`,`idprestamo`,`idlibro`,`idejemplar`),
-  KEY `fk_lineadeprestamo_ejemplar_idx` (`idejemplar`,`idlibro`),
-  KEY `fk_lineadeprestamo_prestamo_idx` (`idprestamo`),
-  CONSTRAINT `fk_lineadeprestamo_ejemplar` FOREIGN KEY (`idejemplar`, `idlibro`) REFERENCES `ejemplar` (`idejemplar`, `idLibro`) ON DELETE RESTRICT ON UPDATE CASCADE,
-  CONSTRAINT `fk_lineadeprestamo_prestamo` FOREIGN KEY (`idprestamo`) REFERENCES `prestamo` (`idprestamo`) ON DELETE RESTRICT ON UPDATE CASCADE
+  `id_lineadeprestamo` int(11) NOT NULL,
+  `id_ejemplar` int(11) NOT NULL,
+  `id_libro` int(11) NOT NULL,
+  `id_prestamo` int(11) NOT NULL,
+  `fecha_devolucion` date NOT NULL,
+  `devuelto` bit(1) NOT NULL,
+  PRIMARY KEY (`id_lineadeprestamo`,`id_prestamo`,`id_libro`,`id_ejemplar`),
+  KEY `fk_lineadeprestamo_ejemplar_idx` (`id_ejemplar`,`id_libro`),
+  KEY `fk_lineadeprestamo_prestamo_idx` (`id_prestamo`),
+  CONSTRAINT `fk_ejemplar_lineadeprestamo` FOREIGN KEY (`id_ejemplar`) REFERENCES `ejemplar` (`id_ejemplar`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_prestamo_lineadeprestamo` FOREIGN KEY (`id_prestamo`) REFERENCES `prestamo` (`id_prestamo`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -157,11 +185,11 @@ DROP TABLE IF EXISTS `politicasancion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `politicasancion` (
-  `idpoliticasancion` int(11) NOT NULL,
+  `id_politicasancion` int(11) NOT NULL,
   `dias_atraso_desde` int(11) NOT NULL,
   `dias_atraso_hasta` int(11) NOT NULL,
   `dias_sancion` int(11) NOT NULL,
-  PRIMARY KEY (`idpoliticasancion`)
+  PRIMARY KEY (`id_politicasancion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -182,14 +210,14 @@ DROP TABLE IF EXISTS `prestamo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `prestamo` (
-  `idprestamo` int(11) NOT NULL,
+  `id_prestamo` int(11) NOT NULL,
   `fecha_prestamo` date NOT NULL,
   `dias_prestamo` int(11) NOT NULL,
-  `estado` varchar(45) NOT NULL,
-  `idsocio` int(11) NOT NULL,
-  PRIMARY KEY (`idprestamo`,`idsocio`),
-  KEY `fk_prestamo_socio_idx` (`idsocio`),
-  CONSTRAINT `fk_prestamo_socio` FOREIGN KEY (`idsocio`) REFERENCES `socio` (`idsocio`) ON DELETE RESTRICT ON UPDATE CASCADE
+  `estado` tinyint(1) NOT NULL,
+  `id_socio` int(11) NOT NULL,
+  PRIMARY KEY (`id_prestamo`,`id_socio`),
+  KEY `fk_prestamo_socio_idx` (`id_socio`),
+  CONSTRAINT `fk_socio_prestamo` FOREIGN KEY (`id_socio`) REFERENCES `socio` (`id_socio`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -203,6 +231,33 @@ LOCK TABLES `prestamo` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `reserva`
+--
+
+DROP TABLE IF EXISTS `reserva`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `reserva` (
+  `id_reserva` int(11) NOT NULL,
+  `fecha_reserva` date NOT NULL,
+  `entregada` bit(1) NOT NULL,
+  `id_socio` int(11) NOT NULL,
+  PRIMARY KEY (`id_reserva`),
+  KEY `fk_socio_reserva_idx` (`id_socio`),
+  CONSTRAINT `fk_socio_reserva` FOREIGN KEY (`id_socio`) REFERENCES `socio` (`id_socio`) ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reserva`
+--
+
+LOCK TABLES `reserva` WRITE;
+/*!40000 ALTER TABLE `reserva` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reserva` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `sancion`
 --
 
@@ -210,13 +265,13 @@ DROP TABLE IF EXISTS `sancion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `sancion` (
-  `idsancion` int(11) NOT NULL,
-  `idsocio` int(11) NOT NULL,
+  `id_sancion` int(11) NOT NULL,
+  `id_socio` int(11) NOT NULL,
   `fecha_sancion` date NOT NULL,
   `dias_sancion` int(11) NOT NULL,
-  PRIMARY KEY (`idsancion`,`idsocio`),
-  KEY `fk_sancion_socio_idx` (`idsocio`),
-  CONSTRAINT `fk_sancion_socio` FOREIGN KEY (`idsocio`) REFERENCES `socio` (`idsocio`) ON DELETE RESTRICT ON UPDATE CASCADE
+  PRIMARY KEY (`id_sancion`,`id_socio`),
+  KEY `fk_sancion_socio_idx` (`id_socio`),
+  CONSTRAINT `fk_socio_sancion` FOREIGN KEY (`id_socio`) REFERENCES `socio` (`id_socio`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -237,15 +292,18 @@ DROP TABLE IF EXISTS `socio`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `socio` (
-  `idsocio` int(11) NOT NULL,
+  `id_socio` int(11) NOT NULL,
   `nombre` varchar(125) NOT NULL,
   `apellido` varchar(125) NOT NULL,
   `email` varchar(125) NOT NULL,
   `domicilio` varchar(125) NOT NULL,
   `telefono` varchar(45) NOT NULL,
   `dni` int(11) NOT NULL,
-  `estado` int(11) NOT NULL,
-  PRIMARY KEY (`idsocio`)
+  `estado` bit(1) NOT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_socio`),
+  KEY `fk_usuario_socio_idx` (`id_usuario`),
+  CONSTRAINT `fk_usuario_socio` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -266,16 +324,13 @@ DROP TABLE IF EXISTS `usuario`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `usuario` (
-  `idusuario` int(11) NOT NULL,
-  `idSocio` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
   `nombre_usuario` varchar(125) NOT NULL,
   `password` varchar(125) NOT NULL,
-  `estado` int(11) NOT NULL,
+  `estado` bit(1) NOT NULL,
   `tipo` int(11) NOT NULL,
-  PRIMARY KEY (`idusuario`,`idSocio`),
-  KEY `fk_usuario_socio_idx` (`idSocio`),
-  CONSTRAINT `fk_usuario_socio` FOREIGN KEY (`idSocio`) REFERENCES `socio` (`idsocio`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='el estado no lo puedo colocar como bool , lo dejamos int?';
+  PRIMARY KEY (`id_usuario`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -296,4 +351,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-16 12:01:09
+-- Dump completed on 2020-05-21 18:15:02
