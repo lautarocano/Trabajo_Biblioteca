@@ -104,7 +104,7 @@ CREATE TABLE `libros` (
   `id_libro` int(11) NOT NULL,
   `autor` varchar(125) NOT NULL,
   `titulo` varchar(125) NOT NULL,
-  `nro_edicion` int(11) NOT NULL,
+  `nro_edicion` varchar(11) NOT NULL,
   `fecha_edicion` date NOT NULL,
   `cant_dias_max` int(11) NOT NULL,
   `id_genero` int(11) NOT NULL,
@@ -351,4 +351,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-21 22:12:37
+-- Dump completed on 2020-05-22 14:16:16
