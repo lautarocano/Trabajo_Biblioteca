@@ -78,7 +78,7 @@ public class GeneroDAO extends BaseDAO implements IBaseDAO<Genero>{
 			this.closeConnection(pst);
 		}
 	}
-	
+
 	public void update(Genero gen) throws SQLException {
 		PreparedStatement pst = null;
 		try {
@@ -86,6 +86,23 @@ public class GeneroDAO extends BaseDAO implements IBaseDAO<Genero>{
 			pst = conn.prepareStatement("UPDATE generos SET descripcion = ? WHERE id_genero = ?");
 			pst.setString(1, gen.getDescripcion());
 			pst.setInt(2, gen.getId());
+			pst.executeUpdate();
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst);
+		}
+	}
+	
+	public void delete(Genero gen) throws SQLException {
+		PreparedStatement pst = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("DELETE FROM generos WHERE id_genero = ?");
+			pst.setInt(1, gen.getId());
 			pst.executeUpdate();
 		}
 		catch (SQLException e){

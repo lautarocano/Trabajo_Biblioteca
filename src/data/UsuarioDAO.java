@@ -1,12 +1,10 @@
 package data;
-import java.sql.Date;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import model.Genero;
 import model.Usuario;
 import model.Usuario.tipoUsuario;
 
@@ -16,9 +14,8 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 		Usuario u = new Usuario();
 		u.setId(rs.getInt("id_usuario"));
 		u.setNombreUsuario(rs.getString("nombre_usuario"));
-		u.setPassword(rs.getString("id_usuario"));
+		u.setPassword(rs.getString("password"));
 		u.setEstado(rs.getBoolean("estado"));
-
 		switch(rs.getInt("tipo")) {
 		case 0:
 			u.setTipo(tipoUsuario.Socio);
@@ -61,7 +58,7 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 		ResultSet rs = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("SELECT * FROM generos WHERE id_usuario = ?");
+			pst = conn.prepareStatement("SELECT * FROM usuarios WHERE id_usuario = ?");
 			pst.setInt(1, id);
 			rs = pst.executeQuery();
 			if (rs.next()) {
@@ -88,7 +85,6 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 			pst.setString(2, usu.getNombreUsuario());
 			pst.setString(3, usu.getPassword());
 			pst.setBoolean(4, usu.getEstado());
-			
 			switch(usu.getTipo())
 			{
 			case Socio:
@@ -116,13 +112,12 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 		PreparedStatement pst = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("UPDATE generos SET nombre_usuario=?,password=?,estado=?,tipo=?"
-					+ " WHERE id_genero = ?");
+			pst = conn.prepareStatement("UPDATE usuarios SET nombre_usuario=?,password=?,estado=?,tipo=?"
+					+ " WHERE id_usuario = ?");
 			
 			pst.setString(1, usu.getNombreUsuario());
 			pst.setString(2, usu.getPassword());
 			pst.setBoolean(3, usu.getEstado());
-			
 			switch(usu.getTipo())
 			{
 			case Socio:
@@ -136,6 +131,23 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 				break;
 			}
 			pst.setInt(5, usu.getId());
+			pst.executeUpdate();
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst);
+		}
+	}
+	
+	public void delete(Usuario usu) throws SQLException {
+		PreparedStatement pst = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("DELETE FROM usuarios WHERE id_usuario = ?");
+			pst.setInt(1, usu.getId());
 			pst.executeUpdate();
 		}
 		catch (SQLException e){

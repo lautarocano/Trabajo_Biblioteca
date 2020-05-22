@@ -1,15 +1,12 @@
 package data;
-import java.sql.Date;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import model.Genero;
-import model.Libro;
 import model.Socio;
-import model.Usuario;
+
 public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 	
 	public Socio mapearSocio(ResultSet rs) throws SQLException {
@@ -22,9 +19,8 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 		s.setTelefono(rs.getString("telefono"));
 		s.setDni(rs.getInt("dni"));
 		s.setEstado(rs.getBoolean("estado"));
-		Usuario usuario=new Usuario();
-		usuario.setId(rs.getInt("id_usuario"));
-		s.setUsuario(usuario);
+		UsuarioDAO uDAO = new UsuarioDAO();
+		s.setUsuario(uDAO.mapearUsuario(rs));
 		
 		return s;
 	}
@@ -36,7 +32,8 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 		try {
 			this.openConnection();
 			stm = conn.createStatement();
-			rs = stm.executeQuery("SELECT * FROM socios");
+			rs = stm.executeQuery("SELECT s.*, u.nombre_usuario, u.password, u.tipo, u.estado "
+					+ "FROM socios s INNER JOIN usuarios u ON s.id_usuario = u.id_usuario");
 			while (rs.next()) {
 				socios.add(this.mapearSocio(rs));
 			}
@@ -57,7 +54,9 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 		ResultSet rs = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("SELECT * FROM socios WHERE id_socio = ?");
+			pst = conn.prepareStatement("SELECT s.*, u.nombre_usuario, u.password, u.tipo, u.estado "
+					+ "FROM socios s INNER JOIN usuarios u ON s.id_usuario = u.id_usuario "
+					+ "WHERE id_socio = ?");
 			pst.setInt(1, id);
 			rs = pst.executeQuery();
 			if (rs.next()) {
@@ -109,8 +108,7 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			pst = conn.prepareStatement("UPDATE socios SET nombre= ?,apellido=?,email=?,domicilio=?,"
 					+ "telefono=?,dni=?,estado=? "
 					+ "WHERE id_socio = ?");
-			
-			
+
 			pst.setString(1,soc.getNombre());
 			pst.setString(2, soc.getApellido());
 			pst.setString(3, soc.getEmail());
@@ -120,7 +118,6 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			pst.setBoolean(7, soc.getEstado());
 			pst.setInt(8, soc.getUsuario().getId());
 			pst.setInt(9, soc.getId());
-
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
@@ -131,5 +128,21 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			this.closeConnection(pst);
 		}
 	}
-
+	
+	public void delete(Socio soc) throws SQLException {
+		PreparedStatement pst = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("DELETE FROM socios WHERE id_socio = ?");
+			pst.setInt(1, soc.getId());
+			pst.executeUpdate();
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst);
+		}
+	}
 }
