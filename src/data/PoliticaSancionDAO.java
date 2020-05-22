@@ -25,7 +25,7 @@ public class PoliticaSancionDAO extends BaseDAO implements IBaseDAO<PoliticaSanc
 		try {
 			this.openConnection();
 			stm = conn.createStatement();
-			rs = stm.executeQuery("SELECT * FROM generos");
+			rs = stm.executeQuery("SELECT * FROM politicasancion");
 			while (rs.next()) {
 				politicassancion.add(this.mapearPoliticaSancion(rs));
 			}
