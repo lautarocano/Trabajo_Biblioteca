@@ -3,17 +3,10 @@ package model;
 import java.util.Date;
 
 public class Sancion extends Entidad {
-	private int _idSancion;
 	private Date _fechaSancion;
 	private int _diasSancion;
 	private Socio _socio;
 	
-	public int getIdSancion() {
-		return _idSancion;
-	}
-	public void setIdSancion(int idSancion) {
-		this._idSancion = idSancion;
-	}
 	public Date getFechaSancion() {
 		return _fechaSancion;
 	}
