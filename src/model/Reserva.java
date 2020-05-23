@@ -7,7 +7,7 @@ public class Reserva extends Entidad {
 	private Date _fechaReserva;
 	private boolean _entregada;
 	private Socio _socio;
-	private ArrayList <Libro> _libros;
+	private ArrayList <LibroReserva> _libros;
 	
 	public Date getFechaReserva() {
 		return _fechaReserva;
@@ -27,10 +27,10 @@ public class Reserva extends Entidad {
 	public void setSocio(Socio socio) {
 		this._socio = socio;
 	}
-	public ArrayList <Libro> getLibros() {
+	public ArrayList <LibroReserva> getLibros() {
 		return _libros;
 	}
-	public void setLibros(ArrayList <Libro> libros) {
+	public void setLibros(ArrayList <LibroReserva> libros) {
 		this._libros = libros;
 	}
 }
