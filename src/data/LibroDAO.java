@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
+import model.Genero;
 import model.Libro;
 
 public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
@@ -70,6 +72,57 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 		}
 		return lib;
 	}
+	
+	public ArrayList<Libro> getAllByGenero(Genero genero) throws SQLException {
+		ArrayList<Libro> libros = new ArrayList<Libro>();
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("SELECT l.*, g.descripcion FROM libros l "
+					+ "INNER JOIN generos g ON l.id_genero = g.id_genero where l.id_genero=?");
+			pst.setInt(1, genero.getId());
+			rs=pst.executeQuery();
+			
+			while (rs.next()) {
+				libros.add(this.mapearLibro(rs));
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+		return libros;
+	}
+	
+	public ArrayList<Libro> getAllByTitulo(String titulo) throws SQLException {
+		ArrayList<Libro> libros = new ArrayList<Libro>();
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("SELECT l.*, g.descripcion FROM libros l "
+					+ "INNER JOIN generos g ON l.id_genero = g.id_genero where l.titulo LIKE '%?%'");
+			pst.setString(1, titulo);
+			rs=pst.executeQuery();
+			
+			while (rs.next()) {
+				libros.add(this.mapearLibro(rs));
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+		return libros;
+	}
+	
 	
 	public void insert(Libro lib) throws SQLException {
 		PreparedStatement pst = null;

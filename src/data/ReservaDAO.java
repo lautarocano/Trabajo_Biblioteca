@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import model.LibroReserva;
 import model.Reserva;
+import model.Socio;
 
 public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 
@@ -121,6 +122,36 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 		}
 		finally {
 			this.closeConnection(stm, rs);
+		}
+		return reservas;
+	}
+	
+	public ArrayList<Reserva> getAllBySocio(Socio socio) throws SQLException {
+		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
+		//Statement stm = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			//stm = conn.createStatement();
+			pst = conn.prepareStatement("SELECT r.id_reserva, r.fecha_reserva, r.entregada, s.* "
+					+ "FROM reservas r INNER JOIN socios s ON r.id_socio = s.id_socio where r.id_socio=?");
+			pst.setInt(1, socio.getId());
+			rs=pst.executeQuery();
+			while (rs.next()) {
+				reservas.add(this.mapearReserva(rs));
+			}
+			rs.close();
+			for (Reserva res: reservas) {
+				res.setLibros(this.getAllLibroReserva(res, pst, rs));
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
 		}
 		return reservas;
 	}

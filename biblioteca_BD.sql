@@ -39,6 +39,7 @@ CREATE TABLE `ejemplares` (
 
 LOCK TABLES `ejemplares` WRITE;
 /*!40000 ALTER TABLE `ejemplares` DISABLE KEYS */;
+INSERT INTO `ejemplares` VALUES (1,1),(2,1),(3,1),(4,2);
 /*!40000 ALTER TABLE `ejemplares` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -62,6 +63,7 @@ CREATE TABLE `generos` (
 
 LOCK TABLES `generos` WRITE;
 /*!40000 ALTER TABLE `generos` DISABLE KEYS */;
+INSERT INTO `generos` VALUES (1,'Comedia'),(2,'Terror'),(3,'Drama'),(4,'Suspenso'),(5,'Fantasia');
 /*!40000 ALTER TABLE `generos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -120,6 +122,7 @@ CREATE TABLE `libros` (
 
 LOCK TABLES `libros` WRITE;
 /*!40000 ALTER TABLE `libros` DISABLE KEYS */;
+INSERT INTO `libros` VALUES (1,'Tomas','La laguna','1','2020-06-07',10,2),(2,'Lautaro','La horca','1','2020-02-04',15,2),(3,'Julio Chavez','Los miserables','1','2020-01-01',20,3),(4,'Marcos Penia','Bajo la misma estrella','2','2018-01-03',10,1);
 /*!40000 ALTER TABLE `libros` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -151,6 +154,7 @@ CREATE TABLE `lineasdeprestamo` (
 
 LOCK TABLES `lineasdeprestamo` WRITE;
 /*!40000 ALTER TABLE `lineasdeprestamo` DISABLE KEYS */;
+INSERT INTO `lineasdeprestamo` VALUES (1,1,1,1,'2020-05-05',_binary ''),(2,1,1,1,'2020-05-05',_binary '');
 /*!40000 ALTER TABLE `lineasdeprestamo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -174,6 +178,7 @@ CREATE TABLE `politicaprestamo` (
 
 LOCK TABLES `politicaprestamo` WRITE;
 /*!40000 ALTER TABLE `politicaprestamo` DISABLE KEYS */;
+INSERT INTO `politicaprestamo` VALUES (1,5),(2,10),(3,40),(4,50),(5,3);
 /*!40000 ALTER TABLE `politicaprestamo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -199,6 +204,7 @@ CREATE TABLE `politicasancion` (
 
 LOCK TABLES `politicasancion` WRITE;
 /*!40000 ALTER TABLE `politicasancion` DISABLE KEYS */;
+INSERT INTO `politicasancion` VALUES (1,1,5,3),(2,6,10,5),(3,10,15,7);
 /*!40000 ALTER TABLE `politicasancion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -227,6 +233,7 @@ CREATE TABLE `prestamos` (
 
 LOCK TABLES `prestamos` WRITE;
 /*!40000 ALTER TABLE `prestamos` DISABLE KEYS */;
+INSERT INTO `prestamos` VALUES (1,'2019-01-01',5,2,1),(2,'2020-01-01',6,2,1);
 /*!40000 ALTER TABLE `prestamos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -281,6 +288,7 @@ CREATE TABLE `sanciones` (
 
 LOCK TABLES `sanciones` WRITE;
 /*!40000 ALTER TABLE `sanciones` DISABLE KEYS */;
+INSERT INTO `sanciones` VALUES (1,1,'2019-07-01',5),(2,1,'2019-09-05',10);
 /*!40000 ALTER TABLE `sanciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -313,6 +321,7 @@ CREATE TABLE `socios` (
 
 LOCK TABLES `socios` WRITE;
 /*!40000 ALTER TABLE `socios` DISABLE KEYS */;
+INSERT INTO `socios` VALUES (1,'tomas','ponce','tpopo@gmail.com','nose1234','1230913',41029330,_binary '\0',1);
 /*!40000 ALTER TABLE `socios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -339,6 +348,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
+INSERT INTO `usuarios` VALUES (1,'backtomas','1234567',_binary '\0',0),(2,'lautarogod','32659877',_binary '',1),(3,'germanneitormaster','487951',_binary '\0',1),(4,'alicebrancketivocih','1111111',_binary '',0);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -351,4 +361,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-22 14:16:16
+-- Dump completed on 2020-06-07 11:39:57
