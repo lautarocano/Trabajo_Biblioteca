@@ -128,15 +128,14 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 		PreparedStatement pst = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("INSERT INTO libros(id_libro,autor,titulo,nro_edicion,fecha_edicion,"
-					+ "cant_dias_max,id_genero) VALUES(?,?,?,?,?,?,?)");
-			pst.setInt(1, lib.getId());
-			pst.setString(2, lib.getAutor());
-			pst.setString(3, lib.getTitulo());
-			pst.setString(4, lib.getNroEdicion());
-			pst.setDate(5, (Date) lib.getFechaEdicion());
-			pst.setInt(6, lib.getCantDiasMaxPrestamo());
-			pst.setInt(7,lib.getGenero().getId());
+			pst = conn.prepareStatement("INSERT INTO libros(autor,titulo,nro_edicion,fecha_edicion,"
+					+ "cant_dias_max, id_genero) VALUES(?,?,?,?,?,?)");
+			pst.setString(1, lib.getAutor());
+			pst.setString(2, lib.getTitulo());
+			pst.setString(3, lib.getNroEdicion());
+			pst.setDate(4, (Date) lib.getFechaEdicion());
+			pst.setInt(5, lib.getCantDiasMaxPrestamo());
+			pst.setInt(6, lib.getGenero().getId());
 			pst.executeUpdate();
 		}
 		catch (SQLException e){

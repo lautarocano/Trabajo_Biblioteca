@@ -79,12 +79,11 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 		PreparedStatement pst = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("INSERT INTO usuarios(id_usuario,nombre_usuario,password,estado,tipo)"
+			pst = conn.prepareStatement("INSERT INTO usuarios(nombre_usuario,password,estado,tipo)"
 					+ " VALUES(?,?,?,?,?)");
-			pst.setInt(1, usu.getId());
-			pst.setString(2, usu.getNombreUsuario());
-			pst.setString(3, usu.getPassword());
-			pst.setBoolean(4, usu.getEstado());
+			pst.setString(1, usu.getNombreUsuario());
+			pst.setString(2, usu.getPassword());
+			pst.setBoolean(3, usu.getEstado());
 			switch(usu.getTipo())
 			{
 			case Socio:

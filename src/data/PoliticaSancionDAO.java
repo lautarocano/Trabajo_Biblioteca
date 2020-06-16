@@ -67,12 +67,11 @@ public class PoliticaSancionDAO extends BaseDAO implements IBaseDAO<PoliticaSanc
 		PreparedStatement pst = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("INSERT INTO politicasancion(id_politicasancion"
-					+ ",dias_atraso_desde,dias_atraso_hasta,dias_sancion) VALUES(?,?,?,?)");
-			pst.setInt(1, ps.getId());
-			pst.setInt(2, ps.getDiasDeAtrasoDesde());
-			pst.setInt(3, ps.getDiasDeAtrasoHasta());
-			pst.setInt(4, ps.getDiasDeSancion());
+			pst = conn.prepareStatement("INSERT INTO politicasancion(dias_atraso_desde, "
+					+ "dias_atraso_hasta,dias_sancion) VALUES(?,?,?)");
+			pst.setInt(1, ps.getDiasDeAtrasoDesde());
+			pst.setInt(2, ps.getDiasDeAtrasoHasta());
+			pst.setInt(3, ps.getDiasDeSancion());
 			pst.executeUpdate();
 		}
 		catch (SQLException e){

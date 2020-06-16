@@ -7,8 +7,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import model.Sancion;
-import model.Socio;
-
 
 
 public class SancionDAO extends BaseDAO implements IBaseDAO<Sancion> {

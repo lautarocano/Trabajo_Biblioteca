@@ -26,12 +26,11 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 		ResultSet rs = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("INSERT INTO reservas(id_reserva, fecha_reserva, "
+			pst = conn.prepareStatement("INSERT INTO reservas(fecha_reserva, "
 					+ "entregada, id_socio) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-			pst.setInt(1, res.getId());
-			pst.setDate(2, (Date)res.getFechaReserva());
-			pst.setBoolean(3, false);
-			pst.setInt(4, res.getSocio().getId());
+			pst.setDate(1, (Date)res.getFechaReserva());
+			pst.setBoolean(2, false);
+			pst.setInt(3, res.getSocio().getId());
 			pst.executeUpdate();
 			rs = pst.getGeneratedKeys();
 			if (rs.next()) {
@@ -100,18 +99,18 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 
 	public ArrayList<Reserva> getAll() throws SQLException {
 		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
-		Statement stm = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
 			this.openConnection();
-			stm = conn.createStatement();
-			rs = stm.executeQuery("SELECT r.id_reserva, r.fecha_reserva, r.entregada, s.* "
+			pst = conn.prepareStatement("SELECT r.id_reserva, r.fecha_reserva, r.entregada, s.* "
 					+ "FROM reservas r INNER JOIN socios s ON r.id_socio = s.id_socio");
+			rs = pst.executeQuery();
 			while (rs.next()) {
 				reservas.add(this.mapearReserva(rs));
 			}
 			rs.close();
+			pst.close();
 			for (Reserva res: reservas) {
 				res.setLibros(this.getAllLibroReserva(res, pst, rs));
 			}
@@ -121,19 +120,17 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 			throw e;
 		}
 		finally {
-			this.closeConnection(stm, rs);
+			this.closeConnection(pst, rs);
 		}
 		return reservas;
 	}
 	
 	public ArrayList<Reserva> getAllBySocio(Socio socio) throws SQLException {
 		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
-		//Statement stm = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
 			this.openConnection();
-			//stm = conn.createStatement();
 			pst = conn.prepareStatement("SELECT r.id_reserva, r.fecha_reserva, r.entregada, s.* "
 					+ "FROM reservas r INNER JOIN socios s ON r.id_socio = s.id_socio where r.id_socio=?");
 			pst.setInt(1, socio.getId());
@@ -218,6 +215,7 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 			libRes.setLibro(lDAO.mapearLibro(rs));
 		}
 		rs.close();
+		pst.close();
 		return librosRes;
 	}
 	

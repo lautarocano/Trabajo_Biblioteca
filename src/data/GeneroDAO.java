@@ -65,9 +65,8 @@ public class GeneroDAO extends BaseDAO implements IBaseDAO<Genero>{
 		PreparedStatement pst = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("INSERT INTO generos(id_genero, descripcion) VALUES(?,?)");
-			pst.setInt(1, gen.getId());
-			pst.setString(2, gen.getDescripcion());
+			pst = conn.prepareStatement("INSERT INTO generos(descripcion) VALUES(?)");
+			pst.setString(1, gen.getDescripcion());
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
