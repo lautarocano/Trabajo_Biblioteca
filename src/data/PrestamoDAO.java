@@ -7,12 +7,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import model.Prestamo;
+import model.Socio;
 import model.Ejemplar;
 import model.LineaDePrestamo;
 
 public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 	
-	public Prestamo mapearPrestamo(ResultSet rs) throws SQLException {
+	public Prestamo mapearPrestamo(ResultSet rs, Boolean mapearSocio) throws SQLException {
 		Prestamo p = new Prestamo();
 		p.setId(rs.getInt("id_prestamo"));
 		p.setFechaPrestamo(rs.getDate("fecha_prestamo"));
@@ -28,8 +29,10 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			p.setEstado(Prestamo.estadoPrestamo.Finalizado);
 			break;
 		}
-		SocioDAO sDAO = new SocioDAO();
-		p.setSocio(sDAO.mapearSocio(rs));
+		if (mapearSocio) {
+			SocioDAO sDAO = new SocioDAO();
+			p.setSocio(sDAO.mapearSocio(rs));
+		}
 		return p;
 	}
 	
@@ -131,7 +134,35 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 					+ "INNER JOIN usuarios u ON s.id_usuario = u.id_usuario");
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				prestamos.add(this.mapearPrestamo(rs));
+				prestamos.add(this.mapearPrestamo(rs, true));
+			}
+			rs.close();
+			pst.close();
+			for(Prestamo pres: prestamos) {
+				pres.setLineasPrestamo(this.getAllLineasPrestamo(pres, pst, rs));
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+		return prestamos;
+	}
+	
+	public ArrayList<Prestamo> getAllBySocio(Socio socio) throws SQLException {
+		ArrayList<Prestamo> prestamos = new ArrayList<Prestamo>();
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("SELECT * FROM prestamo WHERE id_socio = ?");
+			pst.setInt(1, socio.getId());
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				prestamos.add(this.mapearPrestamo(rs, false));
 			}
 			rs.close();
 			pst.close();
@@ -163,7 +194,7 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			pst.setInt(1, id);
 			rs = pst.executeQuery();
 			if (rs.next()) {
-				this.mapearPrestamo(rs);
+				this.mapearPrestamo(rs, true);
 			}
 		}
 		catch (SQLException e) {

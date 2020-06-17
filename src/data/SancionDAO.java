@@ -18,7 +18,6 @@ public class SancionDAO extends BaseDAO implements IBaseDAO<Sancion> {
 		s.setDiasSancion(rs.getInt("dias_sancion"));
 		SocioDAO sDAO=new SocioDAO();
 		s.setSocio(sDAO.mapearSocio(rs));
-		
 		return s;
 	}
 	
@@ -30,9 +29,9 @@ public class SancionDAO extends BaseDAO implements IBaseDAO<Sancion> {
 			this.openConnection();
 			stm = conn.createStatement();
 			rs = stm.executeQuery("SELECT san.*,soc.nombre,soc.apellido,soc.email,soc.telefono,soc.dni,soc.estado,"
-					+ "u.nombre_usuario, u.password, u.tipo, u.estado"
-					+ " FROM sanciones san inner join socios soc ON "
-					+ " san.id_socio=soc.id_socio inner join usuarios u on soc.id_usuario=u.id_usuario");
+					+ "u.nombre_usuario, u.password, u.tipo, u.estado FROM sanciones san "
+					+ "INNER JOIN socios soc ON san.id_socio = soc.id_socio "
+					+ "INNER JOIN usuarios u ON soc.id_usuario = u.id_usuario");
 			while (rs.next()) {
 				sanciones.add(this.mapearSancion(rs));
 			}
@@ -47,7 +46,7 @@ public class SancionDAO extends BaseDAO implements IBaseDAO<Sancion> {
 		return sanciones;
 	}
 	
-	public Sancion getOne(int id_sancion,int id_socio) throws SQLException {
+	public Sancion getOne(int id_sancion) throws SQLException {
 		Sancion san = null;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
@@ -57,9 +56,8 @@ public class SancionDAO extends BaseDAO implements IBaseDAO<Sancion> {
 					+ "u.nombre_usuario, u.password, u.tipo, u.estado"
 					+ " FROM sanciones san inner join socios soc ON "
 					+ " san.id_socio=soc.id_socio inner join usuarios u on soc.id_usuario=u.id_usuario"
-					+ " where id_sancion=? and id_socio=?");
+					+ " where id_sancion=?");
 			pst.setInt(1, id_sancion);
-			pst.setInt(1, id_socio);
 			rs = pst.executeQuery();
 			if (rs.next()) {
 				san = this.mapearSancion(rs);
@@ -79,14 +77,11 @@ public class SancionDAO extends BaseDAO implements IBaseDAO<Sancion> {
 		PreparedStatement pst = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("INSERT INTO sanciones(id_sancion,id_socio,fecha_sancion,"
-					+ "dias_sancion) VALUES(?,?,?,?)");
-			
-			
-			pst.setInt(1, san.getId());
-			pst.setInt(2,san.getSocio().getId());
-			pst.setDate(3, (Date) san.getFechaSancion());
-			pst.setInt(4, san.getDiasSancion());
+			pst = conn.prepareStatement("INSERT INTO sanciones(id_socio,fecha_sancion,"
+					+ "dias_sancion) VALUES(?,?,?)");
+			pst.setInt(1,san.getSocio().getId());
+			pst.setDate(2, (Date) san.getFechaSancion());
+			pst.setInt(3, san.getDiasSancion());
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
@@ -103,13 +98,12 @@ public class SancionDAO extends BaseDAO implements IBaseDAO<Sancion> {
 		try {
 			this.openConnection();
 			pst = conn.prepareStatement("UPDATE sanciones SET fecha_sancion=?,dias_sancion=?"
-					+ "WHERE id_sancion = ? and id_socio=?");
+					+ "WHERE id_sancion = ?");
 			
 			
 			pst.setDate(1,(Date) san.getFechaSancion());
 			pst.setInt(2, san.getDiasSancion());
 			pst.setInt(3, san.getId());
-			pst.setInt(4, san.getSocio().getId());
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
@@ -125,9 +119,8 @@ public class SancionDAO extends BaseDAO implements IBaseDAO<Sancion> {
 		PreparedStatement pst = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("DELETE FROM sancion WHERE id_sancion = ? and id_socio=?");
+			pst = conn.prepareStatement("DELETE FROM sancion WHERE id_sancion = ?");
 			pst.setInt(1, san.getId());
-			pst.setInt(2, san.getSocio().getId());
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
@@ -138,5 +131,4 @@ public class SancionDAO extends BaseDAO implements IBaseDAO<Sancion> {
 			this.closeConnection(pst);
 		}
 	}
-
 }

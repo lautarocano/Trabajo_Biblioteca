@@ -12,12 +12,14 @@ import model.Socio;
 
 public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 
-	public Reserva mapearReserva(ResultSet rs) throws SQLException {
+	public Reserva mapearReserva(ResultSet rs, Boolean mapearSocio) throws SQLException {
 		Reserva r = new Reserva();
 		r.setId(rs.getInt("id_reserva"));
 		r.setFechaReserva(rs.getDate("fecha_reserva"));
-		SocioDAO sDAO = new SocioDAO();
-		r.setSocio(sDAO.mapearSocio(rs));
+		if (mapearSocio) {
+			SocioDAO sDAO = new SocioDAO();
+			r.setSocio(sDAO.mapearSocio(rs));
+		}
 		return r;
 	}
 	
@@ -103,11 +105,12 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 		ResultSet rs = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("SELECT r.id_reserva, r.fecha_reserva, r.entregada, s.* "
-					+ "FROM reservas r INNER JOIN socios s ON r.id_socio = s.id_socio");
+			pst = conn.prepareStatement("SELECT r.id_reserva, r.fecha_reserva, r.entregada, s.*, u.nombre_usuario, u.password, u.tipo, u.estado "
+					+ "FROM reservas r INNER JOIN socios s ON r.id_socio = s.id_socio "
+					+ "INNER JOIN usuarios u ON s.id_usuario = u.id_usuario");
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				reservas.add(this.mapearReserva(rs));
+				reservas.add(this.mapearReserva(rs, true));
 			}
 			rs.close();
 			pst.close();
@@ -131,12 +134,11 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 		ResultSet rs = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("SELECT r.id_reserva, r.fecha_reserva, r.entregada, s.* "
-					+ "FROM reservas r INNER JOIN socios s ON r.id_socio = s.id_socio where r.id_socio=?");
+			pst = conn.prepareStatement("SELECT * FROM reservas WHERE r.id_socio = ?");
 			pst.setInt(1, socio.getId());
 			rs=pst.executeQuery();
 			while (rs.next()) {
-				reservas.add(this.mapearReserva(rs));
+				reservas.add(this.mapearReserva(rs, false));
 			}
 			rs.close();
 			for (Reserva res: reservas) {
@@ -159,13 +161,14 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 		ResultSet rs = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("SELECT r.id_reserva, r.fecha_reserva, r.entregada, s.* "
+			pst = conn.prepareStatement("SELECT r.id_reserva, r.fecha_reserva, r.entregada, s.*, u.nombre_usuario, u.password, u.tipo, u.estado "
 					+ "FROM reservas r INNER JOIN socios s ON r.id_socio = s.id_socio "
+					+ "INNER JOIN usuarios u ON s.id_usuario = u.id_usuario "
 					+ "WHERE id_reserva = ?");
 			pst.setInt(1, id);
 			rs = pst.executeQuery();
 			if (rs.next()) {
-				res = this.mapearReserva(rs);
+				res = this.mapearReserva(rs, true);
 			}
 			rs.close();
 			res.setLibros(this.getAllLibroReserva(res, pst, rs));

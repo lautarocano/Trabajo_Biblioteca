@@ -73,6 +73,31 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 		return soc;
 	}
 	
+	public Socio getOneByUser(int idUser) throws SQLException {
+		Socio soc = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("SELECT s.*, u.nombre_usuario, u.password, u.tipo, u.estado "
+					+ "FROM socios s INNER JOIN usuarios u ON s.id_usuario = u.id_usuario "
+					+ "WHERE id_usuario = ?");
+			pst.setInt(1, idUser);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				soc = this.mapearSocio(rs);
+			}
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+		return soc;
+	}
+	
 	public void insert(Socio soc) throws SQLException {
 		PreparedStatement pst = null;
 		try {
