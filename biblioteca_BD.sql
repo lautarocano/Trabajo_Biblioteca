@@ -27,7 +27,7 @@ DROP TABLE IF EXISTS `ejemplares`;
 CREATE TABLE `ejemplares` (
   `id_ejemplar` int(11) NOT NULL,
   `id_libro` int(11) NOT NULL,
-  PRIMARY KEY (`id_ejemplar`,`id_libro`),
+  PRIMARY KEY (`id_ejemplar`),
   KEY `idLibro_idx` (`id_libro`),
   CONSTRAINT `fk_libro_ejemplar` FOREIGN KEY (`id_libro`) REFERENCES `libros` (`id_libro`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -136,13 +136,12 @@ DROP TABLE IF EXISTS `lineasdeprestamo`;
 CREATE TABLE `lineasdeprestamo` (
   `id_lineadeprestamo` int(11) NOT NULL,
   `id_ejemplar` int(11) NOT NULL,
-  `id_libro` int(11) NOT NULL,
   `id_prestamo` int(11) NOT NULL,
   `fecha_devolucion` date NOT NULL,
   `devuelto` bit(1) NOT NULL,
-  PRIMARY KEY (`id_lineadeprestamo`,`id_prestamo`,`id_libro`,`id_ejemplar`),
-  KEY `fk_lineadeprestamo_ejemplar_idx` (`id_ejemplar`,`id_libro`),
+  PRIMARY KEY (`id_lineadeprestamo`),
   KEY `fk_lineadeprestamo_prestamo_idx` (`id_prestamo`),
+  KEY `fk_lineadeprestamo_ejemplar_idx` (`id_ejemplar`),
   CONSTRAINT `fk_ejemplar_lineadeprestamo` FOREIGN KEY (`id_ejemplar`) REFERENCES `ejemplares` (`id_ejemplar`) ON UPDATE CASCADE,
   CONSTRAINT `fk_prestamo_lineadeprestamo` FOREIGN KEY (`id_prestamo`) REFERENCES `prestamos` (`id_prestamo`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -154,7 +153,7 @@ CREATE TABLE `lineasdeprestamo` (
 
 LOCK TABLES `lineasdeprestamo` WRITE;
 /*!40000 ALTER TABLE `lineasdeprestamo` DISABLE KEYS */;
-INSERT INTO `lineasdeprestamo` VALUES (1,1,1,1,'2020-05-05',_binary ''),(2,1,1,1,'2020-05-05',_binary '');
+INSERT INTO `lineasdeprestamo` VALUES (1,1,1,'2020-05-05',_binary ''),(2,1,1,'2020-05-05',_binary '');
 /*!40000 ALTER TABLE `lineasdeprestamo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -168,7 +167,7 @@ DROP TABLE IF EXISTS `politicaprestamo`;
 CREATE TABLE `politicaprestamo` (
   `idpoliticaprestamo` int(11) NOT NULL,
   `cant_max_libros_pend` int(11) NOT NULL,
-  PRIMARY KEY (`idpoliticaprestamo`,`cant_max_libros_pend`)
+  PRIMARY KEY (`idpoliticaprestamo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -221,7 +220,7 @@ CREATE TABLE `prestamos` (
   `dias_prestamo` int(11) NOT NULL,
   `estado` tinyint(1) NOT NULL,
   `id_socio` int(11) NOT NULL,
-  PRIMARY KEY (`id_prestamo`,`id_socio`),
+  PRIMARY KEY (`id_prestamo`),
   KEY `fk_prestamo_socio_idx` (`id_socio`),
   CONSTRAINT `fk_socio_prestamo` FOREIGN KEY (`id_socio`) REFERENCES `socios` (`id_socio`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -276,7 +275,7 @@ CREATE TABLE `sanciones` (
   `id_socio` int(11) NOT NULL,
   `fecha_sancion` date NOT NULL,
   `dias_sancion` int(11) NOT NULL,
-  PRIMARY KEY (`id_sancion`,`id_socio`),
+  PRIMARY KEY (`id_sancion`),
   KEY `fk_sancion_socio_idx` (`id_socio`),
   CONSTRAINT `fk_socio_sancion` FOREIGN KEY (`id_socio`) REFERENCES `socios` (`id_socio`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -308,7 +307,7 @@ CREATE TABLE `socios` (
   `telefono` varchar(45) NOT NULL,
   `dni` int(11) NOT NULL,
   `estado` bit(1) NOT NULL,
-  `id_usuario` int(11) DEFAULT NULL,
+  `id_usuario` int(11) NOT NULL,
   PRIMARY KEY (`id_socio`),
   KEY `fk_usuario_socio_idx` (`id_usuario`),
   CONSTRAINT `fk_usuario_socio` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON UPDATE CASCADE
@@ -361,4 +360,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-07 11:39:57
+-- Dump completed on 2020-06-17 10:42:34
