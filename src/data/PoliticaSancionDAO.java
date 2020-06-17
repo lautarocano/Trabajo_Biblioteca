@@ -63,6 +63,30 @@ public class PoliticaSancionDAO extends BaseDAO implements IBaseDAO<PoliticaSanc
 		return ps;
 	}
 	
+	public PoliticaSancion getOneByDiasAtraso(int dias_atraso) throws SQLException {
+		PoliticaSancion ps = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("SELECT * FROM politicasancion ps "
+					+ "WHERE ? BETWEEN ps.dias_atraso_desde ABD ps.dias_atraso_hasta");
+			pst.setInt(1, dias_atraso);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				ps = this.mapearPoliticaSancion(rs);
+			}
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+		return ps;
+	}
+	
 	public void insert(PoliticaSancion ps) throws SQLException {
 		PreparedStatement pst = null;
 		try {

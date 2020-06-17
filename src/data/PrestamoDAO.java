@@ -207,6 +207,30 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		return pres;
 	}
 	
+	public int getCantidadPrestamosPendientes(int id_socio) throws SQLException {
+		int cant_prestamos_pendientes=0;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("SELECT COUNT(id_prestamo) AS cantidad_pendientes "
+					+ "FROM prestamos WHERE id_socio=? and estado=0 or estado=1 ");
+			pst.setInt(1, id_socio);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				cant_prestamos_pendientes=rs.getInt("cantidad_pendientes");
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+		return cant_prestamos_pendientes;
+	}
+	
 	private ArrayList<LineaDePrestamo> getAllLineasPrestamo(Prestamo p, PreparedStatement pst, ResultSet rs) throws SQLException {
 		ArrayList<LineaDePrestamo> lineas = new ArrayList<LineaDePrestamo>();
 		if (conn == null || conn.isClosed()) this.openConnection();
