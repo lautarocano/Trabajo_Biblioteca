@@ -6,7 +6,6 @@ public class LineaDePrestamo extends Entidad {
 	private Date _fechaDevolucion;
 	private Boolean _devuelto;
 	private Ejemplar _ejemplar;
-	private Prestamo _prestamo;
 
 	public Date getFechaDevolucion() {
 		return _fechaDevolucion;
@@ -25,11 +24,5 @@ public class LineaDePrestamo extends Entidad {
 	}
 	public void setEjemplar(Ejemplar ejemplar) {
 		this._ejemplar = ejemplar;
-	}
-	public Prestamo getPrestamo() {
-		return _prestamo;
-	}
-	public void setPrestamo(Prestamo prestamo) {
-		this._prestamo = prestamo;
 	}
 }

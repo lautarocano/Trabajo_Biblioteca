@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Prestamo extends Entidad {
@@ -7,6 +8,7 @@ public class Prestamo extends Entidad {
 	private int _diasPrestamo;
 	private estadoPrestamo _estado;
 	private Socio _socio;
+	private ArrayList<LineaDePrestamo> _lineasPrestamo;
 	
 	public enum estadoPrestamo{
 		EnCurso,
@@ -37,5 +39,11 @@ public class Prestamo extends Entidad {
 	}
 	public void setSocio(Socio socio) {
 		this._socio = socio;
+	}
+	public ArrayList<LineaDePrestamo> getLineasPrestamo() {
+		return _lineasPrestamo;
+	}
+	public void setLineasPrestamo(ArrayList<LineaDePrestamo> lineasPrestamo) {
+		this._lineasPrestamo = lineasPrestamo;
 	}
 }
