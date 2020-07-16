@@ -98,6 +98,28 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 		return soc;
 	}
 	
+	public boolean dniAlreadyExists(int dni) throws SQLException{
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("SELECT * FROM socios WHERE dni = ?");
+			pst.setInt(1, dni);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				return true;
+			}
+			else return false;
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+	}
+	
 	public void insert(Socio soc) throws SQLException {
 		PreparedStatement pst = null;
 		try {
