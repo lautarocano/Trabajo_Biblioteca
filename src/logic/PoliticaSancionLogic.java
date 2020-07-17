@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import data.PoliticaSancionDAO;
 import model.PoliticaSancion;
+import model.Prestamo;
 
 public class PoliticaSancionLogic {
 
@@ -74,6 +75,17 @@ private PoliticaSancionDAO _PoliticaSancionDAO;
 	}
 		
 	}
+	
+	public PoliticaSancion getOneByDiferencia(Prestamo pres) throws SQLException {
+		try {
+			return this._PoliticaSancionDAO.getOneByDiferencia(pres);
+		}
+		catch (SQLException exception){
+			throw exception;
+		}
+		
+	}
+
 
 
 

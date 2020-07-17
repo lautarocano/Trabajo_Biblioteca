@@ -1,13 +1,15 @@
 package logic;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import data.PoliticaSancionDAO;
 import data.PrestamoDAO;
-import model.LineaDePrestamo;
+import data.SancionDAO;
+import model.PoliticaSancion;
 import model.Prestamo;
+import model.Sancion;
 import model.Socio;
 
 public class PrestamoLogic {
@@ -91,7 +93,68 @@ private PrestamoDAO _PrestamoDAO;
 		
 	}
 	
+	/*Verifico si el usuario esta o no sancionado*/
+	public Boolean isSancionado(Prestamo pres) throws SQLException {
+		try {
+			return this._PrestamoDAO.isSancionado(pres);
+		}
+		catch (SQLException exception){
+			throw exception;
+		}
+		
+	}
 	
+	/* verifico si excedio el limite de libros pendientes*/
+	public Boolean isLimiteExcedido(Prestamo pres) throws SQLException {
+		
+		try {
+			return this._PrestamoDAO.isLimiteExcedido(pres);
+		}
+		catch (SQLException exception){
+			throw exception;
+		}
+		
+	}
+
+	/*Verifico si existe algun prestamo atrasado*/
+	public Boolean isPrestamoAtrasado(Prestamo pres) throws SQLException {
+		
+		try {
+			return this._PrestamoDAO.isPrestamoAtrasado(pres);
+		}
+		catch (SQLException exception){
+			throw exception;
+		}
+	}
+
+		/* FALTARIA ACA "VERIFICAR LA DISPONIBILIDAD DE LIBROS" */
+	
+	public Boolean isEntregadoATiempo(Prestamo pres) throws SQLException {
+		try {
+			
+			PoliticaSancionDAO _PoliticaSancionDAO=new PoliticaSancionDAO();
+			PoliticaSancion politicaSancion=_PoliticaSancionDAO.getOneByDiferencia(pres);
+			if(politicaSancion!=null) {
+				SancionDAO _SancionDAO=new SancionDAO();
+				Sancion sancion=new Sancion();
+				sancion.setDiasSancion(politicaSancion.getDiasDeSancion());
+				sancion.setFechaSancion(Calendar.getInstance().getTime());
+				sancion.setSocio(pres.getSocio());
+				_SancionDAO.insert(sancion);
+				return true;
+			}
+			
+			else {
+				return false;
+			}
+			
+		
+		}
+		catch (SQLException exception){
+			throw exception;
+		}
+		
+	}
 
 
 
