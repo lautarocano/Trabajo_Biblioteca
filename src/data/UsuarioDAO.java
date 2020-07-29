@@ -181,4 +181,26 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 			this.closeConnection(pst);
 		}
 	}
+	
+	public boolean userAlreadyExists(String user) throws SQLException {
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("SELECT * FROM usuarios WHERE nombre_usuario = ?");
+			pst.setString(1, user);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				return true;
+			}
+			else return false;
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+	}
 }

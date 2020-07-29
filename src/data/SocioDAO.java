@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 import model.Socio;
 
 public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
@@ -98,7 +99,7 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 		return soc;
 	}
 	
-	public boolean dniAlreadyExists(int dni) throws SQLException{
+	public boolean dniAlreadyExists(int dni) throws SQLException {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
@@ -188,6 +189,93 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 		}
 		finally {
 			this.closeConnection(pst);
+		}
+	}
+	
+	/*Verificacion de si el usuario esta o no sancionado*/
+	public Boolean isSancionado(Socio socio) throws SQLException {
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("select max(fecha_sancion) into @maxfecha from sanciones where id_socio=?;\n" + 
+					"select DATEDIFF(CURDATE(),fecha_sancion) as diferencia,dias_sancion   from sanciones where id_socio=?  and  fecha_sancion=@maxfecha");
+			pst.setInt(1, socio.getId());
+			pst.setInt(2, socio.getId());
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				if(rs.getInt("diferencia")>rs.getInt("dias_sancion")) {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+	}	
+	
+	public int getNotReturnedBooks(Socio socio) throws SQLException {
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("select count(id_lineadeprestamo) cant_libros_pendientes "
+					+ "from lineasdeprestamo lp join prestamos p on p.id_prestamo = lp.id_prestamo "
+					+ "where devuelto=0 and id_socio=?");
+			pst.setInt(1, socio.getId());
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("cant_libros_pendientes");
+			}
+			else {
+				return 0;
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+	}
+	
+	public Boolean hasOverdueLoan(Socio socio) throws SQLException {
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("select count(id_prestamo) as cantidad_atrasados from prestamos where id_socio=? and estado=1");
+			pst.setInt(1, socio.getId());
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				if(rs.getInt("cantidad_atrasados")>0) {
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+			else {
+				return false;
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
 		}
 	}
 }

@@ -16,7 +16,7 @@ public class GeneroLogic {
 		try {
 			return this._GeneroDAO.getAll();
 		}
-		catch (SQLException exception){
+		catch (SQLException exception) {
 			throw exception;
 		}
 	}
@@ -25,7 +25,7 @@ public class GeneroLogic {
 		try {
 			return this._GeneroDAO.getOne(id);
 		}
-		catch (SQLException exception){
+		catch (SQLException exception) {
 			throw exception;
 		}
 	}
@@ -34,7 +34,7 @@ public class GeneroLogic {
 		try {
 				this._GeneroDAO.insert(gen);
 		}
-		catch (SQLException exception){
+		catch (SQLException exception) {
 			throw exception;
 		}
 	}
@@ -43,7 +43,7 @@ public class GeneroLogic {
 		try {
 				this._GeneroDAO.update(gen);
 		}
-		catch (SQLException exception){
+		catch (SQLException exception) {
 			throw exception;
 		}
 	}
@@ -52,9 +52,8 @@ public class GeneroLogic {
 		try {
 			this._GeneroDAO.delete(gen);
 		}
-		catch (SQLException exception){
+		catch (SQLException exception) {
 			throw exception;
 		}
 	}
-	
 }

@@ -206,19 +206,17 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		}
 		return pres;
 	}
-	
-	public int getCantidadPrestamosPendientes(int id_socio) throws SQLException {
-		int cant_prestamos_pendientes=0;
+
+	public int getLimiteLibrosPendientes() throws SQLException {
+		int cant_prestamos_pendientes = 0;
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("SELECT COUNT(id_prestamo) AS cantidad_pendientes "
-					+ "FROM prestamos WHERE id_socio=? and estado=0 or estado=1 ");
-			pst.setInt(1, id_socio);
+			pst = conn.prepareStatement("select cant_max_libros_pend from politicaprestamo where idpoliticaprestamo=(select max(idpoliticaprestamo) from politicaprestamo)");
 			rs = pst.executeQuery();
 			if (rs.next()) {
-				cant_prestamos_pendientes=rs.getInt("cantidad_pendientes");
+				cant_prestamos_pendientes = rs.getInt("cant_max_libros_pend");
 			}
 		}
 		catch (SQLException e) {
@@ -296,101 +294,5 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		pst.setDate(3, (Date) lp.getFechaDevolucion());
 		pst.setBoolean(4, lp.getDevuelto());
 		pst.executeUpdate();
-	}
-	
-	/*Verificacion de si el usuario esta o no sancionado*/
-	public Boolean isSancionado(Prestamo pres) throws SQLException {
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		try {
-			this.openConnection();
-			pst = conn.prepareStatement("select max(fecha_sancion) into @maxfecha from sanciones where id_socio=?;\n" + 
-					"select DATEDIFF(CURDATE(),fecha_sancion) as diferencia,dias_sancion   from sanciones where id_socio=?  and  fecha_sancion=@maxfecha");
-			pst.setInt(1, pres.getSocio().getId());
-			pst.setInt(2, pres.getSocio().getId());
-			rs = pst.executeQuery();
-			if (rs.next()) {
-				if(rs.getInt("diferencia")>rs.getInt("dias_sancion")) {
-					return true;
-				}
-				else {
-					return false;
-				}
-			}
-			else {
-				return false;
-			}
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-			throw e;
-		}
-		finally {
-			this.closeConnection(pst, rs);
-		}
-
-	}
-	
-	
-	public Boolean isLimiteExcedido(Prestamo pres) throws SQLException {
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		try {
-			this.openConnection();
-			pst = conn.prepareStatement("select cant_max_libros_pend into @max_libros_pend from politicaprestamo where idpoliticaprestamo=(select max(idpoliticaprestamo) from politicaprestamo);\n" + 
-					"select count(id_lineadeprestamo) cant_libros_pendientes,@max_libros_pend max_libros_pendientes from lineasdeprestamo where devuelto=0 and id_prestamo=?");
-			pst.setInt(1, pres.getId());
-			rs = pst.executeQuery();
-			if (rs.next()) {
-				if(rs.getInt("cant_libros_pendientes")>rs.getInt("max_libros_pendientes")) {
-					return true;
-				}
-				else {
-					return false;
-				}
-			}
-			else {
-				return false;
-			}
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-			throw e;
-		}
-		finally {
-			this.closeConnection(pst, rs);
-		}
-
-	}
-	
-	
-	public Boolean isPrestamoAtrasado(Prestamo pres) throws SQLException {
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		try {
-			this.openConnection();
-			pst = conn.prepareStatement("select count(id_prestamo) as cantidad_atrasados from prestamos where id_socio=? and estado=1");
-			pst.setInt(1, pres.getSocio().getId());
-			rs = pst.executeQuery();
-			if (rs.next()) {
-				if(rs.getInt("cantidad_atrasados")>0) {
-					return true;
-				}
-				else {
-					return false;
-				}
-			}
-			else {
-				return false;
-			}
-		}
-		catch (SQLException e) {
-			e.printStackTrace();
-			throw e;
-		}
-		finally {
-			this.closeConnection(pst, rs);
-		}
-
 	}
 }

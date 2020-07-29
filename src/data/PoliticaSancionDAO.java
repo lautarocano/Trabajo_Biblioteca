@@ -6,7 +6,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import model.PoliticaSancion;
-import model.Prestamo;
 
 public class PoliticaSancionDAO extends BaseDAO implements IBaseDAO<PoliticaSancion> {
 	
@@ -71,7 +70,7 @@ public class PoliticaSancionDAO extends BaseDAO implements IBaseDAO<PoliticaSanc
 		try {
 			this.openConnection();
 			pst = conn.prepareStatement("SELECT * FROM politicasancion ps "
-					+ "WHERE ? BETWEEN ps.dias_atraso_desde ABD ps.dias_atraso_hasta");
+					+ "WHERE ? BETWEEN ps.dias_atraso_desde AND ps.dias_atraso_hasta");
 			pst.setInt(1, dias_atraso);
 			rs = pst.executeQuery();
 			if (rs.next()) {
@@ -145,30 +144,4 @@ public class PoliticaSancionDAO extends BaseDAO implements IBaseDAO<PoliticaSanc
 			this.closeConnection(pst);
 		}
 	}
-	
-	public PoliticaSancion getOneByDiferencia(Prestamo pres) throws SQLException {
-		PoliticaSancion ps = null;
-		PreparedStatement pst = null;
-		ResultSet rs = null;
-		try {
-			this.openConnection();
-			pst = conn.prepareStatement("select DATEDIFF(current_date(),fecha_prestamo) into @diferencia from prestamos where id_prestamo=? and estado=0 and id_socio=? ;\r\n" + 
-					"select * from politicasancion where @diferencia between dias_atraso_desde and dias_atraso_hasta");
-			pst.setInt(1,pres.getId());
-			pst.setInt(2,pres.getSocio().getId());
-			rs = pst.executeQuery();
-			if (rs.next()) {
-				ps = this.mapearPoliticaSancion(rs);
-			}
-		}
-		catch (SQLException e){
-			e.printStackTrace();
-			throw e;
-		}
-		finally {
-			this.closeConnection(pst, rs);
-		}
-		return ps;
-	}
-
 }
