@@ -77,4 +77,13 @@ private PrestamoDAO _PrestamoDAO;
 			throw exception;
 		}	
 	}
+	
+	public void endLoan(Prestamo pres) throws SQLException {	
+		try {
+			this._PrestamoDAO.endLoan(pres);
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}	
+	}
 }

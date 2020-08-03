@@ -295,4 +295,26 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		pst.setBoolean(4, lp.getDevuelto());
 		pst.executeUpdate();
 	}
+	
+	public void endLoan(Prestamo pres) throws SQLException {	
+		PreparedStatement pst = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("update prestamos set fecha_devolucion=? where id_prestamo=?");
+			pst.setDate(1, (Date) pres.getFechaPrestamo());
+			pst.setInt(2, pres.getId());
+			pst.executeUpdate();
+			pst.close();
+			pst = conn.prepareStatement("update lineasdeprestamo set devuelto=1 where id_prestamo=?");
+			pst.setInt(1,pres.getId());			
+			pst.executeUpdate();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst);
+		}	
+	}
 }
