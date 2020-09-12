@@ -70,7 +70,7 @@ public class PoliticaSancionDAO extends BaseDAO implements IBaseDAO<PoliticaSanc
 		try {
 			this.openConnection();
 			pst = conn.prepareStatement("SELECT * FROM politicasancion ps "
-					+ "WHERE ? BETWEEN ps.dias_atraso_desde ABD ps.dias_atraso_hasta");
+					+ "WHERE ? BETWEEN ps.dias_atraso_desde AND ps.dias_atraso_hasta");
 			pst.setInt(1, dias_atraso);
 			rs = pst.executeQuery();
 			if (rs.next()) {
@@ -144,5 +144,4 @@ public class PoliticaSancionDAO extends BaseDAO implements IBaseDAO<PoliticaSanc
 			this.closeConnection(pst);
 		}
 	}
-
 }

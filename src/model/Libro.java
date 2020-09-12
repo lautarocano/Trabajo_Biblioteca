@@ -9,6 +9,7 @@ public class Libro extends Entidad {
 	private Date _fechaEdicion;
 	private int _cantDiasMaxPrestamo;
 	private Genero _genero;
+	private int _cantidadEjemplares;
 
 	public String getAutor() {
 		return _autor;
@@ -45,5 +46,11 @@ public class Libro extends Entidad {
 	}
 	public void setGenero(Genero genero) {
 		this._genero = genero;
+	}
+	public int getCantEjemplares() {
+		return _cantidadEjemplares;
+	}
+	public void setCantEjemplares(int cantidadEjemplares) {
+		this._cantidadEjemplares = cantidadEjemplares;
 	}
 }

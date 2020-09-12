@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `biblioteca` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `biblioteca`;
 -- MySQL dump 10.13  Distrib 8.0.16, for Win64 (x86_64)
 --
 -- Host: localhost    Database: biblioteca
@@ -137,7 +135,6 @@ CREATE TABLE `lineasdeprestamo` (
   `id_lineadeprestamo` int(11) NOT NULL,
   `id_ejemplar` int(11) NOT NULL,
   `id_prestamo` int(11) NOT NULL,
-  `fecha_devolucion` date NOT NULL,
   `devuelto` bit(1) NOT NULL,
   PRIMARY KEY (`id_lineadeprestamo`),
   KEY `fk_lineadeprestamo_prestamo_idx` (`id_prestamo`),
@@ -153,7 +150,7 @@ CREATE TABLE `lineasdeprestamo` (
 
 LOCK TABLES `lineasdeprestamo` WRITE;
 /*!40000 ALTER TABLE `lineasdeprestamo` DISABLE KEYS */;
-INSERT INTO `lineasdeprestamo` VALUES (1,1,1,'2020-05-05',_binary ''),(2,1,1,'2020-05-05',_binary '');
+INSERT INTO `lineasdeprestamo` VALUES (1,1,1,_binary ''),(2,1,1,_binary '');
 /*!40000 ALTER TABLE `lineasdeprestamo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,7 +200,7 @@ CREATE TABLE `politicasancion` (
 
 LOCK TABLES `politicasancion` WRITE;
 /*!40000 ALTER TABLE `politicasancion` DISABLE KEYS */;
-INSERT INTO `politicasancion` VALUES (1,1,5,3),(2,6,10,5),(3,10,15,7);
+INSERT INTO `politicasancion` VALUES (1,1,5,3),(2,6,10,5),(3,11,15,7),(4,16,2000,100);
 /*!40000 ALTER TABLE `politicasancion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -220,6 +217,7 @@ CREATE TABLE `prestamos` (
   `dias_prestamo` int(11) NOT NULL,
   `estado` tinyint(1) NOT NULL,
   `id_socio` int(11) NOT NULL,
+  `fecha_devolucion` date DEFAULT NULL,
   PRIMARY KEY (`id_prestamo`),
   KEY `fk_prestamo_socio_idx` (`id_socio`),
   CONSTRAINT `fk_socio_prestamo` FOREIGN KEY (`id_socio`) REFERENCES `socios` (`id_socio`) ON UPDATE CASCADE
@@ -232,7 +230,7 @@ CREATE TABLE `prestamos` (
 
 LOCK TABLES `prestamos` WRITE;
 /*!40000 ALTER TABLE `prestamos` DISABLE KEYS */;
-INSERT INTO `prestamos` VALUES (1,'2019-01-01',5,2,1),(2,'2020-01-01',6,2,1);
+INSERT INTO `prestamos` VALUES (1,'2019-01-01',5,2,1,NULL),(2,'2020-01-01',6,2,1,NULL),(3,'2019-05-03',7,0,1,NULL),(4,'2019-04-03',9,1,1,NULL);
 /*!40000 ALTER TABLE `prestamos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -360,4 +358,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-17 10:42:34
+-- Dump completed on 2020-08-02 21:25:14
