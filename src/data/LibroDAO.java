@@ -137,6 +137,7 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 			pst.setInt(5, lib.getCantDiasMaxPrestamo());
 			pst.setInt(6, lib.getGenero().getId());
 			pst.executeUpdate();
+			pst.close();
 		}
 		catch (SQLException e){
 			e.printStackTrace();
@@ -187,4 +188,6 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 			this.closeConnection(pst);
 		}
 	}
+	
+	
 }
