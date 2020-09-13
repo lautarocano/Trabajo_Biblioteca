@@ -134,7 +134,7 @@ public class SocioLogic {
 			if (diferencia > 0) {
 				this.penalize(pres.getSocio(), diferencia);
 			}
-			//pLogic.endLoan(pres);
+			pLogic.endLoan(pres);
 		}
 		catch (SQLException exception) {
 			throw exception;
