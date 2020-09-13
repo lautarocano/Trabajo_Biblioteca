@@ -137,7 +137,8 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 			pst.setInt(5, lib.getCantDiasMaxPrestamo());
 			pst.setInt(6, lib.getGenero().getId());
 			pst.executeUpdate();
-			pst.close();
+			this.closeConnection(pst);
+			agregarEjemplares(lib);
 		}
 		catch (SQLException e){
 			e.printStackTrace();
@@ -145,6 +146,17 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 		}
 		finally {
 			this.closeConnection(pst);
+		}
+	}
+	
+	public void agregarEjemplares(Libro lib) throws SQLException {
+		try {
+			EjemplarDAO eDAO=new EjemplarDAO();
+			eDAO.insert(lib);
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			throw e;
 		}
 	}
 	

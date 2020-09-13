@@ -1,11 +1,9 @@
 package data;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import model.Ejemplar;
-import model.Genero;
 import model.Libro;
 
 public class EjemplarDAO  extends BaseDAO{
