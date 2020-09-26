@@ -40,7 +40,7 @@ public class ABMGenero extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		request.getRequestDispatcher("WEB-INF/ABMGenero.jsp").forward(request, response);
+		request.getRequestDispatcher("WebContent/WEB-INF/ABMGenero.jsp").forward(request, response);
 		
 	}
 
