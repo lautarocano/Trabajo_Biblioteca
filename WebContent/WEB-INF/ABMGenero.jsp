@@ -43,5 +43,9 @@
         <%} %>
     </tbody>
 </table>
+<% if (listaGenero.isEmpty()) { %>
+						<p style="font-size: 16px;">No hay resultados</p>
+					<%} %>
+
 </body>
 </html>

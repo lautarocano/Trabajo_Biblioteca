@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import logic.GeneroLogic;
+import model.Genero;
 import model.Usuario;
 
 /**
@@ -34,13 +36,15 @@ public class ABMGenero extends HttpServlet {
 		/*Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador);*/
 		GeneroLogic gl = new GeneroLogic();
 		try {
+			
 			request.setAttribute("ListaGeneros", gl.getAll());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		request.getRequestDispatcher("WebContent/WEB-INF/ABMGenero.jsp").forward(request, response);
+
+
+		request.getRequestDispatcher("WEB-INF/ABMGenero.jsp").forward(request, response);
 		
 	}
 

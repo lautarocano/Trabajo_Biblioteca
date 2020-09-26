@@ -12,7 +12,7 @@ public abstract class BaseDAO {
 	private static String driver = "com.mysql.jdbc.Driver";
 	private static String url = "jdbc:mysql://localhost:3306/biblioteca";
 	private static String user = "root";
-	private static String password = "root";
+	private static String password = "1111";
 	
 	protected void openConnection() throws SQLException {
 		try {
