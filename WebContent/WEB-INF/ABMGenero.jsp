@@ -59,16 +59,40 @@
 	    	<%
 	    	@SuppressWarnings("unchecked")
 	    	ArrayList<Genero> listaGenero=(ArrayList<Genero>)request.getAttribute("ListaGeneros");
-	    	for (Genero g : listaGenero) {
+	    	if (request.getParameter("editId") != null) {
+		    	for (Genero g : listaGenero) {
+		    		if (Integer.parseInt(request.getParameter("editId")) == g.getId()) {
 	        %>
 	        <form class="tr" action="ABMGeneroServlet" method="POST" name="ABMGenero">
 	        	<input name="id" type="hidden" class="form-control" id="id" placeholder="id" value=<%=g.getId() %> required>
 	        	<span class="td"><%=g.getId() %> </span>
+	        	<input name="descripcion" type="text" class="form-control" id="descripcion" placeholder="descripcion" value=<%=g.getDescripcion() %> required>
+	        	<span class="td"><button type="submit" name="action-type" value="editar" class="btn btn-success btn-block" >Aceptar</button> </span>
+	        	<span class="td"><a class="btn btn-danger btn-block" href="ABMGeneroServlet">Cancelar</a></span>
+	        </form>
+	        <%  	} 
+	    			else {
+	        %><form class="tr" action="ABMGeneroServlet" method="POST" name="ABMGenero">
+	        	<input name="id" type="hidden" class="form-control" id="id" placeholder="id" value=<%=g.getId() %> required>
+	        	<span class="td"><%=g.getId() %> </span>
 	        	<span class="td"><%=g.getDescripcion() %> </span>
-	        	<span class="td"><button class="btn btn-primary btn-block">Editar</button> </span>
+	        	<span class="td"><a class="btn btn-primary btn-block" href="ABMGeneroServlet?editId=<%=g.getId() %>">Editar</a> </span>
 	        	<span class="td"><button type="submit" name="action-type" value="eliminar" class="btn btn-danger btn-block">Eliminar</button></span>
 	        </form>
-	        <%} %>
+	        <%		} %>
+	        <%	}
+	    	}
+	    	else {
+	    		for (Genero g : listaGenero) {
+	        %><form class="tr" action="ABMGeneroServlet" method="POST" name="ABMGenero">
+	        	<input name="id" type="hidden" class="form-control" id="id" placeholder="id" value=<%=g.getId() %> required>
+	        	<span class="td"><%=g.getId() %> </span>
+	        	<span class="td"><%=g.getDescripcion() %> </span>
+	        	<span class="td"><a class="btn btn-primary btn-block" href="ABMGeneroServlet?editId=<%=g.getId() %>">Editar</a> </span>
+	        	<span class="td"><button type="submit" name="action-type" value="eliminar" class="btn btn-danger btn-block">Eliminar</button></span>
+	        </form>
+	        <%	} 
+	    	}%>
 	    </div>
 	    <div class="tfoot">
 		    	<form class="tr" action="ABMGeneroServlet" method="POST" name="ABMGenero">

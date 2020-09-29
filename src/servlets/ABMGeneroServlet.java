@@ -69,5 +69,18 @@ public class ABMGeneroServlet extends HttpServlet {
 				response.getWriter().println(e.getMessage());
 			}
 		}
+		else if (request.getParameter("action-type").equals("editar")) {	
+			Genero genero=new Genero();
+			genero.setId(Integer.parseInt(request.getParameter("id")));
+			genero.setDescripcion(request.getParameter("descripcion"));
+			GeneroLogic gl=new GeneroLogic();
+			try {
+				gl.update(genero);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				response.getWriter().println(e.getMessage());
+			}
+		}
+		this.doGet(request, response);
 	}
 }
