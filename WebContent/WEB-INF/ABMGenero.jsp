@@ -22,30 +22,41 @@
         crossorigin="anonymous"></script>
 </head>
 <body>
-<table class="table">
-	<thead>
-	    <tr class="table-primary">
-	        <td><b>ID Genero</b></td>
-	        <td><b>Descripción</b></td>
-	    </tr>
-    </thead>
-    <tbody>
-    	<%
-    	@SuppressWarnings("unchecked")
-    	ArrayList<Genero> listaGenero=(ArrayList<Genero>)request.getAttribute("ListaGeneros");
-    	for (Genero g : listaGenero) {
-        %>
-        <tr>
-        	<td><%=g.getId() %> </td>
-        	<td><%=g.getDescripcion() %> </td>
-        	
-        </tr>
-        <%} %>
-    </tbody>
-</table>
-<% if (listaGenero.isEmpty()) { %>
-						<p style="font-size: 16px;">No hay resultados</p>
-					<%} %>
 
+	<table class="table">
+		<thead>
+		    <tr class="table-primary">
+		        <td><b>ID Genero</b></td>
+		        <td><b>Descripción</b></td>
+		    </tr>
+	    </thead>
+	    <tbody>
+	    	<%
+	    	@SuppressWarnings("unchecked")
+	    	ArrayList<Genero> listaGenero=(ArrayList<Genero>)request.getAttribute("ListaGeneros");
+	    	for (Genero g : listaGenero) {
+	        %>
+	        <tr>
+	        	<td><%=g.getId() %> </td>
+	        	<td><%=g.getDescripcion() %> </td>
+	        	<td><button class="btn btn-primary btn-block">Editar</button> </td>
+	        	<td><button class="btn btn-danger btn-block">Eliminar</button> </td>
+	        </tr>
+	        <%} %>
+	    </tbody>
+	    <tfoot>
+		    	<tr>
+		    		<td>
+		    		<form action="ABMGeneroServlet" method="POST" name="ABMGenero">
+		    			<input name="action-type" id="action-type" type="hidden" value=agregar>
+		    			<input name="descripcion" type="text" class="form-control" id="descripcion" placeholder="Descripción" required>
+		    			<button type="submit" name="btn-agregar" value="agregar" class="btn btn-success btn-block" >Agregar</button>
+		    		</form>
+		    	</tr>
+	    </tfoot>
+	</table>
+	<% if (listaGenero.isEmpty()) { %>
+							<p style="font-size: 16px;">No hay resultados</p>
+						<%} %>
 </body>
 </html>
