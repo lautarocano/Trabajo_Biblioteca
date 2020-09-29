@@ -20,32 +20,7 @@
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
         
-	<style>
-		DIV.table 
-		{
-		    display:table;
-		}
-		DIV.theader
-		{
-			display:table-header-group;
-		}
-		DIV.tbody
-		{
-			display:table-row-group;
-		}
-		DIV.tfoot
-		{
-			display:table-footer-group;
-		}
-		FORM.tr, DIV.tr
-		{
-		    display:table-row;
-		}
-		SPAN.td
-		{
-		    display:table-cell;
-		}
-	</style>
+    <link rel="stylesheet" type="text/css" href="CSS/table-style.css" >
 </head>
 <body>
 	<div class="table">
