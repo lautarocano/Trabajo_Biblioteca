@@ -1,8 +1,6 @@
 package servlets;
 
-import java.awt.print.Printable;
 import java.io.IOException;
-import java.io.Writer;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
@@ -36,16 +34,12 @@ public class ABMGeneroServlet extends HttpServlet {
 		/*Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador);*/
 		GeneroLogic gl = new GeneroLogic();
 		try {
-			
 			request.setAttribute("ListaGeneros", gl.getAll());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			response.getWriter().println(e.getMessage());
 		}
-
-
 		request.getRequestDispatcher("WEB-INF/ABMGenero.jsp").forward(request, response);
-		
 	}
 
 	/**
@@ -53,24 +47,27 @@ public class ABMGeneroServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		if ("agregar".equals(request.getParameter("btn-agregar")))
-		{	
+		if (request.getParameter("action-type").equals("agregar")) {	
 			Genero genero=new Genero();
 			genero.setDescripcion(request.getParameter("descripcion"));
 			GeneroLogic gl=new GeneroLogic();
-			response.getWriter().println("hola");
 			try {
 				gl.insert(genero);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
 				response.getWriter().println(e.getMessage());
 			}
-			
-			response.getWriter().println("chau");
-			
 		}
-
+		else if (request.getParameter("action-type").equals("eliminar")) {	
+			Genero genero=new Genero();
+			genero.setId(Integer.parseInt(request.getParameter("id")));
+			GeneroLogic gl=new GeneroLogic();
+			try {
+				gl.delete(genero);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				response.getWriter().println(e.getMessage());
+			}
+		}
 	}
-
 }

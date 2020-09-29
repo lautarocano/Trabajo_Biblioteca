@@ -8,7 +8,6 @@
 <title>ABM Genero</title>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario Alta Ciudades</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -20,41 +19,69 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
+        
+	<style>
+		DIV.table 
+		{
+		    display:table;
+		}
+		DIV.theader
+		{
+			display:table-header-group;
+		}
+		DIV.tbody
+		{
+			display:table-row-group;
+		}
+		DIV.tfoot
+		{
+			display:table-footer-group;
+		}
+		FORM.tr, DIV.tr
+		{
+		    display:table-row;
+		}
+		SPAN.td
+		{
+		    display:table-cell;
+		}
+	</style>
 </head>
 <body>
-
-	<table class="table">
-		<thead>
-		    <tr class="table-primary">
-		        <td><b>ID Genero</b></td>
-		        <td><b>Descripción</b></td>
-		    </tr>
-	    </thead>
-	    <tbody>
+	<div class="table">
+		<div class="thead">
+		    <div class="tr">
+		        <span class="td">ID Genero</span>
+		        <span class="td">Descripción</span>
+		    </div>
+	    </div>
+	    <div class="tbody">
 	    	<%
 	    	@SuppressWarnings("unchecked")
 	    	ArrayList<Genero> listaGenero=(ArrayList<Genero>)request.getAttribute("ListaGeneros");
 	    	for (Genero g : listaGenero) {
 	        %>
-	        <tr>
-	        	<td><%=g.getId() %> </td>
-	        	<td><%=g.getDescripcion() %> </td>
-	        	<td><button class="btn btn-primary btn-block">Editar</button> </td>
-	        	<td><button class="btn btn-danger btn-block">Eliminar</button> </td>
-	        </tr>
+	        <form class="tr" action="ABMGeneroServlet" method="POST" name="ABMGenero">
+	        	<input name="id" type="hidden" class="form-control" id="id" placeholder="id" value=<%=g.getId() %> required>
+	        	<span class="td"><%=g.getId() %> </span>
+	        	<span class="td"><%=g.getDescripcion() %> </span>
+	        	<span class="td"><button class="btn btn-primary btn-block">Editar</button> </span>
+	        	<span class="td"><button type="submit" name="action-type" value="eliminar" class="btn btn-danger btn-block">Eliminar</button></span>
+	        </form>
 	        <%} %>
-	    </tbody>
-	    <tfoot>
-		    	<tr>
-		    		<td>
-		    		<form action="ABMGeneroServlet" method="POST" name="ABMGenero">
-		    			<input name="action-type" id="action-type" type="hidden" value=agregar>
+	    </div>
+	    <div class="tfoot">
+		    	<form class="tr" action="ABMGeneroServlet" method="POST" name="ABMGenero">
+		    		<span class="td"></span>
+		    		<span class="td">
 		    			<input name="descripcion" type="text" class="form-control" id="descripcion" placeholder="Descripción" required>
-		    			<button type="submit" name="btn-agregar" value="agregar" class="btn btn-success btn-block" >Agregar</button>
-		    		</form>
-		    	</tr>
-	    </tfoot>
-	</table>
+		    		</span>
+		    		<span class="td">
+		    			<button type="submit" name="action-type" value="agregar" class="btn btn-success btn-block" >Agregar</button>
+		    		</span>
+		    	</form>
+	    </div>
+	</div>
 	<% if (listaGenero.isEmpty()) { %>
 							<p style="font-size: 16px;">No hay resultados</p>
 						<%} %>
