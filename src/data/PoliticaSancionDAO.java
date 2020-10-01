@@ -11,7 +11,7 @@ public class PoliticaSancionDAO extends BaseDAO implements IBaseDAO<PoliticaSanc
 	
 	public PoliticaSancion mapearPoliticaSancion(ResultSet rs) throws SQLException {
 		PoliticaSancion ps = new PoliticaSancion();
-		ps.setId(rs.getInt("id_genero"));
+		ps.setId(rs.getInt("id_politicasancion"));
 		ps.setDiasDeAtrasoDesde(rs.getInt("dias_atraso_desde"));
 		ps.setDiasDeAtrasoHasta(rs.getInt("dias_atraso_hasta"));
 		ps.setDiasDeSancion(rs.getInt("dias_sancion"));
