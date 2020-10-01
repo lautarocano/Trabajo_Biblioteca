@@ -46,7 +46,7 @@
 	        	<input name="id" type="hidden" class="form-control" id="id" placeholder="id" value=<%=pp.getId() %> required>
 	        	<span class="td"><%=pp.getId() %> </span>
 	        	<input name="cant_max_libros_pend" type="text" class="form-control" id="cant_max_libros_pend" placeholder="Ingrese una cantidad maxima de libros pendientes" value=<%=pp.getCantMaxLibrosPend() %> required>
-	        	<input name="fecha_politica_prestamo" type="text" class="form-control" id="fecha_politica_prestamo" placeholder="Ingrese una fecha" value=<%=pp.getFechaPoliticaPrestamo() %> required>
+	        	<input name="fecha_politica_prestamo" type="date" class="form-control" id="fecha_politica_prestamo" placeholder="Ingrese una fecha" value=<%=pp.getFechaPoliticaPrestamo() %> required>
 	        	<span class="td"><button type="submit" name="action-type" value="editar" class="btn btn-success btn-block" >Aceptar</button> </span>
 	        	<span class="td"><a class="btn btn-danger btn-block" href="ABMPoliticaPrestamoServlet">Cancelar</a></span>
 	        </form>
@@ -81,7 +81,7 @@
 		    		<span class="td"></span>
 		    		<span class="td">
 		    			<input name="cant_max_libros_pend" type="text" class="form-control" id="cant_max_libros_pend" placeholder="Ingrese una cantidad maxima de libros pendientes" required>
-		    			<input name="fecha_politica_prestamo" type="text" class="form-control" id="fecha_politica_prestamo" placeholder="Ingrese una fecha" required>
+		    			<input name="fecha_politica_prestamo" type="date" class="form-control" id="fecha_politica_prestamo" placeholder="Ingrese una fecha" required>
 		    			
 		    		</span>
 		    		<span class="td">
