@@ -45,15 +45,15 @@
 	        <form class="tr" action="ABMPoliticaPrestamoServlet" method="POST" name="ABMPoliticaPrestamo">
 	        	<input name="id" type="hidden" class="form-control" id="id" placeholder="id" value=<%=pp.getId() %> required>
 	        	<span class="td"><%=pp.getId() %> </span>
-	        	<input name="cant_max_libros_pend" type="text" class="form-control" id="cant_max_libros_pend" placeholder="Ingrese una cantidad maxima de libros pendientes" value=<%=pp.getCantMaxLibrosPend() %> required>
-	        	<input name="fecha_politica_prestamo" type="date" class="form-control" id="fecha_politica_prestamo" placeholder="Ingrese una fecha" value=<%=pp.getFechaPoliticaPrestamo() %> required>
+	        	<input name="cant_max_libros_pend" type="text" class="form-control" id="cant_max_libros_pend" placeholder="Cant. maxima de libros pendientes" value="<%=pp.getCantMaxLibrosPend() %>" required>
+	        	<input name="fecha_politica_prestamo" type="date" class="form-control" id="fecha_politica_prestamo" placeholder="Fecha" value="<%=pp.getFechaPoliticaPrestamo()%>" required>
 	        	<span class="td"><button type="submit" name="action-type" value="editar" class="btn btn-success btn-block" >Aceptar</button> </span>
 	        	<span class="td"><a class="btn btn-danger btn-block" href="ABMPoliticaPrestamoServlet">Cancelar</a></span>
 	        </form>
 	        <%  	} 
 	    			else {
 	        %><form class="tr" action="ABMPoliticaPrestamoServlet" method="POST" name="ABMPoliticaPrestamo">
-	        	<input name="id" type="hidden" class="form-control" id="id" placeholder="id" value=<%=pp.getId() %> required>
+	        	<input name="id" type="hidden" class="form-control" id="id" placeholder="id" value="<%=pp.getId() %>" required>
 	        	<span class="td"><%=pp.getId() %> </span>
 	        	<span class="td"><%=pp.getCantMaxLibrosPend() %> </span>
 	        	<span class="td"><%=pp.getFechaPoliticaPrestamo() %> </span>
@@ -80,10 +80,12 @@
 		    	<form class="tr" action="ABMPoliticaPrestamoServlet" method="POST" name="ABMPoliticaPrestamo">
 		    		<span class="td"></span>
 		    		<span class="td">
-		    			<input name="cant_max_libros_pend" type="text" class="form-control" id="cant_max_libros_pend" placeholder="Ingrese una cantidad maxima de libros pendientes" required>
-		    			<input name="fecha_politica_prestamo" type="date" class="form-control" id="fecha_politica_prestamo" placeholder="Ingrese una fecha" required>
-		    			
+		    			<input name="cant_max_libros_pend" type="text" class="form-control" id="cant_max_libros_pend" placeholder="Cant. maxima de libros pendientes" required>
 		    		</span>
+		    		<span class="td">	
+		    			<input name="fecha_politica_prestamo" type="date" class="form-control" id="fecha_politica_prestamo" placeholder="Fecha" required>
+		    		</span>	
+		    	
 		    		<span class="td">
 		    			<button type="submit" name="action-type" value="agregar" class="btn btn-success btn-block" >Agregar</button>
 		    		</span>
