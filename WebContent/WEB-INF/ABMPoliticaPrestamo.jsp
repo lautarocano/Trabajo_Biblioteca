@@ -26,7 +26,7 @@
 </head>
 <body>
 	<div class="table">
-		<div class="thead">
+		<div class="theader">
 		    <div class="tr">
 		        <span class="td">ID PoliticaPrestamo</span>
 		        <span class="td">CantMax</span>

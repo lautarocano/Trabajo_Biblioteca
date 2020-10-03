@@ -12,7 +12,7 @@ public class EjemplarDAO  extends BaseDAO{
 		PreparedStatement pst = null;
 		try {
 			this.openConnection();
-			for (int i=0;i<=lib.getCantEjemplares();i++)
+			for (int i=1;i<=lib.getCantEjemplares();i++)
 			{
 				pst = conn.prepareStatement("INSERT INTO ejemplares(id_libro) VALUES(?)");
 				pst.setInt(1, lib.getId());
@@ -35,6 +35,23 @@ public class EjemplarDAO  extends BaseDAO{
 			this.openConnection();
 			pst = conn.prepareStatement("DELETE FROM ejemplares WHERE id_ejemplar =?");
 			pst.setInt(1, eje.getId());
+			pst.executeUpdate();
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst);
+		}
+	}
+	
+	public void deleteLibro(Libro lib) throws SQLException {
+		PreparedStatement pst = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("DELETE FROM ejemplares WHERE id_libro =?");
+			pst.setInt(1, lib.getId());
 			pst.executeUpdate();
 		}
 		catch (SQLException e){

@@ -25,7 +25,7 @@
 </head>
 <body>
 	<div class="table">
-		<div class="thead">
+		<div class="theader">
 		    <div class="tr">
 		        <span class="td">ID PoliticaSanción</span>
 		        <span class="td">Dias atrasodesde</span>
