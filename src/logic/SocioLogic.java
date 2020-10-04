@@ -40,6 +40,14 @@ public class SocioLogic {
 		}
 	}
 	
+	public Socio getOneByUser(int idUser) throws SQLException{
+		try {
+			return this._SocioDAO.getOneByUser(idUser);
+		} catch (SQLException exception) {
+			throw exception;
+		}
+	}
+	
 	public void insert(Socio socio) throws SQLException {
 		try {
 			if (!this.dniAlreadyExists(socio.getDni())) 
