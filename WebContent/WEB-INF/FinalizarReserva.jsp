@@ -1,11 +1,12 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="model.Libro"%>
-}<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
-<title>Realizar Reservas</title>
+<meta charset="ISO-8859-1">
+<title>Finalizar Reserva</title>
 <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -38,10 +39,10 @@
 	    <div class="tbody">
 	    	<%
 	    	@SuppressWarnings("unchecked")
-	    	ArrayList<Libro> listaLibro=(ArrayList<Libro>)request.getAttribute("ListaLibros");
+	    	ArrayList<Libro> listaLibro=(ArrayList<Libro>)session.getAttribute("libros");
 		    	for (Libro l : listaLibro) {
 	        %>
-	        <form class="tr" action="ReservaServlet" method="POST" name="ReservaLibro">
+	        <form class="tr" action="FinalizarReservaServlet" method="POST" name="FinalizarReserva">
 	        		
 	        		<input name="id_libro" type="hidden" class="form-control" id="id_libro" placeholder="id_libro" value="<%=l.getId() %>"  required>
 	        	<span class="td">
@@ -60,17 +61,21 @@
 		    		<%=l.getGenero().getDescripcion() %>
 		    	</span>
 
-	        	<span class="td"><button type="submit" name="action-type" value="reservar" class="btn btn-success btn-block" >Reservar</button> </span>
+	        	<span class="td"><button type="submit" name="action-type" value="borrar" class="btn btn-danger btn-block" >Borrar Reserva</button> </span>
 	        </form>
 	        <%
 	          	
 		    	} 
 	    %>
+	    
 				</div>
 </div>
+<form action="FinalizarReservaServlet" method="POST" name="FinalizarReserva">
+<input name="fecha" type="text" class="form-control" id="fecha" placeholder="Fecha de retiro" required>
+<span ><button type="submit" name="action-type" value="finalizar" class="btn btn-primary btn-block" >Finalizar Reservas</button> </span>
+</form>
 	<% if (listaLibro.isEmpty()) { %>
 							<p style="font-size: 16px;">No hay resultados</p>
 						<%} %>
-<a href="FinalizarReservaServlet">Ir al carrito</a>
 </body>
 </html>

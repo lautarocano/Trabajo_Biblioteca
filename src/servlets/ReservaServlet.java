@@ -3,12 +3,15 @@ package servlets;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.mysql.cj.Session;
 
 import logic.GeneroLogic;
 import logic.LibroLogic;
@@ -51,31 +54,28 @@ public class ReservaServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (request.getParameter("action-type").equals("reservar")) {	
-			Reserva reserva=new Reserva();
-			libro.setTitulo(request.getParameter("titulo"));
-			libro.setAutor(request.getParameter("autor"));
-			libro.setFechaEdicion(LocalDate.parse(request.getParameter("fecha-edicion")));
-			libro.setNroEdicion(request.getParameter("numero-edicion"));
-			libro.setCantEjemplares(Integer.parseInt(request.getParameter("cant-ejemplares")));
-			int idGenero = (Integer.parseInt(request.getParameter("genero")));
-			GeneroLogic gl = new GeneroLogic();
+			
+			LibroLogic ll=new LibroLogic();
+			Libro libro;
 			try {
-				libro.setGenero(gl.getOne(idGenero));
+				libro = ll.getOne(Integer.parseInt(request.getParameter("id_libro")));
+				if(request.getSession().getAttribute("libros") == null) {
+					ArrayList<Libro> libros=new ArrayList<Libro>(); 
+					request.getSession().setAttribute("libros", libros);
+				}
+				((ArrayList<Libro>)request.getSession().getAttribute("libros")).add(libro);
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				response.getWriter().println(e.getMessage());
+				e.printStackTrace();
 			}
-			LibroLogic ll = new LibroLogic();
-			try {
-				ll.insert(libro);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				response.getWriter().println(e.getMessage());
-			}
+
 		}
-		
 		this.doGet(request, response);
 	}
 }
