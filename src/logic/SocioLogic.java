@@ -60,8 +60,7 @@ public class SocioLogic {
 	//Considerar agregar validaciones de campos en un futuro (Ejemplo: mail válido)
 	public void update(Socio socio) throws SQLException {
 		try {
-			if (!this.dniAlreadyExists(socio.getDni())) 
-				this._SocioDAO.update(socio);
+			this._SocioDAO.update(socio);
 		}
 		catch (SQLException exception) {
 			throw exception;

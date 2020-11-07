@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
 
 public abstract class BaseDAO {
 	protected static Connection conn;
@@ -13,11 +14,16 @@ public abstract class BaseDAO {
 	private static String url = "jdbc:mysql://localhost:3306/biblioteca";
 	private static String user = "root";
 	private static String password = "1111";
+	private static String serverTimezone  = "UTC";
 	
 	protected void openConnection() throws SQLException {
 		try {
 			Class.forName(driver);
-			conn = DriverManager.getConnection(url,user,password);
+			Properties props = new Properties();
+			props.put("user", user);
+			props.put("password", password);
+			props.put("serverTimezone", serverTimezone);
+			conn = DriverManager.getConnection(url,props);
 		}
 		catch(SQLException e) {
 			e.printStackTrace();

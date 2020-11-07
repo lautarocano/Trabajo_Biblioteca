@@ -30,13 +30,11 @@ public class ABMGeneroServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		/*Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador);*/
 		GeneroLogic gl = new GeneroLogic();
 		try {
 			request.setAttribute("ListaGeneros", gl.getAll());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			response.getWriter().println(e.getMessage());
 		}
 		request.getRequestDispatcher("WEB-INF/ABMGenero.jsp").forward(request, response);

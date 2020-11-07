@@ -68,4 +68,16 @@ private UsuarioDAO _UsuarioDAO;
 			throw exception;
 		}
 	}
+	
+	public Usuario insertAndReturn(Usuario usuario) throws SQLException {
+		Usuario user = new Usuario();
+		try {
+			if (!this.userAlreadyExists(usuario.getNombreUsuario())) 
+				user = this._UsuarioDAO.insertAndReturn(usuario);
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}
+		return user;
+	}
 }

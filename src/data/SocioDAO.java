@@ -127,7 +127,7 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			this.openConnection();
 			pst = conn.prepareStatement("INSERT INTO socios(nombre,apellido,email,domicilio,"
 					+ "telefono,dni,estado,id_usuario)"
-					+ " VALUES(?,?,?,?,?,?,?,?,?)");
+					+ " VALUES(?,?,?,?,?,?,?,?)");
 			pst.setString(1,soc.getNombre());
 			pst.setString(2, soc.getApellido());
 			pst.setString(3, soc.getEmail());
@@ -154,7 +154,6 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			pst = conn.prepareStatement("UPDATE socios SET nombre= ?,apellido=?,email=?,domicilio=?,"
 					+ "telefono=?,dni=?,estado=? "
 					+ "WHERE id_socio = ?");
-
 			pst.setString(1,soc.getNombre());
 			pst.setString(2, soc.getApellido());
 			pst.setString(3, soc.getEmail());
@@ -162,8 +161,7 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			pst.setString(5, soc.getTelefono());
 			pst.setInt(6, soc.getDni());
 			pst.setBoolean(7, soc.getEstado());
-			pst.setInt(8, soc.getUsuario().getId());
-			pst.setInt(9, soc.getId());
+			pst.setInt(8, soc.getId());
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
