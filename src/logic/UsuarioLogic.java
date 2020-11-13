@@ -43,8 +43,7 @@ private UsuarioDAO _UsuarioDAO;
 	//Considerar agregar validaciones de campos en un futuro (Ejemplo: expresión regular para contraseña)
 	public void update(Usuario usuario) throws SQLException {
 		try {
-			if (!this.userAlreadyExists(usuario.getNombreUsuario())) 
-				this._UsuarioDAO.update(usuario);
+			this._UsuarioDAO.update(usuario);
 		}
 		catch (SQLException exception) {
 			throw exception;

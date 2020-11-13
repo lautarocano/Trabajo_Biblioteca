@@ -34,7 +34,7 @@ public class ABMUsuarioServlet extends HttpServlet {
 		/*Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador);*/
 		UsuarioLogic ul = new UsuarioLogic();
 		try {
-			request.setAttribute("listaUsuarios", ul.getAll());
+			request.setAttribute("ListaUsuarios", ul.getAll());
 		} catch (SQLException e) {
 			response.getWriter().println(e.getMessage());
 		}
@@ -47,18 +47,18 @@ public class ABMUsuarioServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (request.getParameter("action-type").equals("agregar")) {	
 			Usuario usuario = new Usuario();
-			usuario.setNombreUsuario(request.getParameter("estado"));
-			usuario.setPassword(request.getParameter("estado"));
+			usuario.setNombreUsuario(request.getParameter("user"));
+			usuario.setPassword(request.getParameter("password"));
 			usuario.setEstado(Boolean.parseBoolean(request.getParameter("estado")));
-			switch(request.getParameter("tipo")) {
-			case ("socio"):
+			switch(Integer.parseInt(request.getParameter("tipo"))) {
+			case (0):
 				usuario.setTipo(tipoUsuario.Socio);
 				break;
-			case ("admin"):
-				usuario.setTipo(tipoUsuario.Administrador);
-				break;
-			case ("bibliotecario"):
+			case (1):
 				usuario.setTipo(tipoUsuario.Bibliotecario);
+				break;
+			case (2):
+				usuario.setTipo(tipoUsuario.Administrador);
 				break;
 			default:
 				//Informar error
@@ -84,18 +84,18 @@ public class ABMUsuarioServlet extends HttpServlet {
 		else if (request.getParameter("action-type").equals("editar")) {	
 			Usuario usuario = new Usuario();
 			usuario.setId(Integer.parseInt(request.getParameter("id")));
-			usuario.setNombreUsuario(request.getParameter("estado"));
-			usuario.setPassword(request.getParameter("estado"));
+			usuario.setNombreUsuario(request.getParameter("user"));
+			usuario.setPassword(request.getParameter("password"));
 			usuario.setEstado(Boolean.parseBoolean(request.getParameter("estado")));
-			switch(request.getParameter("tipo")) {
-			case ("socio"):
+			switch(Integer.parseInt(request.getParameter("tipo"))) {
+			case (0):
 				usuario.setTipo(tipoUsuario.Socio);
 				break;
-			case ("admin"):
-				usuario.setTipo(tipoUsuario.Administrador);
-				break;
-			case ("bibliotecario"):
+			case (1):
 				usuario.setTipo(tipoUsuario.Bibliotecario);
+				break;
+			case (2):
+				usuario.setTipo(tipoUsuario.Administrador);
 				break;
 			default:
 				//Informar error
