@@ -79,4 +79,13 @@ private UsuarioDAO _UsuarioDAO;
 		}
 		return user;
 	}
+	public Usuario login(String username, String password) throws SQLException {
+		try {
+			return this._UsuarioDAO.login(username,password);
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}
+	}
+	
 }
