@@ -2,7 +2,6 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -11,14 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.mysql.cj.Session;
-
 import logic.GeneroLogic;
 import logic.LibroLogic;
-import logic.SocioLogic;
-import model.Genero;
 import model.Libro;
-import model.Reserva;
 
 /**
  * Servlet implementation class ReservaServlet
