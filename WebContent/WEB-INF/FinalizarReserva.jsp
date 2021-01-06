@@ -22,6 +22,18 @@
         crossorigin="anonymous"></script>
         
     <link rel="stylesheet" type="text/css" href="CSS/table-style.css" >
+    
+       <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#datepicker" ).datepicker({maxDate: -1,changeMonth: true,
+        changeYear: true});
+    $( "#datepicker" ).datepicker( "option", "dateFormat","yy-mm-dd");
+  } );
+  </script>
 </head>
 <body>
 <div class="table">
@@ -71,7 +83,7 @@
 				</div>
 </div>
 <form action="FinalizarReservaServlet" method="POST" name="FinalizarReserva">
-<input name="fecha" type="text" class="form-control" id="fecha" placeholder="Fecha de retiro" required>
+<input name="fecha" type="text" class="form-control" id="datepicker" placeholder="Fecha de retiro" required>
 <span ><button type="submit" name="action-type" value="finalizar" class="btn btn-primary btn-block" >Finalizar Reservas</button> </span>
 </form>
 	<% if (listaLibro.isEmpty()) { %>

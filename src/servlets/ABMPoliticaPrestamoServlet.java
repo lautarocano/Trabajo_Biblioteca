@@ -38,7 +38,7 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			response.getWriter().println(e.getMessage());
 		}
-		request.getRequestDispatcher("WEB-INF/ABMPoliticaPrestamo.jsp").forward(request, response);
+		//request.getRequestDispatcher("WEB-INF/ABMPoliticaPrestamo.jsp").forward(request, response);
 	}
 
 	/**

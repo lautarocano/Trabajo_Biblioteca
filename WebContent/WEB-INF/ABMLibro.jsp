@@ -22,6 +22,27 @@
         crossorigin="anonymous"></script>
         
     <link rel="stylesheet" type="text/css" href="CSS/table-style.css" >
+    
+   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#datepicker" ).datepicker({maxDate: -1,changeMonth: true,
+        changeYear: true});
+    $( "#datepicker" ).datepicker( "option", "dateFormat","yy-mm-dd");
+  } );
+  </script>
+  
+   <script>
+  $( function() {
+    $( "#datepicker2" ).datepicker({maxDate: -1,changeMonth: true,
+        changeYear: true});
+    $( "#datepicker2" ).datepicker( "option", "dateFormat","yy-mm-dd");
+  } );
+  </script>
+
 </head>
 <body>
 <div class="table">
@@ -61,7 +82,7 @@
 	        		<input name="numero-edicion" type="text" class="form-control" id="numero-edicion" placeholder="N° de edición" value="<%=l.getNroEdicion() %>" required>
 		    	</span>
 	        	<span class="td">
-	        		<input name="fecha-edicion" type="text" class="form-control" id="fecha-edicion" placeholder="Fecha edición" value="<%=l.getFechaEdicion() %>" required>
+	        		<input name="fecha-edicion" type="text" class="form-control" id="datepicker" placeholder="Fecha edición" value="<%=l.getFechaEdicion() %>" required>
 		    	</span>
 		    	<span class="td">
 		    		<select name="genero" class="form-control" id="genero">
@@ -128,7 +149,7 @@
 	        			<input name="numero-edicion" type="text" class="form-control" id="numero-edicion" placeholder="N° de edición" required>
 		    		</span>
 		    		<span class="td">
-	        			<input name="fecha-edicion" type="text" class="form-control" id="fecha-edicion" placeholder="Fecha edición" required>
+	        			<input name="fecha-edicion" type="text" class="form-control" id="datepicker2" placeholder="Fecha edición" required>
 		    		</span>
 		    		<span class="td">
 		    			<select name="genero" class="form-control" id="genero">
