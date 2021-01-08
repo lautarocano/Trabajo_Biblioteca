@@ -41,7 +41,7 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		ResultSet rs = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("INSERT INTO prestamo(fecha_prestamo, "
+			pst = conn.prepareStatement("INSERT INTO prestamos(fecha_prestamo, "
 					+ "dias_prestamo, estado, id_socio) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
 			pst.setDate(1, (Date) pres.getFechaPrestamo());
 			pst.setInt(2, pres.getDiasPrestamo());
@@ -70,7 +70,7 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		PreparedStatement pst = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("UPDATE prestamo SET fecha_prestamo = ?, "
+			pst = conn.prepareStatement("UPDATE prestamos SET fecha_prestamo = ?, "
 					+ "dias_prestamo = ?, estado = ?, id_socio = ? WHERE id_prestamo = ?");
 			pst.setDate(1, (Date) pres.getFechaPrestamo());
 			pst.setInt(2, pres.getDiasPrestamo());
@@ -105,11 +105,11 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		PreparedStatement pst = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("DELETE FROM lineadeprestamo WHERE id_prestamo = ?");
+			pst = conn.prepareStatement("DELETE FROM lineasdeprestamo WHERE id_prestamo = ?");
 			pst.setInt(1, pres.getId());
 			pst.executeUpdate();
 			pst.close();
-			pst = conn.prepareStatement("DELETE FROM prestamo WHERE id_prestamo = ?");
+			pst = conn.prepareStatement("DELETE FROM prestamos WHERE id_prestamo = ?");
 			pst.setInt(1, pres.getId());
 			pst.executeUpdate();
 		}
@@ -129,7 +129,7 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		try {
 			this.openConnection();
 			pst = conn.prepareStatement("SELECT p.id_prestamo, p.fecha_prestamo, p.dias_prestamo, "
-					+ "p.estado, s.*, u.nombre_usuario, u.password, u.tipo, u.estado FROM prestamo p "
+					+ "p.estado, s.*, u.nombre_usuario, u.password, u.tipo, u.estado FROM prestamos p "
 					+ "INNER JOIN socio s ON p.id_socio = s.id_socio "
 					+ "INNER JOIN usuarios u ON s.id_usuario = u.id_usuario");
 			rs = pst.executeQuery();
@@ -158,7 +158,35 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		ResultSet rs = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("SELECT * FROM prestamo WHERE id_socio = ?");
+			pst = conn.prepareStatement("SELECT * FROM prestamos WHERE id_socio = ?");
+			pst.setInt(1, socio.getId());
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				prestamos.add(this.mapearPrestamo(rs, false));
+			}
+			rs.close();
+			pst.close();
+			for(Prestamo pres: prestamos) {
+				pres.setLineasPrestamo(this.getAllLineasPrestamo(pres, pst, rs));
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+		return prestamos;
+	}
+	
+	public ArrayList<Prestamo> getAllPendientesBySocio(Socio socio) throws SQLException {
+		ArrayList<Prestamo> prestamos = new ArrayList<Prestamo>();
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("select * from prestamos where id_socio=? and estado=0 or estado=1");
 			pst.setInt(1, socio.getId());
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -187,8 +215,8 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		try {
 			this.openConnection();
 			pst = conn.prepareStatement("SELECT p.id_prestamo, p.fecha_prestamo, p.dias_prestamo, "
-					+ "p.estado, s.*, u.nombre_usuario, u.password, u.tipo, u.estado FROM prestamo p "
-					+ "INNER JOIN socio s ON p.id_socio = s.id_socio "
+					+ "p.estado, s.*, u.nombre_usuario, u.password, u.tipo, u.estado FROM prestamos p "
+					+ "INNER JOIN socios s ON p.id_socio = s.id_socio "
 					+ "INNER JOIN usuarios u ON s.id_usuario = u.id_usuario "
 					+ "WHERE p.id_prestamo = ?");
 			pst.setInt(1, id);
@@ -234,8 +262,8 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		if (conn == null || conn.isClosed()) this.openConnection();
 		if (!pst.isClosed()) pst.close();
 		if (!rs.isClosed()) rs.close();
-		pst = conn.prepareStatement("SELECT l.*, ldp.*, g.descripcion FROM lineadeprestamo ldp "
-				+ "INNER JOIN ejemplar e ON ldp.id_ejemplar = e.id_ejemplar "
+		pst = conn.prepareStatement("SELECT l.*, ldp.*, g.descripcion FROM lineasdeprestamo ldp "
+				+ "INNER JOIN ejemplares e ON ldp.id_ejemplar = e.id_ejemplar "
 				+ "INNER JOIN libros l ON e.id_libro = l.id_libro "
 				+ "INNER JOIN generos g ON l.id_genero = g.id_genero "
 				+ "WHERE ldp.id_prestamo = ?");
@@ -265,7 +293,7 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 	private void insertLineaDePrestamo(LineaDePrestamo lp, Prestamo pres, PreparedStatement pst) throws SQLException {
 		if (conn == null || conn.isClosed()) this.openConnection();
 		if (!pst.isClosed()) pst.close();
-		pst = conn.prepareStatement("INSERT INTO lineadeprestamo(id_ejemplar, id_prestamo, "
+		pst = conn.prepareStatement("INSERT INTO lineasdeprestamo(id_ejemplar, id_prestamo, "
 				+ "fecha_devolucion, devuelto) VALUES (?,?,?,?)");
 		pst.setInt(1, lp.getEjemplar().getId());
 		pst.setInt(2, pres.getId());
@@ -277,7 +305,7 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 	private void deleteLineaDePrestamo(LineaDePrestamo lp, PreparedStatement pst) throws SQLException {
 		if (conn == null || conn.isClosed()) this.openConnection();
 		if (!pst.isClosed()) pst.close();
-		pst = conn.prepareStatement("DELETE FROM lineadeprestamo "
+		pst = conn.prepareStatement("DELETE FROM lineasdeprestamo "
 				+ "WHERE id_lineadeprestamo = ?");
 		pst.setInt(1, lp.getId());
 		pst.executeUpdate();
@@ -286,7 +314,7 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 	private void updateLineaDePrestamo (LineaDePrestamo lp, Prestamo pres, PreparedStatement pst) throws SQLException {
 		if (conn == null || conn.isClosed()) this.openConnection();
 		if (!pst.isClosed()) pst.close();
-		pst = conn.prepareStatement("UPDATE lineadeprestamo SET id_ejemplar = ?, "
+		pst = conn.prepareStatement("UPDATE lineasdeprestamo SET id_ejemplar = ?, "
 				+ "id_prestamo = ?, fecha_devolucion = ?, devuelto = ? "
 				+ "WHERE id_lineadeprestamo = ?");
 		pst.setInt(1, lp.getEjemplar().getId());
@@ -300,14 +328,14 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		PreparedStatement pst = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("update prestamos set fecha_devolucion=? where id_prestamo=?");
-			pst.setDate(1, (Date) pres.getFechaPrestamo());
-			pst.setInt(2, pres.getId());
+			pst = conn.prepareStatement("update prestamos set fecha_devolucion=CURRENT_DATE() ,estado=2 where id_prestamo=?");
+			pst.setInt(1, pres.getId());
 			pst.executeUpdate();
 			pst.close();
 			pst = conn.prepareStatement("update lineasdeprestamo set devuelto=1 where id_prestamo=?");
 			pst.setInt(1,pres.getId());			
 			pst.executeUpdate();
+			
 		}
 		catch (SQLException e) {
 			e.printStackTrace();

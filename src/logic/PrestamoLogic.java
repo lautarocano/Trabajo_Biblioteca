@@ -59,6 +59,15 @@ private PrestamoDAO _PrestamoDAO;
 			throw exception;
 		}
 	}
+	public ArrayList<Prestamo> getAllPendientesBySocio(Socio socio) throws SQLException {
+		try {
+			return this._PrestamoDAO.getAllPendientesBySocio(socio);
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}
+	}
+
 	
 	public Prestamo getOne(int id) throws SQLException {
 		try {
