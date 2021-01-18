@@ -44,6 +44,8 @@
   </script>
 </head>
 <body>
+<div class="d-flex">
+<%@ include file="/WEB-INF/Menu_Administrador.html"%>
 	<div class="table">
 		<div class="theader">
 		    <div class="tr">
@@ -114,5 +116,6 @@
 	<% if (ListaPoliticasPrestamos.isEmpty()) { %>
 							<p style="font-size: 16px;">No hay resultados</p>
 						<%} %>
+</div>
 </body>
 </html>

@@ -24,6 +24,8 @@
     <link rel="stylesheet" type="text/css" href="CSS/table-style.css" >
 </head>
 <body>
+<div class="d-flex">
+<%@ include file="/WEB-INF/Menu_Administrador.html"%>
 <h2>Lista de ejemplares del libro "<%=((Libro)request.getAttribute("libro")).getTitulo()%>"</h2>
 	<div class="table">
 		<div class="theader">
@@ -57,5 +59,6 @@
 	<% if (listaEjemplar.isEmpty()) { %>
 							<p style="font-size: 16px;">No hay resultados</p>
 						<%} %>
+</div>
 </body>
 </html>
