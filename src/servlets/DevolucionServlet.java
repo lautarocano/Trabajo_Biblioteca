@@ -2,7 +2,6 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,14 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import logic.GeneroLogic;
-import logic.LibroLogic;
 import logic.PrestamoLogic;
 import logic.SocioLogic;
-import model.Libro;
-import model.LibroReserva;
 import model.Prestamo;
-import model.Reserva;
 import model.Socio;
 
 /**
@@ -49,14 +43,15 @@ public class DevolucionServlet extends HttpServlet {
 		} catch (SQLException e) {
 			response.getWriter().println(e.getMessage());
 		}
-		request.getRequestDispatcher("WEB-INF/Devolucion.jsp").forward(request, response);
+		request.setAttribute("JSP", "Devolucion");
+		request.getRequestDispatcher("WEB-INF/Bibliotecario.jsp").forward(request, response);
 		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	@SuppressWarnings("unchecked")
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 if (request.getParameter("action-type").equals("devolver")) {	
