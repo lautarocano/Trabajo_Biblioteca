@@ -25,24 +25,7 @@
     
    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script>
-  $( function() {
-    $( "#datepicker" ).datepicker({maxDate: -1,changeMonth: true,
-        changeYear: true});
-    $( "#datepicker" ).datepicker( "option", "dateFormat","yy-mm-dd");
-  } );
-  </script>
   
-   <script>
-  $( function() {
-    $( "#datepicker2" ).datepicker({maxDate: -1,changeMonth: true,
-        changeYear: true});
-    $( "#datepicker2" ).datepicker( "option", "dateFormat","yy-mm-dd");
-  } );
-  </script>
-
 </head>
 <body>
 <div class="d-flex">
@@ -173,5 +156,22 @@
 							<p style="font-size: 16px;">No hay resultados</p>
 						<%} %>
 </div>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    $( "#datepicker" ).datepicker({maxDate: -1,changeMonth: true,
+        changeYear: true});
+    $( "#datepicker" ).datepicker( "option", "dateFormat","yy-mm-dd");
+  } );
+  </script>
+  
+   <script>
+  $( function() {
+    $( "#datepicker2" ).datepicker({maxDate: -1,changeMonth: true,
+        changeYear: true});
+    $( "#datepicker2" ).datepicker( "option", "dateFormat","yy-mm-dd");
+  } );
+  </script>
 </body>
 </html>
