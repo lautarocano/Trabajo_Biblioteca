@@ -30,4 +30,13 @@ private ReservaDAO _ReservaDAO;
 			throw exception;
 		}
 	}
+	
+	public Reserva getOne(int id) throws SQLException {
+		try {
+			return this._ReservaDAO.getOne(id);
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}
+	}
 }

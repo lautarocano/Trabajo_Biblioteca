@@ -196,8 +196,8 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 		ResultSet rs = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("select max(fecha_sancion) into @maxfecha from sanciones where id_socio=?;\n" + 
-					"select DATEDIFF(CURDATE(),fecha_sancion) as diferencia,dias_sancion   from sanciones where id_socio=?  and  fecha_sancion=@maxfecha");
+			pst = conn.prepareStatement("select max(fecha_sancion) into @maxfecha from sanciones where id_socio=?;" + 
+					"select DATEDIFF(CURDATE(),fecha_sancion) as diferencia,dias_sancion from sanciones where id_socio=?  and  fecha_sancion=@maxfecha");
 			pst.setInt(1, socio.getId());
 			pst.setInt(2, socio.getId());
 			rs = pst.executeQuery();

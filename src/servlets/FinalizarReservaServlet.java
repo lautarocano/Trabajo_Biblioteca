@@ -45,35 +45,36 @@ public class FinalizarReservaServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-if (request.getParameter("action-type").equals("borrar")) {	
-			
-		int id=Integer.parseInt(request.getParameter("id_libro"));
-		((ArrayList<Libro>)request.getSession().getAttribute("libros")).removeIf(l -> l.getId()== id);
+		if (request.getParameter("action-type").equals("borrar")) {	
+					
+				int id=Integer.parseInt(request.getParameter("id_libro"));
+				((ArrayList<Libro>)request.getSession().getAttribute("libros")).removeIf(l -> l.getId()== id);
+				}
+		else if(request.getParameter("action-type").equals("finalizar"))
+		{
+			Reserva reserva=new Reserva();
+			SocioLogic sl=new SocioLogic();
+			LibroReserva lr;
+			ArrayList<LibroReserva> librosReservas=new ArrayList<LibroReserva>();
+			ArrayList<Libro> libros=(((ArrayList<Libro>)request.getSession().getAttribute("libros")));
+			for(Libro l : libros) {
+				lr=new LibroReserva();
+				lr.setLibro(l);
+				librosReservas.add(lr);
+				
+			}
+			reserva.setLibros(librosReservas);
+			reserva.setFechaReserva(java.sql.Date.valueOf(request.getParameter("fecha")));
+			//reserva.setSocio((Socio) request.getSession().getAttribute("socio"));
+			Socio s = new Socio();
+			s.setId(1);
+			reserva.setSocio(s);
+			try {
+				sl.realizaReserva(reserva);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-else if(request.getParameter("action-type").equals("finalizar"))
-{
-	Reserva reserva=new Reserva();
-	SocioLogic sl=new SocioLogic();
-	LibroReserva lr;
-	ArrayList<LibroReserva> librosReservas=new ArrayList<LibroReserva>();
-	ArrayList<Libro> libros=(((ArrayList<Libro>)request.getSession().getAttribute("libros")));
-	for(Libro l : libros) {
-		lr=new LibroReserva();
-		lr.setLibro(l);
-		librosReservas.add(lr);
-		
-	}
-	reserva.setLibros(librosReservas);
-	reserva.setFechaReserva(java.sql.Date.valueOf(request.getParameter("fecha")));
-	reserva.setSocio((Socio) request.getSession().getAttribute("socio"));
-	try {
-		sl.realizaReserva(reserva);
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-}
-		this.doGet(request, response);
-	}
-
+				this.doGet(request, response);
+			}
 }

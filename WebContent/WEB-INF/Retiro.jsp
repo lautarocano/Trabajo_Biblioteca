@@ -31,9 +31,9 @@
 	    	ArrayList<Reserva> listaReserva=(ArrayList<Reserva>)request.getAttribute("listaReserva");
 		    	for (Reserva r : listaReserva) {
 	        %>
-	        <form class="tr" action="RetiroServlet" method="POST" name="Retiro">
+	        <form class="tr" action="SeleccionEjemplaresServlet">
 	        		
-	        	<input name="id_prestamo" type="hidden" class="form-control" id="id_prestamo" placeholder="id_prestamo" value="<%=r.getId() %>"  required>
+	        	<input name="id_reserva" type="hidden" class="form-control" id="id_reserva" value="<%=r.getId() %>"  required>
 	        	<span class="td">
 	        		<%=r.getId()%>
 		    	</span>
@@ -71,7 +71,7 @@
 				      </div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-				        <button type="submit" name="action-type" value="retirar" class="btn btn-primary">Retirar</button>
+				        <button type="submit" class="btn btn-primary">Retirar</button>
 				      </div>
 				    </div>
 				  </div>
