@@ -35,9 +35,8 @@ public class FinalizarReservaServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		request.getRequestDispatcher("WEB-INF/FinalizarReserva.jsp").forward(request, response);
-		
+		request.setAttribute("JSP", "FinalizarReserva");
+		request.getRequestDispatcher("WEB-INF/Socio.jsp").forward(request, response);
 	}
 
 	/**

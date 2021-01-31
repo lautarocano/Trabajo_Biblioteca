@@ -42,7 +42,8 @@ public class ReservaServlet extends HttpServlet {
 		} catch (SQLException e) {
 			response.getWriter().println(e.getMessage());
 		}
-		request.getRequestDispatcher("WEB-INF/RealizarReserva.jsp").forward(request, response);
+		request.setAttribute("JSP", "Reserva");
+		request.getRequestDispatcher("WEB-INF/Socio.jsp").forward(request, response);
 	}
 
 	/**

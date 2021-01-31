@@ -9,19 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>TP Biblioteca - Bibliotecario</title>
-  
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-        crossorigin="anonymous"></script>
+  <title>TP Biblioteca - Socio</title>
 
   <!-- Bootstrap core CSS -->
   <link href="CSS/bootstrap.min.css" rel="stylesheet">
@@ -37,12 +25,12 @@
 
     <!-- Sidebar -->
     <div class="bg-light border-right" id="sidebar-wrapper">
-      <div class="sidebar-heading">Menú Bibliotecario </div>
+      <div class="sidebar-heading">Menú Socio </div>
       <div class="list-group list-group-flush">
-        <a href="RetiroServlet" class="list-group-item list-group-item-action bg-light">Retiro reserva</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Retiro sin reserva</a>
-        <a href="DevolucionServlet" class="list-group-item list-group-item-action bg-light">Devolución</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="ReservaServlet" class="list-group-item list-group-item-action bg-light">Reservas</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Mis Reservas</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Mis Préstamos</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Datos Personales</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
       </div>
@@ -63,12 +51,12 @@
       </nav>
 
       <div class="container-fluid">
-      <%if (request.getAttribute("JSP")=="Devolucion"){ %>
-       <%@ include file="/WEB-INF/Devolucion.jsp"%>
+      <%if (request.getAttribute("JSP")=="Reserva"){ %>
+       <%@ include file="/WEB-INF/RealizarReserva.jsp"%>
        <%} 
-      	else if (request.getAttribute("JSP")=="Retiro"){ %>
-      	<%@ include file="/WEB-INF/Retiro.jsp"%>
-      <%} %>
+      	else if (request.getAttribute("JSP")=="FinalizarReserva"){ %>
+       <%@ include file="/WEB-INF/FinalizarReserva.jsp"%>
+       <%} %>
       </div>
     </div>
     <!-- /#page-content-wrapper -->
