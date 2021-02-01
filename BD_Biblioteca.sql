@@ -2,7 +2,7 @@ CREATE DATABASE  IF NOT EXISTS `biblioteca` /*!40100 DEFAULT CHARACTER SET utf8m
 USE `biblioteca`;
 -- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: biblioteca
+-- Host: localhost    Database: biblioteca
 -- ------------------------------------------------------
 -- Server version	8.0.22
 
@@ -52,7 +52,7 @@ DROP TABLE IF EXISTS `generos`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `generos` (
   `id_genero` int NOT NULL AUTO_INCREMENT,
-  `descripcion` varchar(125) COLLATE utf8mb4_general_ci NOT NULL,
+  `descripcion` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id_genero`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -83,7 +83,7 @@ CREATE TABLE `libro_reserva` (
   KEY `fk_libroreserva_reserva_idx` (`id_reserva`),
   CONSTRAINT `fk_libroreserva_libro` FOREIGN KEY (`id_libro`) REFERENCES `libros` (`id_libro`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `fk_libroreserva_reserva` FOREIGN KEY (`id_reserva`) REFERENCES `reservas` (`id_reserva`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,6 +92,7 @@ CREATE TABLE `libro_reserva` (
 
 LOCK TABLES `libro_reserva` WRITE;
 /*!40000 ALTER TABLE `libro_reserva` DISABLE KEYS */;
+INSERT INTO `libro_reserva` VALUES (1,2,1),(2,1,2),(3,3,2);
 /*!40000 ALTER TABLE `libro_reserva` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -104,9 +105,9 @@ DROP TABLE IF EXISTS `libros`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `libros` (
   `id_libro` int NOT NULL AUTO_INCREMENT,
-  `autor` varchar(125) COLLATE utf8mb4_general_ci NOT NULL,
-  `titulo` varchar(125) COLLATE utf8mb4_general_ci NOT NULL,
-  `nro_edicion` varchar(11) COLLATE utf8mb4_general_ci NOT NULL,
+  `autor` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `titulo` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `nro_edicion` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `fecha_edicion` date NOT NULL,
   `id_genero` int NOT NULL,
   PRIMARY KEY (`id_libro`),
@@ -250,7 +251,7 @@ CREATE TABLE `reservas` (
   PRIMARY KEY (`id_reserva`),
   KEY `fk_reservas_socios_idx` (`id_socio`),
   CONSTRAINT `fk_reservas_socios` FOREIGN KEY (`id_socio`) REFERENCES `socios` (`id_socio`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -259,6 +260,7 @@ CREATE TABLE `reservas` (
 
 LOCK TABLES `reservas` WRITE;
 /*!40000 ALTER TABLE `reservas` DISABLE KEYS */;
+INSERT INTO `reservas` VALUES (1,'2021-01-30',_binary '\0',1),(2,'2021-01-29',_binary '\0',1);
 /*!40000 ALTER TABLE `reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -299,11 +301,11 @@ DROP TABLE IF EXISTS `socios`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `socios` (
   `id_socio` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(125) COLLATE utf8mb4_general_ci NOT NULL,
-  `apellido` varchar(125) COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(125) COLLATE utf8mb4_general_ci NOT NULL,
-  `domicilio` varchar(125) COLLATE utf8mb4_general_ci NOT NULL,
-  `telefono` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `nombre` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `apellido` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `domicilio` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `telefono` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `dni` int NOT NULL,
   `estado` bit(1) NOT NULL,
   `id_usuario` int NOT NULL,
@@ -332,8 +334,8 @@ DROP TABLE IF EXISTS `usuarios`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuarios` (
   `id_usuario` int NOT NULL AUTO_INCREMENT,
-  `nombre_usuario` varchar(125) COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(125) COLLATE utf8mb4_general_ci NOT NULL,
+  `nombre_usuario` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `estado` bit(1) NOT NULL,
   `tipo` int NOT NULL,
   PRIMARY KEY (`id_usuario`)
@@ -359,4 +361,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-01-06 11:12:09
+-- Dump completed on 2021-01-31 21:00:35
