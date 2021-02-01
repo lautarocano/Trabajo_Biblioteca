@@ -113,6 +113,11 @@ public class SocioLogic {
 		try {
 			PrestamoLogic pLogic = new PrestamoLogic();
 			cantMaxLibrosPend = pLogic.getLimiteLibrosPendientes();
+			
+			if (!this._SocioDAO.isSancionado(res.getSocio())) {
+				
+			}
+			else
 			if (!this._SocioDAO.hasOverdueLoan(res.getSocio())) {
 				
 			}

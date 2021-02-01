@@ -2,7 +2,7 @@ CREATE DATABASE  IF NOT EXISTS `biblioteca` /*!40100 DEFAULT CHARACTER SET utf8m
 USE `biblioteca`;
 -- MySQL dump 10.13  Distrib 8.0.22, for Win64 (x86_64)
 --
--- Host: localhost    Database: biblioteca
+-- Host: 127.0.0.1    Database: biblioteca
 -- ------------------------------------------------------
 -- Server version	8.0.22
 
@@ -83,7 +83,7 @@ CREATE TABLE `libro_reserva` (
   KEY `fk_libroreserva_reserva_idx` (`id_reserva`),
   CONSTRAINT `fk_libroreserva_libro` FOREIGN KEY (`id_libro`) REFERENCES `libros` (`id_libro`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `fk_libroreserva_reserva` FOREIGN KEY (`id_reserva`) REFERENCES `reservas` (`id_reserva`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -92,7 +92,7 @@ CREATE TABLE `libro_reserva` (
 
 LOCK TABLES `libro_reserva` WRITE;
 /*!40000 ALTER TABLE `libro_reserva` DISABLE KEYS */;
-INSERT INTO `libro_reserva` VALUES (1,2,1),(2,1,2),(3,3,2);
+INSERT INTO `libro_reserva` VALUES (1,2,1),(2,1,2),(3,3,2),(4,3,3),(5,3,3),(6,2,3),(7,3,4),(8,3,4),(9,2,4),(10,3,5),(11,3,6);
 /*!40000 ALTER TABLE `libro_reserva` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -251,7 +251,7 @@ CREATE TABLE `reservas` (
   PRIMARY KEY (`id_reserva`),
   KEY `fk_reservas_socios_idx` (`id_socio`),
   CONSTRAINT `fk_reservas_socios` FOREIGN KEY (`id_socio`) REFERENCES `socios` (`id_socio`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -260,7 +260,7 @@ CREATE TABLE `reservas` (
 
 LOCK TABLES `reservas` WRITE;
 /*!40000 ALTER TABLE `reservas` DISABLE KEYS */;
-INSERT INTO `reservas` VALUES (1,'2021-01-30',_binary '\0',1),(2,'2021-01-29',_binary '\0',1);
+INSERT INTO `reservas` VALUES (1,'2021-01-30',_binary '\0',1),(2,'2021-01-29',_binary '\0',1),(3,'2021-01-21',_binary '\0',1),(4,'2021-01-22',_binary '\0',1),(5,'2021-01-06',_binary '\0',1),(6,'2021-01-30',_binary '\0',1);
 /*!40000 ALTER TABLE `reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -351,6 +351,30 @@ LOCK TABLES `usuarios` WRITE;
 INSERT INTO `usuarios` VALUES (1,'backtomas','1234567',_binary '\0',0),(2,'lautarogod','32659877',_binary '',1),(3,'germanneitormaster','487951',_binary '\0',1),(4,'alicebrancketivocih','1111111',_binary '',0);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'biblioteca'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `Is_Sancionado` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Is_Sancionado`(Id_De_Socio int)
+BEGIN
+select max(fecha_sancion) into @maxfecha from sanciones where id_socio=Id_De_Socio;
+select DATEDIFF(CURDATE(),fecha_sancion) as diferencia,dias_sancion from sanciones where id_socio=Id_De_Socio  and  fecha_sancion=@maxfecha;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -361,4 +385,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-01-31 21:00:35
+-- Dump completed on 2021-01-31 21:15:48

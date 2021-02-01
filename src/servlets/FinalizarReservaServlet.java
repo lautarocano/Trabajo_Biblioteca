@@ -65,10 +65,8 @@ public class FinalizarReservaServlet extends HttpServlet {
 			}
 			reserva.setLibros(librosReservas);
 			reserva.setFechaReserva(java.sql.Date.valueOf(request.getParameter("fecha")));
-			//reserva.setSocio((Socio) request.getSession().getAttribute("socio"));
-			Socio s = new Socio();
-			s.setId(1);
-			reserva.setSocio(s);
+			reserva.setSocio((Socio) request.getSession().getAttribute("socio"));
+
 			try {
 				sl.realizaReserva(reserva);
 			} catch (SQLException e) {
