@@ -138,10 +138,10 @@
 		    		</span>
 		    		<span class="td">
 		    			<select name="genero" class="form-control" id="genero">
-	        		<% for (Genero g : listaGenero) {%>
-	        			<option value="<%=g.getId() %>" > <%=g.getDescripcion() %> </option>
-	        		<%} %>
-	        		</select>
+	        			<% for (Genero g : listaGenero) {%>
+	        				<option value="<%=g.getId() %>" > <%=g.getDescripcion() %> </option>
+	        			<%} %>
+	        			</select>
 		    		</span>
 		    		<span class="td">
 	        			<input name="cant-ejemplares" type="text" class="form-control" id="cant-ejemplares" placeholder="Cantidad de Ejemp." required>

@@ -71,7 +71,7 @@
 	        		<input name="estado" type="checkbox" class="form-control" id="estado" placeholder="Estado" <% if (s.getEstado()) { %> checked <%}%> value="True">
 		    	</span>
 	        	<span class="td"><button type="submit" name="action-type" value="editar" class="btn btn-success btn-block" >Aceptar</button> </span>
-	        	<span class="td"><a class="btn btn-danger btn-block" href="ABMSocioervlet">Cancelar</a></span>
+	        	<span class="td"><a class="btn btn-danger btn-block" href="ABMSocioServlet">Cancelar</a></span>
 	        </form>
 	        <%  	} 
 	    			else {

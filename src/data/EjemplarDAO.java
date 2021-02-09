@@ -80,7 +80,7 @@ public class EjemplarDAO  extends BaseDAO{
 		ResultSet rs = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("SELECT e.id_libro,l.*,g.descripcion FROM ejemplares e INNER JOIN libros l "
+			pst = conn.prepareStatement("SELECT e.id_ejemplar,l.*,g.descripcion FROM ejemplares e INNER JOIN libros l "
 					+ "ON e.id_libro=l.id_libro INNER JOIN generos g ON l.id_genero = g.id_genero");
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -137,5 +137,34 @@ public class EjemplarDAO  extends BaseDAO{
 		finally {
 			this.closeConnection(pst);
 		}
+	}
+	
+	public ArrayList<Ejemplar> getAllDisponibles(Libro lib) throws SQLException {
+		ArrayList<Ejemplar> disponibles = new ArrayList<Ejemplar>();
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("SELECT e.id_ejemplar,l.*,g.descripcion FROM ejemplares e "
+					+ "INNER JOIN libros l ON e.id_libro=l.id_libro "
+					+ "INNER JOIN generos g ON l.id_genero = g.id_genero "
+					+ "LEFT JOIN lineasdeprestamo lp ON lp.id_ejemplar = e.id_ejemplar "
+					+ "WHERE e.id_libro = ? "
+					+ "GROUP BY e.id_ejemplar "
+					+ "HAVING (sum(if(ifnull(lp.devuelto, 1), 0, 1)) = 0)");
+			pst.setInt(1, lib.getId());
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				disponibles.add(mapearEjemplar(rs));
+			}
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+		return disponibles;
 	}
 }

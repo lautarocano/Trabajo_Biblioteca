@@ -183,6 +183,35 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 		return res;
 	}
 	
+	public ArrayList<Reserva> getReservasFuturas(int idLibro) throws SQLException {
+		ArrayList<Reserva> reservas = new ArrayList<Reserva>();
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("SELECT r.id_reserva, r.fecha_reserva, r.entregada, s.*, u.nombre_usuario, u.password, u.tipo, u.estado "
+					+ "FROM libro_reserva lr "
+					+ "INNER JOIN reservas r ON r.id_reserva= lr.id_reserva "
+					+ "INNER JOIN socios s ON r.id_socio = s.id_socio "
+					+ "INNER JOIN usuarios u ON s.id_usuario = u.id_usuario "
+					+ "WHERE lr.id_libro=? AND r.fecha_reserva >= curdate()");
+			pst.setInt(1, idLibro);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				reservas.add(this.mapearReserva(rs));
+			}
+			rs.close();
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+		return reservas;
+	}
+	
 	public void entregarReserva(Reserva res) throws SQLException {
 		PreparedStatement pst = null;
 		try {

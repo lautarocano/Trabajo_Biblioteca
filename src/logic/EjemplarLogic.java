@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import data.EjemplarDAO;
 import model.Ejemplar;
+import model.Libro;
 
 public class EjemplarLogic {
 private EjemplarDAO _EjemplarDAO;
@@ -25,6 +26,15 @@ private EjemplarDAO _EjemplarDAO;
 	public ArrayList<Ejemplar> getAllByLibro(int idLibro) throws SQLException {
 		try {
 			return this._EjemplarDAO.getAllByLibro(idLibro);
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}
+	}
+	
+	public ArrayList<Ejemplar> getAllDisponibles(Libro lib) throws SQLException {
+		try {
+			return this._EjemplarDAO.getAllDisponibles(lib);
 		}
 		catch (SQLException exception) {
 			throw exception;

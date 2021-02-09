@@ -40,7 +40,6 @@
       <div class="sidebar-heading">Menú Bibliotecario </div>
       <div class="list-group list-group-flush">
         <a href="RetiroServlet" class="list-group-item list-group-item-action bg-light">Retiro reserva</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Retiro sin reserva</a>
         <a href="DevolucionServlet" class="list-group-item list-group-item-action bg-light">Devolución</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
@@ -68,6 +67,9 @@
        <%} 
       	else if (request.getAttribute("JSP")=="Retiro"){ %>
       	<%@ include file="/WEB-INF/Retiro.jsp"%>
+      <%}
+      	else if (request.getAttribute("JSP")=="SeleccionEjemplar"){ %>
+      	<%@ include file="/WEB-INF/SeleccionEjemplares.jsp"%>
       <%} %>
       </div>
     </div>

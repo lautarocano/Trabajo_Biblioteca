@@ -39,4 +39,13 @@ private ReservaDAO _ReservaDAO;
 			throw exception;
 		}
 	}
+	
+	public ArrayList<Reserva> getReservasFuturas(int idLibro) throws SQLException {
+		try {
+			return this._ReservaDAO.getReservasFuturas(idLibro);
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}
+	}
 }
