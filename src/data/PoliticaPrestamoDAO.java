@@ -16,6 +16,7 @@ public class PoliticaPrestamoDAO extends BaseDAO implements IBaseDAO<PoliticaPre
 		pp.setId(rs.getInt("idpoliticaprestamo"));
 		pp.setCantMaxLibrosPend(rs.getInt("cant_max_libros_pend"));
 		pp.setFechaPoliticaPrestamo(rs.getDate("fecha_politica_prestamo"));
+		pp.setDiasPrestamo(rs.getInt("cant_dias_prestamo"));
 		return pp;
 	}
 	
@@ -64,13 +65,36 @@ public class PoliticaPrestamoDAO extends BaseDAO implements IBaseDAO<PoliticaPre
 		return pp;
 	}
 	
+	public PoliticaPrestamo getActual() throws SQLException {
+		PoliticaPrestamo pp = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("select * from politicaprestamo where fecha_politica_prestamo in ( select max(fecha_politica_prestamo) from politicaprestamo)");
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				pp = this.mapearPoliticaPrestamo(rs);
+			}
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+		return pp;
+	}
+	
 	public void insert(PoliticaPrestamo pp) throws SQLException {
 		PreparedStatement pst = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("INSERT INTO politicaprestamo(cant_max_libros_pend,fecha_politica_prestamo) VALUES(?,?)");
+			pst = conn.prepareStatement("INSERT INTO politicaprestamo(cant_max_libros_pend,fecha_politica_prestamo,cant_dias_prestamo) VALUES(?,?,?)");
 			pst.setInt(1, pp.getCantMaxLibrosPend());
 			pst.setDate(2, (Date) pp.getFechaPoliticaPrestamo());
+			pst.setInt(3,pp.getDiasPrestamo());
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
@@ -86,11 +110,12 @@ public class PoliticaPrestamoDAO extends BaseDAO implements IBaseDAO<PoliticaPre
 		PreparedStatement pst = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("UPDATE politicaprestamo SET cant_max_libros_pend = ?,fecha_politica_prestamo=? WHERE "
+			pst = conn.prepareStatement("UPDATE politicaprestamo SET cant_max_libros_pend = ?,fecha_politica_prestamo=?,cant_dias_prestamo=? WHERE "
 					+ "idpoliticaprestamo = ?");
 			pst.setInt(1,pp.getCantMaxLibrosPend());
 			pst.setDate(2, (Date) pp.getFechaPoliticaPrestamo());
-			pst.setInt(3,pp.getId() );
+			pst.setInt(3,pp.getDiasPrestamo());
+			pst.setInt(4,pp.getId() );
 			pst.executeUpdate();
 		}
 		catch (SQLException e){

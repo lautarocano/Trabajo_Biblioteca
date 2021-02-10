@@ -30,11 +30,13 @@ public class PoliticaPrestamoLogic {
 		}
 	}
 	
-	//ARREGLAR
-	public PoliticaPrestamo getActual() {
-		PoliticaPrestamo pp = new PoliticaPrestamo();
-		pp.setDiasPrestamo(15);
-		return pp;
+	public PoliticaPrestamo getActual() throws SQLException {
+		try {
+			return this._PoliticaPrestamoDAO.getActual();
+		}
+		catch (SQLException exception)  {
+			throw exception;
+		}
 	}
 	
 	public void insert(PoliticaPrestamo pp) throws SQLException {
