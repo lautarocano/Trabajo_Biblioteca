@@ -137,8 +137,7 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 			pst.executeUpdate();
 			rs = pst.getGeneratedKeys();
 			if (rs.next()) {
-				lib.setId(rs.getInt(1));
-				//throw new SQLException("holis"+lib.getId());
+				lib.setId(rs.getInt(1));			
 			}
 			rs.close();
 			this.closeConnection(pst);

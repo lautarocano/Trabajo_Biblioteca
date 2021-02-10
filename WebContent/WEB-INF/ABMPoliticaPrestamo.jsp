@@ -52,7 +52,7 @@
 		        <span class="td">ID PoliticaPrestamo</span>
 		        <span class="td">CantMax</span>
 		        <span class="td">Fecha</span>
-		        
+		        <span class="td">Cantidad Dias Prestamo</span>     
 		    </div>
 	    </div>
 	    <div class="tbody">
@@ -68,6 +68,7 @@
 	        	<span class="td"><%=pp.getId() %> </span>
 	        	<input name="cant_max_libros_pend" type="text" class="form-control" id="cant_max_libros_pend" placeholder="Cant. maxima de libros pendientes" value="<%=pp.getCantMaxLibrosPend() %>" required>
 	        	<input name="fecha_politica_prestamo" type="text" class="form-control" id="datepicker" placeholder="Fecha" value="<%=pp.getFechaPoliticaPrestamo()%>" required>
+	        	<input name="cant_dias_prestamo" type="text" class="form-control" id="cant_dias_prestamo" placeholder="Cant. dias de prestamo" value="<%=pp.getDiasPrestamo() %>" required>
 	        	<span class="td"><button type="submit" name="action-type" value="editar" class="btn btn-success btn-block" >Aceptar</button> </span>
 	        	<span class="td"><a class="btn btn-danger btn-block" href="ABMPoliticaPrestamoServlet">Cancelar</a></span>
 	        </form>
@@ -78,6 +79,7 @@
 	        	<span class="td"><%=pp.getId() %> </span>
 	        	<span class="td"><%=pp.getCantMaxLibrosPend() %> </span>
 	        	<span class="td"><%=pp.getFechaPoliticaPrestamo() %> </span>
+	        	<span class="td"><%=pp.getDiasPrestamo() %> </span>
 	        	<span class="td"><a class="btn btn-primary btn-block" href="ABMPoliticaPrestamoServlet?editId=<%=pp.getId() %>">Editar</a> </span>
 	        	<span class="td"><button type="submit" name="action-type" value="eliminar" class="btn btn-danger btn-block">Eliminar</button></span>
 	        </form>
@@ -91,6 +93,7 @@
 	        	<span class="td"><%=pp.getId() %> </span>
 	        	<span class="td"><%=pp.getCantMaxLibrosPend() %> </span>
 	        	<span class="td"><%=pp.getFechaPoliticaPrestamo() %> </span>
+	        	<span class="td"><%=pp.getDiasPrestamo() %> </span>
 	        	<span class="td"><a class="btn btn-primary btn-block" href="ABMPoliticaPrestamoServlet?editId=<%=pp.getId() %>">Editar</a> </span>
 	        	<span class="td"><button type="submit" name="action-type" value="eliminar" class="btn btn-danger btn-block">Eliminar</button></span>
 	        </form>
@@ -106,8 +109,10 @@
 		    		<span class="td">	
 		    			<input name="fecha_politica_prestamo" type="text" class="form-control" id="datepicker2" placeholder="Fecha" required>
 		    		</span>	
-		    	
 		    		<span class="td">
+		    			<input name="cant_dias_prestamo" type="text" class="form-control" id="cant_dias_prestamo" placeholder="Cant. dias de prestamo" required>
+		    		</span>
+		    			    		<span class="td">
 		    			<button type="submit" name="action-type" value="agregar" class="btn btn-success btn-block" >Agregar</button>
 		    		</span>
 		    	</form>

@@ -38,7 +38,7 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			response.getWriter().println(e.getMessage());
 		}
-		//request.getRequestDispatcher("WEB-INF/ABMPoliticaPrestamo.jsp").forward(request, response);
+		request.getRequestDispatcher("WEB-INF/ABMPoliticaPrestamo.jsp").forward(request, response);
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 			PoliticaPrestamo pp=new PoliticaPrestamo();
 			pp.setCantMaxLibrosPend(Integer.parseInt(request.getParameter("cant_max_libros_pend")));
 			pp.setFechaPoliticaPrestamo(java.sql.Date.valueOf(request.getParameter("fecha_politica_prestamo")));
-			
+			pp.setDiasPrestamo(Integer.parseInt(request.getParameter("cant_dias_prestamo")));
 			PoliticaPrestamoLogic ppl=new PoliticaPrestamoLogic();
 			try {
 				ppl.insert(pp);
@@ -75,7 +75,7 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 			pp.setId(Integer.parseInt(request.getParameter("id")));
 			pp.setCantMaxLibrosPend(Integer.parseInt(request.getParameter("cant_max_libros_pend")));
 			pp.setFechaPoliticaPrestamo(java.sql.Date.valueOf(request.getParameter("fecha_politica_prestamo")));
-	
+			pp.setDiasPrestamo(Integer.parseInt(request.getParameter("cant_dias_prestamo")));
 			PoliticaPrestamoLogic ppl=new PoliticaPrestamoLogic();
 			try {
 				ppl.update(pp);
