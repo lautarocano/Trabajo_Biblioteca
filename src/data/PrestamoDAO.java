@@ -42,11 +42,10 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		try {
 			this.openConnection();
 			pst = conn.prepareStatement("INSERT INTO prestamos(fecha_prestamo, "
-					+ "dias_prestamo, estado, id_socio) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-			pst.setDate(1, (Date) pres.getFechaPrestamo());
-			pst.setInt(2, pres.getDiasPrestamo());
-			pst.setInt(3, pres.getSocio().getId());
-			pst.setInt(4, 0);
+					+ "dias_prestamo, id_socio, estado) VALUES(curdate(),?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			pst.setInt(1, pres.getDiasPrestamo());
+			pst.setInt(2, pres.getSocio().getId());
+			pst.setInt(3, 0);
 			pst.executeUpdate();
 			rs = pst.getGeneratedKeys();
 			if (rs.next()) {
@@ -281,7 +280,6 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		LineaDePrestamo linea = new LineaDePrestamo();
 		linea.setId(rs.getInt("id_lineadeprestamo"));
 		linea.setDevuelto(rs.getBoolean("devuelto"));
-		linea.setFechaDevolucion(rs.getDate("fecha_devolucion"));
 		Ejemplar ejemp = new Ejemplar();
 		ejemp.setId(rs.getInt("id_ejemplar"));
 		LibroDAO lDAO = new LibroDAO();
@@ -294,11 +292,10 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		if (conn == null || conn.isClosed()) this.openConnection();
 		if (!pst.isClosed()) pst.close();
 		pst = conn.prepareStatement("INSERT INTO lineasdeprestamo(id_ejemplar, id_prestamo, "
-				+ "fecha_devolucion, devuelto) VALUES (?,?,?,?)");
+				+ "devuelto) VALUES (?,?,?)");
 		pst.setInt(1, lp.getEjemplar().getId());
 		pst.setInt(2, pres.getId());
-		pst.setDate(3, (Date) lp.getFechaDevolucion());
-		pst.setBoolean(4, false);
+		pst.setBoolean(3, false);
 		pst.executeUpdate();
 	}
 	
@@ -315,12 +312,11 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		if (conn == null || conn.isClosed()) this.openConnection();
 		if (!pst.isClosed()) pst.close();
 		pst = conn.prepareStatement("UPDATE lineasdeprestamo SET id_ejemplar = ?, "
-				+ "id_prestamo = ?, fecha_devolucion = ?, devuelto = ? "
+				+ "id_prestamo = ?, devuelto = ? "
 				+ "WHERE id_lineadeprestamo = ?");
 		pst.setInt(1, lp.getEjemplar().getId());
 		pst.setInt(2, pres.getId());
-		pst.setDate(3, (Date) lp.getFechaDevolucion());
-		pst.setBoolean(4, lp.getDevuelto());
+		pst.setBoolean(3, lp.getDevuelto());
 		pst.executeUpdate();
 	}
 	

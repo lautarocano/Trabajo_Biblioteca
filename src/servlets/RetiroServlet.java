@@ -41,7 +41,7 @@ public class RetiroServlet extends HttpServlet {
 		}
 		else {
 			try {
-				request.setAttribute("listaReserva", rl.getAll());
+				request.setAttribute("listaReserva", rl.getAllPendientes());
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -30,6 +30,13 @@ public class PoliticaPrestamoLogic {
 		}
 	}
 	
+	//ARREGLAR
+	public PoliticaPrestamo getActual() {
+		PoliticaPrestamo pp = new PoliticaPrestamo();
+		pp.setDiasPrestamo(15);
+		return pp;
+	}
+	
 	public void insert(PoliticaPrestamo pp) throws SQLException {
 		try {
 				this._PoliticaPrestamoDAO.insert(pp);

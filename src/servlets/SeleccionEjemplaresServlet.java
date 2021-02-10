@@ -69,11 +69,27 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 			SocioLogic sl = new SocioLogic();
 			Prestamo prestamo = new Prestamo();
 			LineaDePrestamo ldp = null;
+			ArrayList<LineaDePrestamo> lineasdp = new ArrayList<LineaDePrestamo>();
+			Ejemplar ejemplar = null;
+			String idLibro = null;
+			Reserva reserva;
 			try {
-				Reserva reserva = rl.getOne(Integer.parseInt(request.getParameter("id_reserva")));
+				reserva = rl.getOne(Integer.parseInt(request.getParameter("reserva")));
+				prestamo.setSocio(reserva.getSocio());
 				for (LibroReserva lr : reserva.getLibros()) {
-					
+					idLibro = Integer.toString(lr.getLibro().getId());
+					if (!Boolean.parseBoolean(request.getParameter(idLibro+"checkbox"))) {
+						ejemplar = new Ejemplar();
+						ejemplar.setLibro(lr.getLibro());
+						ejemplar.setId(Integer.parseInt(request.getParameter(idLibro)));
+						ldp = new LineaDePrestamo();
+						ldp.setEjemplar(ejemplar);
+						lineasdp.add(ldp);
+					}
 				}
+				prestamo.setLineasPrestamo(lineasdp);
+				sl.realizaPrestamo(prestamo);
+				rl.entregarReserva(reserva);
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -82,6 +98,8 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
+		RetiroServlet retServlet = new RetiroServlet();
+		retServlet.doGet(request, response);
 	}
 
 }

@@ -10,10 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import logic.GeneroLogic;
 import logic.UsuarioLogic;
-import model.Genero;
-import model.Socio;
 import model.Usuario;
 import model.Usuario.tipoUsuario;
 
@@ -95,5 +92,4 @@ public class LoginServlet extends HttpServlet {
 		}
 		doGet(request, response);
 	}
-
 }
