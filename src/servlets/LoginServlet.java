@@ -37,15 +37,16 @@ public class LoginServlet extends HttpServlet {
 		try {
 		Usuario usActual = (Usuario) sesion.getAttribute("usuario");
 		if(usActual.getTipo()==tipoUsuario.Socio) {
-			request.getRequestDispatcher("WEB-INF/Socio.jsp").forward(request, response);
+			ReservaServlet resServlet = new ReservaServlet();
+			resServlet.doGet(request, response);
 		}
 		else if(usActual.getTipo()==tipoUsuario.Bibliotecario) {
-			request.getRequestDispatcher("WEB-INF/Bibliotecario.jsp").forward(request, response);
-
+			RetiroServlet retServlet = new RetiroServlet();
+			retServlet.doGet(request, response);
 		}
 		else if(usActual.getTipo()==tipoUsuario.Administrador) {
-			request.getRequestDispatcher("WEB-INF/ABMLibro.jsp").forward(request, response);
-
+			ABMLibroServlet abmLibroServlet = new ABMLibroServlet();
+			abmLibroServlet.doGet(request, response);
 		}
 	}
 		catch(java.lang.NullPointerException e) {

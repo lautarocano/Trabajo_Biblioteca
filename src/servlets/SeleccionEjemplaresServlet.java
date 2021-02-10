@@ -78,6 +78,8 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 				prestamo.setSocio(reserva.getSocio());
 				for (LibroReserva lr : reserva.getLibros()) {
 					idLibro = Integer.toString(lr.getLibro().getId());
+					System.out.println(idLibro+"checkbox");
+					System.out.println(request.getParameter(idLibro+"checkbox"));
 					if (!Boolean.parseBoolean(request.getParameter(idLibro+"checkbox"))) {
 						ejemplar = new Ejemplar();
 						ejemplar.setLibro(lr.getLibro());

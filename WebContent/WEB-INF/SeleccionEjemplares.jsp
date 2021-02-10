@@ -52,7 +52,7 @@ if (request.getAttribute("ejemplares")!=null) {
 	        	<%} %>
 	        </select>
 	        <label class="card-text" for=<%=ejemplares.get(0).getLibro().getId()+"checkbox" %> >
-	        	<input name=<%=ejemplares.get(0).getLibro().getId()+"checkbox" %> type="checkbox" id=<%=ejemplares.get(0).getLibro().getId()+"checkbox" %> >
+	        	<input name=<%=ejemplares.get(0).getLibro().getId()+"checkbox" %> type="checkbox" id=<%=ejemplares.get(0).getLibro().getId()+"checkbox" %> value="True" >
 	        	Descartar libro
 	        </label>
 		  </div>

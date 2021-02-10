@@ -40,6 +40,15 @@ private ReservaDAO _ReservaDAO;
 		}
 	}
 	
+	public ArrayList<Reserva> getAllPendientesBySocio(int id) throws SQLException {
+		try {
+			return this._ReservaDAO.getAllPendientesBySocio(id);
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}
+	}
+	
 	public Reserva getOne(int id) throws SQLException {
 		try {
 			return this._ReservaDAO.getOne(id);

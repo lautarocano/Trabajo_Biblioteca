@@ -33,7 +33,8 @@ public class RetiroServlet extends HttpServlet {
 		ReservaLogic rl = new ReservaLogic();
 		if (request.getParameter("id-socio")!=null) {
 			try {
-				request.setAttribute("listaReserva", rl.getAllBySocio(Integer.parseInt(request.getParameter("id-socio"))));
+				//ARREGLAR, traer solo pendientes
+				request.setAttribute("listaReserva", rl.getAllPendientesBySocio(Integer.parseInt(request.getParameter("id-socio"))));
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
