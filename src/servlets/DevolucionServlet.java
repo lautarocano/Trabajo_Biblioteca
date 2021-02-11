@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import logic.PrestamoLogic;
 import logic.SocioLogic;
 import model.Prestamo;
-import model.Socio;
+import model.Usuario;
 
 /**
  * Servlet implementation class DevolucionServlet
@@ -33,19 +33,28 @@ public class DevolucionServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		PrestamoLogic pl = new PrestamoLogic();
-		// ESTO ES SOLO PARA PROBAR QUE FUNCIONA
-		SocioLogic sl = new SocioLogic();
-		try {
-			Socio socio= sl.getOne(1);
-			request.setAttribute("ListaPrestamo", pl.getAllPendientesBySocio(socio));
-		} catch (SQLException e) {
-			response.getWriter().println(e.getMessage());
+		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Bibliotecario)) {
+			PrestamoLogic pl = new PrestamoLogic();
+			SocioLogic sl = new SocioLogic();
+			if (request.getParameter("id-socio")!=null) {
+				try {
+					request.setAttribute("ListaPrestamo", pl.getAllPendientesBySocio(sl.getOne(Integer.parseInt(request.getParameter("id-socio")))));
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else {
+				try {
+					request.setAttribute("ListaPrestamo", pl.getAllPendientes());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			request.setAttribute("JSP", "Devolucion");
+			request.getRequestDispatcher("WEB-INF/Bibliotecario.jsp").forward(request, response);
 		}
-		request.setAttribute("JSP", "Devolucion");
-		request.getRequestDispatcher("WEB-INF/Bibliotecario.jsp").forward(request, response);
-		
 	}
 
 	/**
@@ -53,19 +62,20 @@ public class DevolucionServlet extends HttpServlet {
 	 */
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-if (request.getParameter("action-type").equals("devolver")) {	
-	Prestamo prestamo=new Prestamo();
-	prestamo.setId(Integer.parseInt(request.getParameter("id_prestamo")));
-	PrestamoLogic pl=new PrestamoLogic();
-	try {
-		pl.endLoan(prestamo);;
-	} catch (SQLException e) {
-		// TODO Auto-generated catch block
-		response.getWriter().println(e.getMessage());
-	}
+		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Bibliotecario)) {
+			if (request.getParameter("action-type").equals("devolver")) {	
+				Prestamo prestamo=new Prestamo();
+				prestamo.setId(Integer.parseInt(request.getParameter("id_prestamo")));
+				SocioLogic sl = new SocioLogic();
+				try {
+					sl.entregaPrestamo(prestamo);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			this.doGet(request, response);
 		}
-		this.doGet(request, response);
 	}
 
 }

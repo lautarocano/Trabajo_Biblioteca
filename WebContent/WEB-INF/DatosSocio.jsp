@@ -39,7 +39,7 @@
 	    <div class="tbody">
 	    	<%
 	    	@SuppressWarnings("unchecked")
-	    	Socio s = (Socio)request.getAttribute("SocioActual");
+	    	Socio s = (Socio)request.getSession().getAttribute("socio");
 	    	if (request.getParameter("editId") != null) {
 		    		if (Integer.parseInt(request.getParameter("editId")) == s.getId()) {
 	        %>

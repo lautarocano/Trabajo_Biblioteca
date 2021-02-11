@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import logic.GeneroLogic;
 import logic.LibroLogic;
 import model.Libro;
+import model.Usuario;
 
 /**
  * Servlet implementation class ReservaServlet
@@ -33,17 +34,18 @@ public class ReservaServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		/*Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador);*/
-		LibroLogic ll = new LibroLogic();
-		GeneroLogic gl = new GeneroLogic();
-		try {
-			request.setAttribute("ListaLibros", ll.getAll());
-			request.setAttribute("ListaGeneros", gl.getAll());
-		} catch (SQLException e) {
-			response.getWriter().println(e.getMessage());
+		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Socio)) {
+			LibroLogic ll = new LibroLogic();
+			GeneroLogic gl = new GeneroLogic();
+			try {
+				request.setAttribute("ListaLibros", ll.getAll());
+				request.setAttribute("ListaGeneros", gl.getAll());
+			} catch (SQLException e) {
+				response.getWriter().println(e.getMessage());
+			}
+			request.setAttribute("JSP", "Reserva");
+			request.getRequestDispatcher("WEB-INF/Socio.jsp").forward(request, response);
 		}
-		request.setAttribute("JSP", "Reserva");
-		request.getRequestDispatcher("WEB-INF/Socio.jsp").forward(request, response);
 	}
 
 	/**
@@ -51,26 +53,28 @@ public class ReservaServlet extends HttpServlet {
 	 */
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (request.getParameter("action-type").equals("reservar")) {	
-			
-			LibroLogic ll=new LibroLogic();
-			Libro libro;
-			try {
-				libro = ll.getOne(Integer.parseInt(request.getParameter("id_libro")));
-				if(request.getSession().getAttribute("libros") == null) {
-					ArrayList<Libro> libros=new ArrayList<Libro>(); 
-					request.getSession().setAttribute("libros", libros);
+		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Socio)) {
+			if (request.getParameter("action-type").equals("reservar")) {	
+				
+				LibroLogic ll=new LibroLogic();
+				Libro libro;
+				try {
+					libro = ll.getOne(Integer.parseInt(request.getParameter("id_libro")));
+					if(request.getSession().getAttribute("libros") == null) {
+						ArrayList<Libro> libros=new ArrayList<Libro>(); 
+						request.getSession().setAttribute("libros", libros);
+					}
+					((ArrayList<Libro>)request.getSession().getAttribute("libros")).add(libro);
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				((ArrayList<Libro>)request.getSession().getAttribute("libros")).add(libro);
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-
+			this.doGet(request, response);
 		}
-		this.doGet(request, response);
 	}
+	
 }

@@ -81,7 +81,7 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 		ResultSet rs = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("SELECT * FROM usuarios WHERE nombre_usuario ='?' AND password ='?'");
+			pst = conn.prepareStatement("SELECT * FROM usuarios WHERE nombre_usuario = ? AND password = ?");
 			pst.setString(1, username);
 			pst.setString(2, password);
 			rs = pst.executeQuery();

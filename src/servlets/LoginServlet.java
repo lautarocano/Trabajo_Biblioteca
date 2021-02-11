@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import logic.SocioLogic;
 import logic.UsuarioLogic;
 import model.Usuario;
 import model.Usuario.tipoUsuario;
@@ -33,34 +34,27 @@ public class LoginServlet extends HttpServlet {
 	 */
     HttpSession sesion;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		/*Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador);*/
 		try {
-		Usuario usActual = (Usuario) sesion.getAttribute("usuario");
-		if(usActual.getTipo()==tipoUsuario.Socio) {
-			ReservaServlet resServlet = new ReservaServlet();
-			resServlet.doGet(request, response);
+			Usuario usActual = (Usuario) sesion.getAttribute("usuario");
+			if(usActual.getTipo()==tipoUsuario.Socio) {
+				response.sendRedirect("ReservaServlet");
+			}
+			else if(usActual.getTipo()==tipoUsuario.Bibliotecario) {
+				response.sendRedirect("RetiroServlet");
+			}
+			else if(usActual.getTipo()==tipoUsuario.Administrador) {
+				response.sendRedirect("ABMLibroServlet");
+			}
 		}
-		else if(usActual.getTipo()==tipoUsuario.Bibliotecario) {
-			RetiroServlet retServlet = new RetiroServlet();
-			retServlet.doGet(request, response);
-		}
-		else if(usActual.getTipo()==tipoUsuario.Administrador) {
-			ABMLibroServlet abmLibroServlet = new ABMLibroServlet();
-			abmLibroServlet.doGet(request, response);
-		}
-	}
 		catch(java.lang.NullPointerException e) {
 			request.getRequestDispatcher("WEB-INF/Login.jsp").forward(request, response);
 		}
-
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		if (request.getParameter("action-type").equals("ingresar")) {	
 			sesion = request.getSession();
 			Usuario usuario=new Usuario();
@@ -70,12 +64,16 @@ public class LoginServlet extends HttpServlet {
 			try {
 				usuario=ul.login(nombreUsuario,password);
 				sesion.setAttribute("usuario",usuario);
+				if(usuario.getTipo()==tipoUsuario.Socio) {
+					SocioLogic sl = new SocioLogic();
+					sesion.setAttribute("socio", sl.getOneByUser(usuario.getId()));
+				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}			
-			
 		}
 		doGet(request, response);
 	}
+	
 }

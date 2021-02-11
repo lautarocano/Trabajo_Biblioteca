@@ -17,6 +17,7 @@ import model.LibroReserva;
 import model.LineaDePrestamo;
 import model.Prestamo;
 import model.Reserva;
+import model.Usuario;
 import model.Ejemplar;
 
 /**
@@ -38,70 +39,71 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (request.getParameter("id_reserva")!=null) {
-			ReservaLogic rl = new ReservaLogic();
-			EjemplarLogic el = new EjemplarLogic();
-			try {
-				ArrayList<ArrayList<Ejemplar>> disponibles = new ArrayList<ArrayList<Ejemplar>>();
-				Reserva reserva = rl.getOne(Integer.parseInt(request.getParameter("id_reserva")));
-				for (LibroReserva lr : reserva.getLibros()) {
-					disponibles.add(el.getAllDisponibles(lr.getLibro()));
+		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Bibliotecario)) {
+			if (request.getParameter("id_reserva")!=null) {
+				ReservaLogic rl = new ReservaLogic();
+				EjemplarLogic el = new EjemplarLogic();
+				try {
+					ArrayList<ArrayList<Ejemplar>> disponibles = new ArrayList<ArrayList<Ejemplar>>();
+					Reserva reserva = rl.getOne(Integer.parseInt(request.getParameter("id_reserva")));
+					for (LibroReserva lr : reserva.getLibros()) {
+						disponibles.add(el.getAllDisponibles(lr.getLibro()));
+					}
+					request.setAttribute("ejemplares", disponibles);
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				request.setAttribute("ejemplares", disponibles);
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+			request.setAttribute("JSP", "SeleccionEjemplar");
+			request.getRequestDispatcher("WEB-INF/Bibliotecario.jsp").forward(request, response);
 		}
-		request.setAttribute("JSP", "SeleccionEjemplar");
-		request.getRequestDispatcher("WEB-INF/Bibliotecario.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (request.getParameter("reserva")!=null) {
-			ReservaLogic rl = new ReservaLogic();
-			SocioLogic sl = new SocioLogic();
-			Prestamo prestamo = new Prestamo();
-			LineaDePrestamo ldp = null;
-			ArrayList<LineaDePrestamo> lineasdp = new ArrayList<LineaDePrestamo>();
-			Ejemplar ejemplar = null;
-			String idLibro = null;
-			Reserva reserva;
-			try {
-				reserva = rl.getOne(Integer.parseInt(request.getParameter("reserva")));
-				prestamo.setSocio(reserva.getSocio());
-				for (LibroReserva lr : reserva.getLibros()) {
-					idLibro = Integer.toString(lr.getLibro().getId());
-					System.out.println(idLibro+"checkbox");
-					System.out.println(request.getParameter(idLibro+"checkbox"));
-					if (!Boolean.parseBoolean(request.getParameter(idLibro+"checkbox"))) {
-						ejemplar = new Ejemplar();
-						ejemplar.setLibro(lr.getLibro());
-						ejemplar.setId(Integer.parseInt(request.getParameter(idLibro)));
-						ldp = new LineaDePrestamo();
-						ldp.setEjemplar(ejemplar);
-						lineasdp.add(ldp);
+		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Bibliotecario)) {
+			if (request.getParameter("reserva")!=null) {
+				ReservaLogic rl = new ReservaLogic();
+				SocioLogic sl = new SocioLogic();
+				Prestamo prestamo = new Prestamo();
+				LineaDePrestamo ldp = null;
+				ArrayList<LineaDePrestamo> lineasdp = new ArrayList<LineaDePrestamo>();
+				Ejemplar ejemplar = null;
+				String idLibro = null;
+				Reserva reserva;
+				try {
+					reserva = rl.getOne(Integer.parseInt(request.getParameter("reserva")));
+					prestamo.setSocio(reserva.getSocio());
+					for (LibroReserva lr : reserva.getLibros()) {
+						idLibro = Integer.toString(lr.getLibro().getId());
+						if (!Boolean.parseBoolean(request.getParameter(idLibro+"checkbox"))) {
+							ejemplar = new Ejemplar();
+							ejemplar.setLibro(lr.getLibro());
+							ejemplar.setId(Integer.parseInt(request.getParameter(idLibro)));
+							ldp = new LineaDePrestamo();
+							ldp.setEjemplar(ejemplar);
+							lineasdp.add(ldp);
+						}
 					}
+					prestamo.setLineasPrestamo(lineasdp);
+					sl.realizaPrestamo(prestamo);
+					rl.entregarReserva(reserva);
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				prestamo.setLineasPrestamo(lineasdp);
-				sl.realizaPrestamo(prestamo);
-				rl.entregarReserva(reserva);
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+			response.sendRedirect("RetiroServlet");
 		}
-		RetiroServlet retServlet = new RetiroServlet();
-		retServlet.doGet(request, response);
 	}
 
 }

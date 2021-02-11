@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import logic.PoliticaPrestamoLogic;
 import model.PoliticaPrestamo;
+import model.Usuario;
 
 /**
  * Servlet implementation class ABMPoliticaPrestamoServlet
@@ -29,62 +30,63 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		/*Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador);*/
-		PoliticaPrestamoLogic ppl = new PoliticaPrestamoLogic();
-		try {
-			request.setAttribute("ListaPoliticasPrestamos", ppl.getAll());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			response.getWriter().println(e.getMessage());
+		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
+			PoliticaPrestamoLogic ppl = new PoliticaPrestamoLogic();
+			try {
+				request.setAttribute("ListaPoliticasPrestamos", ppl.getAll());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			request.getRequestDispatcher("WEB-INF/ABMPoliticaPrestamo.jsp").forward(request, response);
 		}
-		request.getRequestDispatcher("WEB-INF/ABMPoliticaPrestamo.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		if (request.getParameter("action-type").equals("agregar")) {	
-			PoliticaPrestamo pp=new PoliticaPrestamo();
-			pp.setCantMaxLibrosPend(Integer.parseInt(request.getParameter("cant_max_libros_pend")));
-			pp.setFechaPoliticaPrestamo(java.sql.Date.valueOf(request.getParameter("fecha_politica_prestamo")));
-			pp.setDiasPrestamo(Integer.parseInt(request.getParameter("cant_dias_prestamo")));
-			PoliticaPrestamoLogic ppl=new PoliticaPrestamoLogic();
-			try {
-				ppl.insert(pp);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				response.getWriter().println(e.getMessage());
+		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
+			if (request.getParameter("action-type").equals("agregar")) {	
+				PoliticaPrestamo pp=new PoliticaPrestamo();
+				pp.setCantMaxLibrosPend(Integer.parseInt(request.getParameter("cant_max_libros_pend")));
+				pp.setFechaPoliticaPrestamo(java.sql.Date.valueOf(request.getParameter("fecha_politica_prestamo")));
+				pp.setDiasPrestamo(Integer.parseInt(request.getParameter("cant_dias_prestamo")));
+				PoliticaPrestamoLogic ppl=new PoliticaPrestamoLogic();
+				try {
+					ppl.insert(pp);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		}
-		else if (request.getParameter("action-type").equals("eliminar")) {	
-			PoliticaPrestamo pp=new PoliticaPrestamo();
-			pp.setId(Integer.parseInt(request.getParameter("id")));
-			PoliticaPrestamoLogic ppl=new PoliticaPrestamoLogic();
-			try {
-				ppl.delete(pp);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				response.getWriter().println(e.getMessage());
+			else if (request.getParameter("action-type").equals("eliminar")) {	
+				PoliticaPrestamo pp=new PoliticaPrestamo();
+				pp.setId(Integer.parseInt(request.getParameter("id")));
+				PoliticaPrestamoLogic ppl=new PoliticaPrestamoLogic();
+				try {
+					ppl.delete(pp);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		}
-		else if (request.getParameter("action-type").equals("editar")) {	
-			PoliticaPrestamo pp=new PoliticaPrestamo();
-			pp.setId(Integer.parseInt(request.getParameter("id")));
-			pp.setCantMaxLibrosPend(Integer.parseInt(request.getParameter("cant_max_libros_pend")));
-			pp.setFechaPoliticaPrestamo(java.sql.Date.valueOf(request.getParameter("fecha_politica_prestamo")));
-			pp.setDiasPrestamo(Integer.parseInt(request.getParameter("cant_dias_prestamo")));
-			PoliticaPrestamoLogic ppl=new PoliticaPrestamoLogic();
-			try {
-				ppl.update(pp);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				response.getWriter().println(e.getMessage());
+			else if (request.getParameter("action-type").equals("editar")) {	
+				PoliticaPrestamo pp=new PoliticaPrestamo();
+				pp.setId(Integer.parseInt(request.getParameter("id")));
+				pp.setCantMaxLibrosPend(Integer.parseInt(request.getParameter("cant_max_libros_pend")));
+				pp.setFechaPoliticaPrestamo(java.sql.Date.valueOf(request.getParameter("fecha_politica_prestamo")));
+				pp.setDiasPrestamo(Integer.parseInt(request.getParameter("cant_dias_prestamo")));
+				PoliticaPrestamoLogic ppl=new PoliticaPrestamoLogic();
+				try {
+					ppl.update(pp);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			this.doGet(request, response);
 		}
-		this.doGet(request, response);
 	}
 
 }

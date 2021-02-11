@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import logic.PoliticaSancionLogic;
 import model.PoliticaSancion;
+import model.Usuario;
 
 /**
  * Servlet implementation class ABMPoliticaSancionServlet
@@ -30,62 +31,63 @@ public class ABMPoliticaSancionServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		/*Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador);*/
-		PoliticaSancionLogic psl = new PoliticaSancionLogic();
-		try {
-			request.setAttribute("ListaPoliticasSanciones", psl.getAll());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			response.getWriter().println(e.getMessage());
+		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
+			PoliticaSancionLogic psl = new PoliticaSancionLogic();
+			try {
+				request.setAttribute("ListaPoliticasSanciones", psl.getAll());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			request.getRequestDispatcher("WEB-INF/ABMPoliticaSancion.jsp").forward(request, response);
 		}
-		request.getRequestDispatcher("WEB-INF/ABMPoliticaSancion.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		if (request.getParameter("action-type").equals("agregar")) {	
-			PoliticaSancion ps=new PoliticaSancion();
-			ps.setDiasDeAtrasoDesde(Integer.parseInt(request.getParameter("dias_atraso_desde")));
-			ps.setDiasDeAtrasoHasta(Integer.parseInt(request.getParameter("dias_atraso_hasta")));
-			ps.setDiasDeSancion(Integer.parseInt(request.getParameter("dias_sancion")));
-			PoliticaSancionLogic psl=new PoliticaSancionLogic();
-			try {
-				psl.insert(ps);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				response.getWriter().println(e.getMessage());
+		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
+			if (request.getParameter("action-type").equals("agregar")) {	
+				PoliticaSancion ps=new PoliticaSancion();
+				ps.setDiasDeAtrasoDesde(Integer.parseInt(request.getParameter("dias_atraso_desde")));
+				ps.setDiasDeAtrasoHasta(Integer.parseInt(request.getParameter("dias_atraso_hasta")));
+				ps.setDiasDeSancion(Integer.parseInt(request.getParameter("dias_sancion")));
+				PoliticaSancionLogic psl=new PoliticaSancionLogic();
+				try {
+					psl.insert(ps);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					response.getWriter().println(e.getMessage());
+				}
 			}
-		}
-		else if (request.getParameter("action-type").equals("eliminar")) {	
-			PoliticaSancion ps=new PoliticaSancion();
-			ps.setId(Integer.parseInt(request.getParameter("id")));
-			PoliticaSancionLogic psl=new PoliticaSancionLogic();
-			try {
-				psl.delete(ps);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				response.getWriter().println(e.getMessage());
+			else if (request.getParameter("action-type").equals("eliminar")) {	
+				PoliticaSancion ps=new PoliticaSancion();
+				ps.setId(Integer.parseInt(request.getParameter("id")));
+				PoliticaSancionLogic psl=new PoliticaSancionLogic();
+				try {
+					psl.delete(ps);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		}
-		else if (request.getParameter("action-type").equals("editar")) {	
-			PoliticaSancion ps=new PoliticaSancion();
-			ps.setId(Integer.parseInt(request.getParameter("id")));
-			ps.setDiasDeAtrasoDesde(Integer.parseInt(request.getParameter("dias_atraso_desde")));
-			ps.setDiasDeAtrasoHasta(Integer.parseInt(request.getParameter("dias_atraso_hasta")));
-			ps.setDiasDeSancion(Integer.parseInt(request.getParameter("dias_sancion")));
-			PoliticaSancionLogic psl=new PoliticaSancionLogic();
-			try {
-				psl.update(ps);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				response.getWriter().println(e.getMessage());
+			else if (request.getParameter("action-type").equals("editar")) {	
+				PoliticaSancion ps=new PoliticaSancion();
+				ps.setId(Integer.parseInt(request.getParameter("id")));
+				ps.setDiasDeAtrasoDesde(Integer.parseInt(request.getParameter("dias_atraso_desde")));
+				ps.setDiasDeAtrasoHasta(Integer.parseInt(request.getParameter("dias_atraso_hasta")));
+				ps.setDiasDeSancion(Integer.parseInt(request.getParameter("dias_sancion")));
+				PoliticaSancionLogic psl=new PoliticaSancionLogic();
+				try {
+					psl.update(ps);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+			this.doGet(request, response);
 		}
-		this.doGet(request, response);
 	}
 
 }

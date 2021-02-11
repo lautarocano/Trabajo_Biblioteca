@@ -53,6 +53,15 @@ private PrestamoDAO _PrestamoDAO;
 		}
 	}
 	
+	public ArrayList<Prestamo> getAllPendientes() throws SQLException {
+		try {
+			return this._PrestamoDAO.getAllPendientes();
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}
+	}
+	
 	public ArrayList<Prestamo> getAllBySocio(Socio socio) throws SQLException {
 		try {
 			return this._PrestamoDAO.getAllBySocio(socio);

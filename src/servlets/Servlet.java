@@ -25,31 +25,38 @@ public class Servlet extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-	public static void VerificarSesion(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
+	public static Boolean VerificarSesion(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
 		//Si el Usuario no tiene una sesion se lo manda a la pagina de inicio.
 		
 		HttpSession sesion = request.getSession(false);	
-		if(sesion==null) request.getRequestDispatcher("index.html").forward(request, response);
-		
+		if(sesion==null) {
+			response.sendRedirect("LoginServlet");
+			return false;
 		}
-	public static void VerificarUsuario(HttpServletRequest request,HttpServletResponse response,Usuario.tipoUsuario tipoUsuario) throws IOException, ServletException{
+		else return true;
+	}
+	
+	public static Boolean VerificarUsuario(HttpServletRequest request,HttpServletResponse response,Usuario.tipoUsuario tipoUsuario) throws IOException, ServletException{
 		//Si el Usuario es un tipo de usuario incorrecto se lo manda a la pagina de inicio.
-		
 		HttpSession sesion = request.getSession();
 		if(((Usuario)(sesion.getAttribute("usuario")))==null) {
-			request.getRequestDispatcher("index.html").forward(request, response);
+			response.sendRedirect("LoginServlet");
+			return false;
 		}
-		if(tipoUsuario != ((Usuario)(sesion.getAttribute("usuario"))).getTipo()) {
-			sesion.invalidate();
-			request.getRequestDispatcher("index.html").forward(request, response);
-			}	
-		}
+		else if(tipoUsuario != ((Usuario)(sesion.getAttribute("usuario"))).getTipo()) {
+			//Mmm revisar el invalidate, capaz es mucho
+			//sesion.invalidate();
+			response.sendRedirect("LoginServlet");
+			return false;
+		}	
+		else return true;
+	}
 
-	public static void VerificarSesionYUsuario(HttpServletRequest request, HttpServletResponse response, Usuario.tipoUsuario tipoUsuario) throws ServletException, IOException {	
-		//Si el Usuario no tiene una sesion o es un paciente se lo manda a la pagina de inicio.
-		
-		VerificarSesion(request, response);
-		VerificarUsuario(request, response, tipoUsuario);
+	public static Boolean VerificarSesionYUsuario(HttpServletRequest request, HttpServletResponse response, Usuario.tipoUsuario tipoUsuario) throws ServletException, IOException {			
+		if (VerificarSesion(request, response)) {
+			return VerificarUsuario(request, response, tipoUsuario);
 		}
+		else return false;
+	}
 
 }

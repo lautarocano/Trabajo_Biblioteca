@@ -15,6 +15,7 @@ import model.Libro;
 import model.LibroReserva;
 import model.Reserva;
 import model.Socio;
+import model.Usuario;
 
 /**
  * Servlet implementation class FinalizarReservaServlet
@@ -35,8 +36,10 @@ public class FinalizarReservaServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setAttribute("JSP", "FinalizarReserva");
-		request.getRequestDispatcher("WEB-INF/Socio.jsp").forward(request, response);
+		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Socio)) {
+			request.setAttribute("JSP", "FinalizarReserva");
+			request.getRequestDispatcher("WEB-INF/Socio.jsp").forward(request, response);
+		}
 	}
 
 	/**
@@ -44,35 +47,33 @@ public class FinalizarReservaServlet extends HttpServlet {
 	 */
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		if (request.getParameter("action-type").equals("borrar")) {	
-					
+		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Socio)) {
+			if (request.getParameter("action-type").equals("borrar")) {	
 				int id=Integer.parseInt(request.getParameter("id_libro"));
 				((ArrayList<Libro>)request.getSession().getAttribute("libros")).removeIf(l -> l.getId()== id);
+			}
+			else if(request.getParameter("action-type").equals("finalizar")) {
+				Reserva reserva=new Reserva();
+				SocioLogic sl=new SocioLogic();
+				LibroReserva lr;
+				ArrayList<LibroReserva> librosReservas=new ArrayList<LibroReserva>();
+				ArrayList<Libro> libros=(((ArrayList<Libro>)request.getSession().getAttribute("libros")));
+				for(Libro l : libros) {
+					lr=new LibroReserva();
+					lr.setLibro(l);
+					librosReservas.add(lr);
 				}
-		else if(request.getParameter("action-type").equals("finalizar"))
-		{
-			Reserva reserva=new Reserva();
-			SocioLogic sl=new SocioLogic();
-			LibroReserva lr;
-			ArrayList<LibroReserva> librosReservas=new ArrayList<LibroReserva>();
-			ArrayList<Libro> libros=(((ArrayList<Libro>)request.getSession().getAttribute("libros")));
-			for(Libro l : libros) {
-				lr=new LibroReserva();
-				lr.setLibro(l);
-				librosReservas.add(lr);
-				
+				reserva.setLibros(librosReservas);
+				reserva.setFechaReserva(java.sql.Date.valueOf(request.getParameter("fecha")));
+				reserva.setSocio((Socio) request.getSession().getAttribute("socio"));
+				try {
+					sl.realizaReserva(reserva);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 			}
-			reserva.setLibros(librosReservas);
-			reserva.setFechaReserva(java.sql.Date.valueOf(request.getParameter("fecha")));
-			reserva.setSocio((Socio) request.getSession().getAttribute("socio"));
-
-			try {
-				sl.realizaReserva(reserva);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			this.doGet(request, response);
 		}
-				this.doGet(request, response);
-			}
+	}
+	
 }

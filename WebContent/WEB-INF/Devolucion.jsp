@@ -1,5 +1,6 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="model.Prestamo"%>
+<%@page import="model.LineaDePrestamo"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -29,6 +30,9 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
+<form action="DevolucionServlet">
+<span>ID de socio:</span><input name="id-socio" type="number" class="form-control" id="id-socio" placeholder="id">
+</form>
 <div class="table">
 		<div class="theader">
 		    <div class="tr">
@@ -59,7 +63,36 @@
 	        	<span class="td">
 	        		<%=p.getEstado()%>
 		    	</span>
-	        	<span class="td"><button type="submit" name="action-type" value="devolver" class="btn btn-danger btn-block" >Realizar devolución</button> </span>
+	        	<span class="td">
+		        	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal<%=p.getId()%>">
+					  Ver Préstamo
+					</button>
+				</span>
+				<!-- Modal -->
+				<div class="modal fade" id="modal<%=p.getId()%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel<%=p.getId()%>" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel<%=p.getId()%>">Préstamo N° <%=p.getId()%></h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				        <p>Socio: <%=p.getSocio().getNombreyApellido()%></p>
+				        <p>Fecha: <%=p.getFechaPrestamo()%></p>
+				        <p>Libros:</p>
+				        <% for (LineaDePrestamo l : p.getLineasPrestamo()) { %>
+				        <p>- <%=l.getEjemplar().getLibro().getTitulo() + " - " + l.getEjemplar().getLibro().getAutor() %></p>
+				        <% }  %>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+				        <button type="submit" class="btn btn-primary" name="action-type" value="devolver">Realizar devolución</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
 	        </form>
 	        <%
 	          	
