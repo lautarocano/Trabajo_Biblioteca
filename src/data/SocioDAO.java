@@ -82,7 +82,7 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			this.openConnection();
 			pst = conn.prepareStatement("SELECT s.*, u.nombre_usuario, u.password, u.tipo, u.estado "
 					+ "FROM socios s INNER JOIN usuarios u ON s.id_usuario = u.id_usuario "
-					+ "WHERE id_usuario = ?");
+					+ "WHERE s.id_usuario = ?");
 			pst.setInt(1, idUser);
 			rs = pst.executeQuery();
 			if (rs.next()) {
