@@ -33,6 +33,7 @@ public class LoginServlet extends HttpServlet {
 	 */
     HttpSession sesion;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		/*Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador);*/
 		try {
 		Usuario usActual = (Usuario) sesion.getAttribute("usuario");
@@ -66,29 +67,13 @@ public class LoginServlet extends HttpServlet {
 			UsuarioLogic ul = new UsuarioLogic();
 			String nombreUsuario=request.getParameter("nombreUsuario");
 			String password=request.getParameter("password");
-			
 			try {
 				usuario=ul.login(nombreUsuario,password);
 				sesion.setAttribute("usuario",usuario);
-				/*
-				switch(usuario.getTipo()) {
-				case Socio:
-					request.getRequestDispatcher("WEB-INF/ABMEjemplar.jsp").forward(request, response);
-					break;
-				case Bibliotecario:
-					request.getRequestDispatcher("WEB-INF/Bibliotecario.jsp").forward(request, response);
-					break;
-				case Administrador:
-					request.getRequestDispatcher("WEB-INF/ABMLibro.jsp").forward(request, response);
-					break;
-					
-				}
-			*/
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-
+			}			
 			
 		}
 		doGet(request, response);

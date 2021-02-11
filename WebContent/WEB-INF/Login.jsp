@@ -76,10 +76,10 @@
                     <h3>Sistema de Biblioteca</h3>
                     <form action="LoginServlet" method="POST" name="Login">
                         <div class="form-group">
-                            <input name="nombreUsuario" type="text" class="form-control" placeholder="Nombre de usuario" value="" />
+                            <input name="nombreUsuario" id="nombreUsuario" type="text" class="form-control" placeholder="Nombre de usuario" required  />
                         </div>
                         <div class="form-group">
-                            <input name="password" type="password" class="form-control" placeholder="Contraseña" value="" />
+                            <input name="password" id="password"  type="password" class="form-control" placeholder="Contraseña"  required/>
                         </div>
                         <div class="form-group">
                             <input name="action-type" type="submit" class="btnSubmit" value="ingresar" />
