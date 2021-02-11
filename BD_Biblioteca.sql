@@ -30,7 +30,7 @@ CREATE TABLE `ejemplares` (
   PRIMARY KEY (`id_ejemplar`),
   KEY `fk_ejemplares_libro_idx` (`id_libro`),
   CONSTRAINT `fk_ejemplares_libro` FOREIGN KEY (`id_libro`) REFERENCES `libros` (`id_libro`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `ejemplares` (
 
 LOCK TABLES `ejemplares` WRITE;
 /*!40000 ALTER TABLE `ejemplares` DISABLE KEYS */;
-INSERT INTO `ejemplares` VALUES (1,1),(2,1),(3,1),(4,2);
+INSERT INTO `ejemplares` VALUES (1,1),(2,1),(3,1),(4,2),(5,5),(6,5);
 /*!40000 ALTER TABLE `ejemplares` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +113,7 @@ CREATE TABLE `libros` (
   PRIMARY KEY (`id_libro`),
   KEY `fk_libros_generos_idx` (`id_genero`),
   CONSTRAINT `fk_libros_generos` FOREIGN KEY (`id_genero`) REFERENCES `generos` (`id_genero`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +122,7 @@ CREATE TABLE `libros` (
 
 LOCK TABLES `libros` WRITE;
 /*!40000 ALTER TABLE `libros` DISABLE KEYS */;
-INSERT INTO `libros` VALUES (1,'Tomas','La laguna','1','2020-06-07',2),(2,'Lautaro','La horca','1','2020-02-04',2),(3,'Julio Chavez','Los miserables','1','2020-01-01',3),(4,'Marcos Penia','Bajo la misma estrella','2','2018-01-03',1);
+INSERT INTO `libros` VALUES (1,'Tomas','La laguna','1','2020-06-07',2),(2,'Lautaro','La horca','1','2020-02-04',2),(3,'Julio Chavez','Los miserables','1','2020-01-01',3),(4,'Marcos Penia','Bajo la misma estrella','2','2018-01-03',1),(5,'asdasd','asdasd','1','2021-02-01',2);
 /*!40000 ALTER TABLE `libros` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,8 +166,10 @@ DROP TABLE IF EXISTS `politicaprestamo`;
 CREATE TABLE `politicaprestamo` (
   `idpoliticaprestamo` int NOT NULL AUTO_INCREMENT,
   `cant_max_libros_pend` int NOT NULL,
+  `fecha_politica_prestamo` datetime NOT NULL,
+  `cant_dias_prestamo` int NOT NULL,
   PRIMARY KEY (`idpoliticaprestamo`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -176,7 +178,7 @@ CREATE TABLE `politicaprestamo` (
 
 LOCK TABLES `politicaprestamo` WRITE;
 /*!40000 ALTER TABLE `politicaprestamo` DISABLE KEYS */;
-INSERT INTO `politicaprestamo` VALUES (1,5),(2,10),(3,40),(4,50),(5,3);
+INSERT INTO `politicaprestamo` VALUES (1,5,'2000-02-15 00:00:00',3),(2,10,'2002-01-16 00:00:00',4),(3,40,'2002-01-17 00:00:00',2),(4,50,'2002-01-19 00:00:00',7),(5,3,'2002-01-20 00:00:00',6),(7,4,'1997-03-10 00:00:00',3),(8,2,'2002-01-25 00:00:00',2),(9,55,'2002-01-16 00:00:00',8);
 /*!40000 ALTER TABLE `politicaprestamo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -312,7 +314,7 @@ CREATE TABLE `socios` (
   PRIMARY KEY (`id_socio`),
   KEY `fk_socios_usuarios_idx` (`id_usuario`),
   CONSTRAINT `fk_socios_usuarios` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -321,7 +323,7 @@ CREATE TABLE `socios` (
 
 LOCK TABLES `socios` WRITE;
 /*!40000 ALTER TABLE `socios` DISABLE KEYS */;
-INSERT INTO `socios` VALUES (1,'tomas','ponce','tpopo@gmail.com','nose1234','1230913',41029330,_binary '\0',1);
+INSERT INTO `socios` VALUES (1,'Tomás','Ponce','tpopo@gmailox.com','nose12345','4445566333',41602902,_binary '',1),(2,'Lautaro','Cano','lau@gmail.com','asdasd333','1313123',4105150,_binary '\0',2);
 /*!40000 ALTER TABLE `socios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -385,4 +387,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-01-31 21:15:48
+-- Dump completed on 2021-02-11 19:43:22
