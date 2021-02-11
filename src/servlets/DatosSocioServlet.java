@@ -33,7 +33,10 @@ public class DatosSocioServlet extends HttpServlet {
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Socio)) 
-		request.getRequestDispatcher("WEB-INF/DatosSocio.jsp").forward(request, response);
+		{
+		request.setAttribute("JSP", "DatosSocio");
+		request.getRequestDispatcher("WEB-INF/Socio.jsp").forward(request, response);
+		}
 	}
 
 	/**

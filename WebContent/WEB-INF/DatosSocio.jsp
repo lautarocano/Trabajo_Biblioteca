@@ -24,7 +24,6 @@
 </head>
 <body>
 <div class="d-flex">
-<%@ include file="/WEB-INF/Menu_Socio.html"%>
 	<div class="table">
 		<div class="theader">
 		    <div class="tr">

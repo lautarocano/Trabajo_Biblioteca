@@ -56,7 +56,10 @@
        <%} 
       	else if (request.getAttribute("JSP")=="FinalizarReserva"){ %>
        <%@ include file="/WEB-INF/FinalizarReserva.jsp"%>
-       <%} %>
+       <%}   else if (request.getAttribute("JSP")=="DatosSocio"){%>
+       <%@ include file="/WEB-INF/DatosSocio.jsp"%>
+       <%}%>
+       
       </div>
     </div>
     <!-- /#page-content-wrapper -->
