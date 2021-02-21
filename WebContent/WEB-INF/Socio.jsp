@@ -30,8 +30,7 @@
         <a href="ReservaServlet" class="list-group-item list-group-item-action bg-light">Reservas</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Mis Reservas</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Mis Préstamos</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Datos Personales</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
+        <a href="DatosSocioServlet" class="list-group-item list-group-item-action bg-light">Datos Personales</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
       </div>
     </div>

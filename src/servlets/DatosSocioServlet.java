@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import logic.SocioLogic;
 import model.Socio;
@@ -31,6 +32,7 @@ public class DatosSocioServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    HttpSession sesion;
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Socio)) 
 		{
@@ -45,6 +47,7 @@ public class DatosSocioServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Socio)) {
 			if (request.getParameter("action-type").equals("editar")) {	
+				sesion = request.getSession();
 				Socio socio = new Socio();
 				socio.setId(Integer.parseInt(request.getParameter("id")));
 				socio.setNombre(request.getParameter("nombre"));
@@ -56,6 +59,7 @@ public class DatosSocioServlet extends HttpServlet {
 				socio.setEstado(Boolean.parseBoolean(request.getParameter("estado")));
 				SocioLogic sl = new SocioLogic();
 				try {
+					sesion.setAttribute("socio", socio );
 					sl.update(socio);
 				} catch (SQLException e) {
 					response.getWriter().println(e.getMessage());
