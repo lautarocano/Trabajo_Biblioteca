@@ -64,14 +64,23 @@ public class DevolucionServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Bibliotecario)) {
 			if (request.getParameter("action-type").equals("devolver")) {	
-				Prestamo prestamo=new Prestamo();
-				prestamo.setId(Integer.parseInt(request.getParameter("id_prestamo")));
-				SocioLogic sl = new SocioLogic();
+				PrestamoLogic pl = new PrestamoLogic();
+				Prestamo prestamo;
 				try {
-					sl.entregaPrestamo(prestamo);
-				} catch (SQLException e) {
+					prestamo = pl.getOne(Integer.parseInt(request.getParameter("id_prestamo")));
+					SocioLogic sl = new SocioLogic();
+					try {
+						sl.entregaPrestamo(prestamo);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} catch (NumberFormatException e1) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
 			this.doGet(request, response);

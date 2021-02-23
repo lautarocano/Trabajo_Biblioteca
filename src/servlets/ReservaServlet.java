@@ -38,8 +38,16 @@ public class ReservaServlet extends HttpServlet {
 			LibroLogic ll = new LibroLogic();
 			GeneroLogic gl = new GeneroLogic();
 			try {
-				request.setAttribute("ListaLibros", ll.getAll());
+				ArrayList<Libro> listaLibros = ll.getAll();
 				request.setAttribute("ListaGeneros", gl.getAll());
+				if (request.getSession().getAttribute("libros") != null) {
+					@SuppressWarnings("unchecked")
+					ArrayList<Libro> librosCarrito=((ArrayList<Libro>)request.getSession().getAttribute("libros"));
+					for (Libro l : librosCarrito) {
+						listaLibros.removeIf(libro -> libro.getId() == l.getId());
+					}
+				}
+				request.setAttribute("ListaLibros", listaLibros);
 			} catch (SQLException e) {
 				response.getWriter().println(e.getMessage());
 			}

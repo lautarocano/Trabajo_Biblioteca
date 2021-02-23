@@ -80,7 +80,7 @@ public class SancionDAO extends BaseDAO implements IBaseDAO<Sancion> {
 			pst = conn.prepareStatement("INSERT INTO sanciones(id_socio,fecha_sancion,"
 					+ "dias_sancion) VALUES(?,?,?)");
 			pst.setInt(1,san.getSocio().getId());
-			pst.setDate(2, (Date) san.getFechaSancion());
+			pst.setDate(2, new java.sql.Date(san.getFechaSancion().getTime()));
 			pst.setInt(3, san.getDiasSancion());
 			pst.executeUpdate();
 		}

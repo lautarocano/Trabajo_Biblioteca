@@ -26,7 +26,6 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 		case 2:
 			u.setTipo(tipoUsuario.Administrador);
 		}
-			
 		return u;
 	}
 	

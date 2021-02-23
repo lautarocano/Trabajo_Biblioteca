@@ -57,16 +57,18 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (request.getParameter("action-type").equals("ingresar")) {	
 			sesion = request.getSession();
-			Usuario usuario=new Usuario();
+			Usuario usuario = null;
 			UsuarioLogic ul = new UsuarioLogic();
-			String nombreUsuario=request.getParameter("nombreUsuario");
-			String password=request.getParameter("password");
+			String nombreUsuario = request.getParameter("nombreUsuario");
+			String password = request.getParameter("password");
 			try {
 				usuario=ul.login(nombreUsuario,password);
-				sesion.setAttribute("usuario",usuario);
-				if(usuario.getTipo()==tipoUsuario.Socio) {
-					SocioLogic sl = new SocioLogic();
-					sesion.setAttribute("socio", sl.getOneByUser(usuario.getId()));
+				if (usuario != null) {
+					sesion.setAttribute("usuario",usuario);
+					if(usuario.getTipo()==tipoUsuario.Socio) {
+						SocioLogic sl = new SocioLogic();
+						sesion.setAttribute("socio", sl.getOneByUser(usuario.getId()));
+					}
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

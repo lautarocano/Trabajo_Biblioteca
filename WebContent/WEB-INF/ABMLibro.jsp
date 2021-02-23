@@ -67,7 +67,17 @@
 	        		<input name="numero-edicion" type="text" class="form-control" id="numero-edicion" placeholder="N° de edición" value="<%=l.getNroEdicion() %>" required>
 		    	</span>
 	        	<span class="td">
-	        		<input name="fecha-edicion" type="text" class="form-control" id="datepicker" placeholder="Fecha edición" value="<%=l.getFechaEdicion() %>" required>
+	        		<input name="fecha-edicion" type="text" class="form-control" id="datepicker" placeholder="Fecha edición" required>
+	        		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+					<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+					<script>
+					$( function() {
+					  $( "#datepicker" ).datepicker({maxDate: -1,changeMonth: true,
+					      changeYear: true});
+					  $( "#datepicker" ).datepicker( "option", "dateFormat","yy-mm-dd");
+					  $( "#datepicker" ).datepicker( "setDate", "<%=l.getFechaEdicion().toString()%>" );
+					} );
+					</script>
 		    	</span>
 		    	<span class="td">
 		    		<select name="genero" class="form-control" id="genero">
@@ -156,15 +166,7 @@
 							<p style="font-size: 16px;">No hay resultados</p>
 						<%} %>
 </div>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script>
-  $( function() {
-    $( "#datepicker" ).datepicker({maxDate: -1,changeMonth: true,
-        changeYear: true});
-    $( "#datepicker" ).datepicker( "option", "dateFormat","yy-mm-dd");
-  } );
-  </script>
+
   
    <script>
   $( function() {

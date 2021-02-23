@@ -129,7 +129,7 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			this.openConnection();
 			pst = conn.prepareStatement("SELECT p.id_prestamo, p.fecha_prestamo, p.dias_prestamo, "
 					+ "p.estado, s.*, u.nombre_usuario, u.password, u.tipo, u.estado FROM prestamos p "
-					+ "INNER JOIN socio s ON p.id_socio = s.id_socio "
+					+ "INNER JOIN socios s ON p.id_socio = s.id_socio "
 					+ "INNER JOIN usuarios u ON s.id_usuario = u.id_usuario");
 			rs = pst.executeQuery();
 			while (rs.next()) {
@@ -159,7 +159,7 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			this.openConnection();
 			pst = conn.prepareStatement("SELECT p.id_prestamo, p.fecha_prestamo, p.dias_prestamo, "
 					+ "p.estado, s.*, u.nombre_usuario, u.password, u.tipo, u.estado FROM prestamos p "
-					+ "INNER JOIN socio s ON p.id_socio = s.id_socio "
+					+ "INNER JOIN socios s ON p.id_socio = s.id_socio "
 					+ "INNER JOIN usuarios u ON s.id_usuario = u.id_usuario "
 					+ "WHERE p.estado = 0 OR p.estado = 1");
 			rs = pst.executeQuery();
@@ -252,7 +252,7 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			pst.setInt(1, id);
 			rs = pst.executeQuery();
 			if (rs.next()) {
-				this.mapearPrestamo(rs, true);
+				pres = this.mapearPrestamo(rs, true);
 			}
 		}
 		catch (SQLException e) {

@@ -44,7 +44,7 @@
 
           <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="#">Cerrar sesión</a>
+              <a class="nav-link" href="LogoutServlet">Cerrar sesión</a>
             </li>
           </ul>
       </nav>
