@@ -146,6 +146,16 @@
 		    		<span class="td">
 	        			<input name="fecha-edicion" type="text" class="form-control" id="datepicker2" placeholder="Fecha edición" required>
 		    		</span>
+		    		
+		    		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+					<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+				   <script>
+					  $( function() {
+					    $( "#datepicker2" ).datepicker({maxDate: -1,changeMonth: true,
+					        changeYear: true});
+					    $( "#datepicker2" ).datepicker( "option", "dateFormat","yy-mm-dd");
+					  } );
+					  </script>
 		    		<span class="td">
 		    			<select name="genero" class="form-control" id="genero">
 	        			<% for (Genero g : listaGenero) {%>

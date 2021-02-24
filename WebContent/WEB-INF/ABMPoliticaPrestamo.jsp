@@ -68,6 +68,16 @@
 	        	<span class="td"><%=pp.getId() %> </span>
 	        	<input name="cant_max_libros_pend" type="text" class="form-control" id="cant_max_libros_pend" placeholder="Cant. maxima de libros pendientes" value="<%=pp.getCantMaxLibrosPend() %>" required>
 	        	<input name="fecha_politica_prestamo" type="text" class="form-control" id="datepicker" placeholder="Fecha" value="<%=pp.getFechaPoliticaPrestamo()%>" required>
+	        		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+					<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+					<script>
+					$( function() {
+					  $( "#datepicker" ).datepicker({maxDate: -1,changeMonth: true,
+					      changeYear: true});
+					  $( "#datepicker" ).datepicker( "option", "dateFormat","yy-mm-dd");
+					  $( "#datepicker" ).datepicker( "setDate", "<%=pp.getFechaPoliticaPrestamo().toString()%>" );
+					} );
+					</script>
 	        	<input name="cant_dias_prestamo" type="text" class="form-control" id="cant_dias_prestamo" placeholder="Cant. dias de prestamo" value="<%=pp.getDiasPrestamo() %>" required>
 	        	<span class="td"><button type="submit" name="action-type" value="editar" class="btn btn-success btn-block" >Aceptar</button> </span>
 	        	<span class="td"><a class="btn btn-danger btn-block" href="ABMPoliticaPrestamoServlet">Cancelar</a></span>
@@ -109,6 +119,15 @@
 		    		<span class="td">	
 		    			<input name="fecha_politica_prestamo" type="text" class="form-control" id="datepicker2" placeholder="Fecha" required>
 		    		</span>	
+		    		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+					<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+				   <script>
+					  $( function() {
+					    $( "#datepicker2" ).datepicker({maxDate: -1,changeMonth: true,
+					        changeYear: true});
+					    $( "#datepicker2" ).datepicker( "option", "dateFormat","yy-mm-dd");
+					  } );
+					  </script>
 		    		<span class="td">
 		    			<input name="cant_dias_prestamo" type="text" class="form-control" id="cant_dias_prestamo" placeholder="Cant. dias de prestamo" required>
 		    		</span>
