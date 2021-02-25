@@ -93,7 +93,7 @@ public class SocioLogic {
 			if (!this._SocioDAO.isSancionado(pres.getSocio())) {
 				
 			}
-			else if (!this._SocioDAO.hasOverdueLoan(pres.getSocio())) {
+			else if (this._SocioDAO.hasOverdueLoan(pres.getSocio())) {
 				
 			}
 			else if (this._SocioDAO.getNotReturnedBooks(pres.getSocio())+pres.getLineasPrestamo().size() > cantMaxLibrosPend) {

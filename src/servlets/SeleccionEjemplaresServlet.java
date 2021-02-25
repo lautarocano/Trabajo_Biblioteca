@@ -82,7 +82,7 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 					prestamo.setSocio(reserva.getSocio());
 					for (LibroReserva lr : reserva.getLibros()) {
 						idLibro = Integer.toString(lr.getLibro().getId());
-						if(request.getParameter(idLibro+"checkbox")!=null){
+						if (request.getParameter(idLibro) != null) {
 							if (!Boolean.parseBoolean(request.getParameter(idLibro+"checkbox"))) {
 								ejemplar = new Ejemplar();
 								ejemplar.setLibro(lr.getLibro());
@@ -90,15 +90,14 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 								ldp = new LineaDePrestamo();
 								ldp.setEjemplar(ejemplar);
 								lineasdp.add(ldp);
-							
 							}
 						}
 					}
 					if(!lineasdp.isEmpty())
 					{
-					prestamo.setLineasPrestamo(lineasdp);
-					sl.realizaPrestamo(prestamo);
-					rl.entregarReserva(reserva);
+						prestamo.setLineasPrestamo(lineasdp);
+						sl.realizaPrestamo(prestamo);
+						rl.entregarReserva(reserva);
 					}
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block
