@@ -41,7 +41,10 @@ public class FinalizarReservaServlet extends HttpServlet {
 				request.setAttribute("JSP", "FinalizarReserva");
 				request.getRequestDispatcher("WEB-INF/Socio.jsp").forward(request, response);
 			}
-			else response.sendRedirect("ReservaServlet");
+			else {
+				request.setAttribute("mensaje", "Carrito vacío, por favor agregue al menos un elemento.");
+				request.getRequestDispatcher("ReservaServlet").forward(request,response);
+			}
 		}
 	}
 
@@ -73,9 +76,11 @@ public class FinalizarReservaServlet extends HttpServlet {
 						reserva.setSocio((Socio) request.getSession().getAttribute("socio"));
 						try {
 							sl.realizaReserva(reserva);
+							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Reserva guardada.");
 							request.getSession().setAttribute("libros", null);
 						} catch (SQLException e) {
-							e.printStackTrace();
+							request.setAttribute("mensaje", "Error en la base de datos, su reserva puede no haber sido realizada.");
 						}
 					}
 				}

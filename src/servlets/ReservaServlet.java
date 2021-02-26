@@ -49,7 +49,7 @@ public class ReservaServlet extends HttpServlet {
 				}
 				request.setAttribute("ListaLibros", listaLibros);
 			} catch (SQLException e) {
-				response.getWriter().println(e.getMessage());
+				request.setAttribute("mensaje", "Error en la base de datos.");
 			}
 			request.setAttribute("JSP", "Reserva");
 			request.getRequestDispatcher("WEB-INF/Socio.jsp").forward(request, response);
@@ -63,7 +63,6 @@ public class ReservaServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Socio)) {
 			if (request.getParameter("action-type").equals("reservar")) {	
-				
 				LibroLogic ll=new LibroLogic();
 				Libro libro;
 				try {
@@ -73,12 +72,12 @@ public class ReservaServlet extends HttpServlet {
 						request.getSession().setAttribute("libros", libros);
 					}
 					((ArrayList<Libro>)request.getSession().getAttribute("libros")).add(libro);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Libro agregado correctamente");
 				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "Error en los datos suministrados.");
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "Error en la base de datos.");
 				}
 			}
 			this.doGet(request, response);

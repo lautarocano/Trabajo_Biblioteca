@@ -74,6 +74,14 @@
             <div class="row">
                 <div class="col-md-12 login-form-1 ">
                     <h3>Sistema de Biblioteca</h3>
+                    <%if (request.getAttribute("mensaje")!=null) {%>
+			      	<div class="alert alert-warning alert-dismissible fade show" role="alert">
+					  <%=request.getAttribute("mensaje")%>
+					  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+					    <span aria-hidden="true">&times;</span>
+					  </button>
+					</div>
+			      	<%} %>
                     <form action="LoginServlet" method="POST" name="Login">
                         <div class="form-group">
                             <input name="nombreUsuario" id="nombreUsuario" type="text" class="form-control" placeholder="Nombre de usuario" required  />

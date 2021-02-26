@@ -70,9 +70,9 @@ public class LoginServlet extends HttpServlet {
 						sesion.setAttribute("socio", sl.getOneByUser(usuario.getId()));
 					}
 				}
+				else request.setAttribute("mensaje", "Usuario y/o contraseña incorrectos.");
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				request.setAttribute("mensaje", "Error en la base de datos.");
 			}			
 		}
 		doGet(request, response);
