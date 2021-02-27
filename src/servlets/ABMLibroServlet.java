@@ -41,7 +41,7 @@ public class ABMLibroServlet extends HttpServlet {
 				request.setAttribute("ListaLibros", ll.getAll());
 				request.setAttribute("ListaGeneros", gl.getAll());
 			} catch (SQLException e) {
-				e.printStackTrace();
+				request.setAttribute("mensaje", "No se pudieron obtener los libros");
 			}
 			request.getRequestDispatcher("WEB-INF/ABMLibro.jsp").forward(request, response);
 		}
@@ -65,14 +65,17 @@ public class ABMLibroServlet extends HttpServlet {
 					libro.setGenero(gl.getOne(idGenero));
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo encontrar el genero indicado");
 				}
 				LibroLogic ll = new LibroLogic();
 				try {
 					ll.insert(libro);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Libro agregado correctamente");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo agregar un libro");
+
 				}
 			}
 			else if (request.getParameter("action-type").equals("eliminar")) {	
@@ -81,9 +84,11 @@ public class ABMLibroServlet extends HttpServlet {
 				LibroLogic ll=new LibroLogic();
 				try {
 					ll.delete(libro);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Libro eliminado correctamente");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo eliminar un libro");
 				}
 			}
 			else if (request.getParameter("action-type").equals("editar")) {	
@@ -99,14 +104,16 @@ public class ABMLibroServlet extends HttpServlet {
 					libro.setGenero(gl.getOne(idGenero));
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo encontrar el genero indicado");
 				}
 				LibroLogic ll=new LibroLogic();
 				try {
 					ll.update(libro);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Libro actualizado correctamente");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo actualizar un libro");
 				}
 			}
 			this.doGet(request, response);

@@ -36,7 +36,7 @@ public class ABMGeneroServlet extends HttpServlet {
 			try {
 				request.setAttribute("ListaGeneros", gl.getAll());
 			} catch (SQLException e) {
-				response.getWriter().println(e.getMessage());
+				request.setAttribute("mensaje", "No se pudieron obtener los generos");
 			}
 			request.getRequestDispatcher("WEB-INF/ABMGenero.jsp").forward(request, response);
 		}
@@ -53,9 +53,11 @@ public class ABMGeneroServlet extends HttpServlet {
 				GeneroLogic gl=new GeneroLogic();
 				try {
 					gl.insert(genero);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Genero agregado correctamente");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					response.getWriter().println(e.getMessage());
+					request.setAttribute("mensaje", "No se pudo agregar un genero");
 				}
 			}
 			else if (request.getParameter("action-type").equals("eliminar")) {	
@@ -64,9 +66,11 @@ public class ABMGeneroServlet extends HttpServlet {
 				GeneroLogic gl=new GeneroLogic();
 				try {
 					gl.delete(genero);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Genero eliminado correctamente");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					response.getWriter().println(e.getMessage());
+					request.setAttribute("mensaje", "No se pudo eliminar un genero");
 				}
 			}
 			else if (request.getParameter("action-type").equals("editar")) {	
@@ -76,9 +80,11 @@ public class ABMGeneroServlet extends HttpServlet {
 				GeneroLogic gl=new GeneroLogic();
 				try {
 					gl.update(genero);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Genero actualizado correctamente");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					response.getWriter().println(e.getMessage());
+					request.setAttribute("mensaje", "No se pudo actualizar el genero");
 				}
 			}
 			this.doGet(request, response);

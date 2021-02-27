@@ -45,10 +45,10 @@ public class ABMEjemplarServlet extends HttpServlet {
 					request.setAttribute("ListaEjemplares", el.getAllByLibro(libro.getId()));
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudieron obtener los ejemplares");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudieron obtener los ejemplares");
 				}
 				request.getRequestDispatcher("WEB-INF/ABMEjemplar.jsp").forward(request, response);
 			}
@@ -72,14 +72,16 @@ public class ABMEjemplarServlet extends HttpServlet {
 					ejemplar.setLibro(ll.getOne(idLibro));
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo obtener ejemplares para el libro solicitado");
 				}
 				EjemplarLogic el = new EjemplarLogic();
 				try {
 					el.insert(ejemplar);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Ejemplar agregado correctamente");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo agregar el ejemplar");
 				}
 			}
 			else if (request.getParameter("action-type").equals("eliminar")) {	
@@ -88,9 +90,11 @@ public class ABMEjemplarServlet extends HttpServlet {
 				EjemplarLogic ll=new EjemplarLogic();
 				try {
 					ll.delete(ejemplar);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Ejemplar eliminado correctamente");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo eliminar el ejemplar");
 				}
 			}
 			this.doGet(request, response);
