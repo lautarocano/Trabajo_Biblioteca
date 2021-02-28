@@ -41,7 +41,7 @@ public class LogoutServlet extends HttpServlet {
 			sesion.setAttribute("usuario", null);
 		}
 		catch(java.lang.NullPointerException e) {
-			e.printStackTrace();
+			request.setAttribute("mensaje", "No se pudo cerrar sesión");
 		}
 		request.getRequestDispatcher("WEB-INF/Login.jsp").forward(request, response);
 	}

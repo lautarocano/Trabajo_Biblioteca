@@ -36,7 +36,7 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 				request.setAttribute("ListaPoliticasPrestamos", ppl.getAll());
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				request.setAttribute("mensaje", "No se pudieron obtener las politicas de prestamo");
 			}
 			request.getRequestDispatcher("WEB-INF/ABMPoliticaPrestamo.jsp").forward(request, response);
 		}
@@ -55,9 +55,11 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 				PoliticaPrestamoLogic ppl=new PoliticaPrestamoLogic();
 				try {
 					ppl.insert(pp);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Politica de prestamo agregada correctamente");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo agregar la politica de prestamo");
 				}
 			}
 			else if (request.getParameter("action-type").equals("eliminar")) {	
@@ -66,9 +68,11 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 				PoliticaPrestamoLogic ppl=new PoliticaPrestamoLogic();
 				try {
 					ppl.delete(pp);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Politica de prestamo eliminada correctamente");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo eliminar la politica de prestamo");
 				}
 			}
 			else if (request.getParameter("action-type").equals("editar")) {	
@@ -80,9 +84,11 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 				PoliticaPrestamoLogic ppl=new PoliticaPrestamoLogic();
 				try {
 					ppl.update(pp);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Politica de prestamo actualizada correctamente");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo actualizar la politica de prestamo");
 				}
 			}
 			this.doGet(request, response);

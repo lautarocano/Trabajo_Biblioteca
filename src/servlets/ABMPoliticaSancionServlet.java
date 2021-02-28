@@ -37,7 +37,7 @@ public class ABMPoliticaSancionServlet extends HttpServlet {
 				request.setAttribute("ListaPoliticasSanciones", psl.getAll());
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				request.setAttribute("mensaje", "No se pudieron obtener las politicas de sanción");
 			}
 			request.getRequestDispatcher("WEB-INF/ABMPoliticaSancion.jsp").forward(request, response);
 		}
@@ -56,9 +56,11 @@ public class ABMPoliticaSancionServlet extends HttpServlet {
 				PoliticaSancionLogic psl=new PoliticaSancionLogic();
 				try {
 					psl.insert(ps);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Politica de sanción agregada correctamente");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					response.getWriter().println(e.getMessage());
+					request.setAttribute("mensaje", "No se pudo agregar la politica de sanción");
 				}
 			}
 			else if (request.getParameter("action-type").equals("eliminar")) {	
@@ -67,9 +69,11 @@ public class ABMPoliticaSancionServlet extends HttpServlet {
 				PoliticaSancionLogic psl=new PoliticaSancionLogic();
 				try {
 					psl.delete(ps);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Politica de sanción eliminada correctamente");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo eliminar la politica de sanción");
 				}
 			}
 			else if (request.getParameter("action-type").equals("editar")) {	
@@ -81,9 +85,11 @@ public class ABMPoliticaSancionServlet extends HttpServlet {
 				PoliticaSancionLogic psl=new PoliticaSancionLogic();
 				try {
 					psl.update(ps);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Politica de sanción actualizada correctamente");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo actualizar la politica de sanción");
 				}
 			}
 			this.doGet(request, response);

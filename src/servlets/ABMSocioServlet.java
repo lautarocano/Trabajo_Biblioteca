@@ -38,7 +38,7 @@ public class ABMSocioServlet extends HttpServlet {
 			try {
 				request.setAttribute("ListaSocios", sl.getAll());
 			} catch (SQLException e) {
-				response.getWriter().println(e.getMessage());
+				request.setAttribute("mensaje", "No se pudo obtener el listado de socios");
 			}
 			request.getRequestDispatcher("WEB-INF/ABMSocio.jsp").forward(request, response);
 		}
@@ -68,8 +68,10 @@ public class ABMSocioServlet extends HttpServlet {
 				try {
 					socio.setUsuario(ul.insertAndReturn(user));
 					sl.insert(socio);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Socio agregado correctamente");
 				} catch (SQLException e) {
-					response.getWriter().println(e.getMessage());
+					request.setAttribute("mensaje", "No se pudo agregar un socio");
 				}
 			}
 			else if (request.getParameter("action-type").equals("eliminar")) {	
@@ -78,8 +80,10 @@ public class ABMSocioServlet extends HttpServlet {
 				SocioLogic sl = new SocioLogic();
 				try {
 					sl.delete(socio);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Socio eliminado correctamente");
 				} catch (SQLException e) {
-					response.getWriter().println(e.getMessage());
+					request.setAttribute("mensaje", "No se pudo eliminar un socio");
 				}
 			}
 			else if (request.getParameter("action-type").equals("editar")) {	
@@ -95,8 +99,10 @@ public class ABMSocioServlet extends HttpServlet {
 				SocioLogic sl = new SocioLogic();
 				try {
 					sl.update(socio);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Socio actualizado correctamente");
 				} catch (SQLException e) {
-					response.getWriter().println(e.getMessage());
+					request.setAttribute("mensaje", "No se pudo actualizar un socio");
 				}
 			}
 			this.doGet(request, response);

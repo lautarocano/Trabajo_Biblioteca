@@ -36,7 +36,7 @@ public class ABMUsuarioServlet extends HttpServlet {
 			try {
 				request.setAttribute("ListaUsuarios", ul.getAll());
 			} catch (SQLException e) {
-				response.getWriter().println(e.getMessage());
+				request.setAttribute("mensaje", "No se pudo obtener el listado de usuarios");
 			}
 			request.getRequestDispatcher("WEB-INF/ABMUsuario.jsp").forward(request, response);
 		}
@@ -69,8 +69,10 @@ public class ABMUsuarioServlet extends HttpServlet {
 				UsuarioLogic ul = new UsuarioLogic();
 				try {
 					ul.insert(usuario);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Usuario agregado correctamente");
 				} catch (SQLException e) {
-					response.getWriter().println(e.getMessage());
+					request.setAttribute("mensaje", "No se pudo agregar un usuario");
 				}
 			}
 			else if (request.getParameter("action-type").equals("eliminar")) {	
@@ -79,8 +81,10 @@ public class ABMUsuarioServlet extends HttpServlet {
 				UsuarioLogic ul = new UsuarioLogic();
 				try {
 					ul.delete(usuario);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Usuario eliminado correctamente");
 				} catch (SQLException e) {
-					response.getWriter().println(e.getMessage());
+					request.setAttribute("mensaje", "No se pudo eliminar un usuario");
 				}
 			}
 			else if (request.getParameter("action-type").equals("editar")) {	
@@ -106,8 +110,10 @@ public class ABMUsuarioServlet extends HttpServlet {
 				UsuarioLogic ul = new UsuarioLogic();
 				try {
 					ul.update(usuario);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Usuario actualizado correctamente");
 				} catch (SQLException e) {
-					response.getWriter().println(e.getMessage());
+					request.setAttribute("mensaje", "No se pudo actualizar un usuario");
 				}
 			}
 		this.doGet(request, response);

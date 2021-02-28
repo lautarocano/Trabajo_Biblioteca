@@ -61,8 +61,10 @@ public class DatosSocioServlet extends HttpServlet {
 				try {
 					sesion.setAttribute("socio", socio );
 					sl.update(socio);
+					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Datos actualizados correctamente");
 				} catch (SQLException e) {
-					response.getWriter().println(e.getMessage());
+					request.setAttribute("mensaje", "No se pudieron actualizar los datos");
 				}
 			}
 			this.doGet(request, response);
