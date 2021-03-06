@@ -31,7 +31,7 @@
         <a href="#" class="list-group-item list-group-item-action bg-light">Mis Reservas</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Mis Préstamos</a>
         <a href="DatosSocioServlet" class="list-group-item list-group-item-action bg-light">Datos Personales</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
+        <a href="FinalizarReservaServlet" class="list-group-item list-group-item-action bg-light">Carrito de compras</a>
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
