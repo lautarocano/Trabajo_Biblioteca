@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import logic.GeneroLogic;
 import logic.LibroLogic;
+import model.Genero;
 import model.Libro;
 import model.Usuario;
 
@@ -37,8 +38,28 @@ public class ReservaServlet extends HttpServlet {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Socio)) {
 			LibroLogic ll = new LibroLogic();
 			GeneroLogic gl = new GeneroLogic();
+			Genero genero = null;
+			ArrayList<Libro> listaLibros = null;
 			try {
-				ArrayList<Libro> listaLibros = ll.getAll();
+				if (request.getParameter("genero")!=null) {
+					try {
+						genero = gl.getOne(Integer.parseInt(request.getParameter("genero")));
+					}
+					catch (NumberFormatException e) {
+						//response.sendRedirect("ReservaServlet");
+					}
+					if (genero!=null) {
+						if (request.getParameter("libro")!=null) {
+							listaLibros = ll.getAllByTituloAndGenero(request.getParameter("libro"), genero);
+						}
+						else listaLibros = ll.getAllByGenero(genero);
+					}
+					//else response.sendRedirect("ReservaServlet");
+				}
+				else if (request.getParameter("libro")!=null) {
+					listaLibros = ll.getAllByTitulo(request.getParameter("libro"));
+				}
+				else listaLibros = ll.getAll();
 				request.setAttribute("ListaGeneros", gl.getAll());
 				if (request.getSession().getAttribute("libros") != null) {
 					@SuppressWarnings("unchecked")

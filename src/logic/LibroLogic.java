@@ -50,6 +50,15 @@ private LibroDAO _LibroDAO;
 			throw exception;
 		}
 	}
+	
+	public ArrayList<Libro> getAllByTituloAndGenero(String titulo, Genero genero) throws SQLException {
+		try {
+			return this._LibroDAO.getAllByTituloAndGenero(titulo, genero);
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}
+	}
 
 	public void insert(Libro lib) throws SQLException {
 		try {

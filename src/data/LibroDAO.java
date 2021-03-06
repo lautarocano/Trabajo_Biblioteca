@@ -103,10 +103,9 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 		try {
 			this.openConnection();
 			pst = conn.prepareStatement("SELECT l.*, g.descripcion FROM libros l "
-					+ "INNER JOIN generos g ON l.id_genero = g.id_genero where l.titulo LIKE '%?%'");
-			pst.setString(1, titulo);
+					+ "INNER JOIN generos g ON l.id_genero = g.id_genero where l.titulo LIKE ?");
+			pst.setString(1, "%"+titulo+"%");
 			rs=pst.executeQuery();
-			
 			while (rs.next()) {
 				libros.add(this.mapearLibro(rs));
 			}
@@ -121,6 +120,31 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 		return libros;
 	}
 	
+	public ArrayList<Libro> getAllByTituloAndGenero(String titulo, Genero genero) throws SQLException {
+		ArrayList<Libro> libros = new ArrayList<Libro>();
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("SELECT l.*, g.descripcion FROM libros l "
+					+ "INNER JOIN generos g ON l.id_genero = g.id_genero "
+					+ "WHERE l.id_genero = ? AND l.titulo LIKE ?");
+			pst.setInt(1, genero.getId());
+			pst.setString(2, "%"+titulo+"%");
+			rs=pst.executeQuery();
+			while (rs.next()) {
+				libros.add(this.mapearLibro(rs));
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+		return libros;
+	}
 	
 	public void insert(Libro lib) throws SQLException {
 		PreparedStatement pst = null;

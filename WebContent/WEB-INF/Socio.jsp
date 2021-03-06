@@ -52,7 +52,7 @@
       <div class="container-fluid">
       <%if (request.getAttribute("mensaje")!=null) {
       		if (request.getAttribute("clase-mensaje")!=null) {%>
-      	<div <%=request.getAttribute("clase-mensaje")%> role="alert">
+      	<div <%=request.getAttribute("clase-mensaje")%> role="alert"></div>
       	<% 	}
       		else {%>
       	<div class=<%="alert alert-warning alert-dismissible fade show"%> role="alert">
@@ -64,7 +64,7 @@
 		</div>
       <%}
       	if (request.getAttribute("JSP")=="Reserva") { %>
-       <%@ include file="/WEB-INF/RealizarReserva.jsp"%>
+       <%@ include file="/WEB-INF/Reserva.jsp"%>
        <%} 
       	else if (request.getAttribute("JSP")=="FinalizarReserva"){ %>
        <%@ include file="/WEB-INF/FinalizarReserva.jsp"%>
