@@ -38,8 +38,9 @@ public class ABMGeneroServlet extends HttpServlet {
 			} catch (SQLException e) {
 				request.setAttribute("mensaje", "No se pudieron obtener los generos");
 			}
-			request.getRequestDispatcher("WEB-INF/ABMGenero.jsp").forward(request, response);
-		}
+			request.setAttribute("JSP", "ABMGenero");
+			request.getRequestDispatcher("WEB-INF/Administrador.jsp").forward(request, response);		
+			}
 	}
 
 	/**

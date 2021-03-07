@@ -43,8 +43,9 @@ public class ABMLibroServlet extends HttpServlet {
 			} catch (SQLException e) {
 				request.setAttribute("mensaje", "No se pudieron obtener los libros");
 			}
-			request.getRequestDispatcher("WEB-INF/ABMLibro.jsp").forward(request, response);
-		}
+			request.setAttribute("JSP", "ABMLibro");
+			request.getRequestDispatcher("WEB-INF/Administrador.jsp").forward(request, response);		
+			}
 	}
 
 	/**

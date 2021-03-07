@@ -38,8 +38,8 @@ public class ABMUsuarioServlet extends HttpServlet {
 			} catch (SQLException e) {
 				request.setAttribute("mensaje", "No se pudo obtener el listado de usuarios");
 			}
-			request.getRequestDispatcher("WEB-INF/ABMUsuario.jsp").forward(request, response);
-		}
+			request.setAttribute("JSP", "ABMUsuario");
+			request.getRequestDispatcher("WEB-INF/Administrador.jsp").forward(request, response);		}
 	}
 
 	/**

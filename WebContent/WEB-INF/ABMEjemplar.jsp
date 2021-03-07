@@ -25,7 +25,6 @@
 </head>
 <body>
 <div class="d-flex">
-<%@ include file="/WEB-INF/Menu_Administrador.html"%>
 <h2>Lista de ejemplares del libro "<%=((Libro)request.getAttribute("libro")).getTitulo()%>"</h2>
 	<div class="table">
 		<div class="theader">

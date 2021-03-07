@@ -38,7 +38,8 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 				// TODO Auto-generated catch block
 				request.setAttribute("mensaje", "No se pudieron obtener las politicas de prestamo");
 			}
-			request.getRequestDispatcher("WEB-INF/ABMPoliticaPrestamo.jsp").forward(request, response);
+			request.setAttribute("JSP", "ABMPoliticaPrestamo");
+			request.getRequestDispatcher("WEB-INF/Administrador.jsp").forward(request, response);
 		}
 	}
 

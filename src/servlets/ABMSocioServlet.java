@@ -40,8 +40,8 @@ public class ABMSocioServlet extends HttpServlet {
 			} catch (SQLException e) {
 				request.setAttribute("mensaje", "No se pudo obtener el listado de socios");
 			}
-			request.getRequestDispatcher("WEB-INF/ABMSocio.jsp").forward(request, response);
-		}
+			request.setAttribute("JSP", "ABMSocio");
+			request.getRequestDispatcher("WEB-INF/Administrador.jsp").forward(request, response);		}
 	}
 
 	/**

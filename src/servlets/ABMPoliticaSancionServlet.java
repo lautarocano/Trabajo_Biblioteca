@@ -39,8 +39,9 @@ public class ABMPoliticaSancionServlet extends HttpServlet {
 				// TODO Auto-generated catch block
 				request.setAttribute("mensaje", "No se pudieron obtener las politicas de sanción");
 			}
-			request.getRequestDispatcher("WEB-INF/ABMPoliticaSancion.jsp").forward(request, response);
-		}
+			request.setAttribute("JSP", "ABMPoliticaSancion");
+			request.getRequestDispatcher("WEB-INF/Administrador.jsp").forward(request, response);		
+			}
 	}
 
 	/**

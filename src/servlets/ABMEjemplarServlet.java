@@ -50,8 +50,8 @@ public class ABMEjemplarServlet extends HttpServlet {
 					// TODO Auto-generated catch block
 					request.setAttribute("mensaje", "No se pudieron obtener los ejemplares");
 				}
-				request.getRequestDispatcher("WEB-INF/ABMEjemplar.jsp").forward(request, response);
-			}
+				request.setAttribute("JSP", "ABMEjemplar");
+				request.getRequestDispatcher("WEB-INF/Administrador.jsp").forward(request, response);				}
 			else {
 				ABMLibroServlet abmlServlet = new ABMLibroServlet();
 				abmlServlet.doGet(request, response);
