@@ -64,7 +64,7 @@
       <div class="container-fluid">
       <%if (request.getAttribute("mensaje")!=null) {
       		if (request.getAttribute("clase-mensaje")!=null) {%>
-      	<div <%=request.getAttribute("clase-mensaje")%> role="alert"></div>
+      	<div <%=request.getAttribute("clase-mensaje")%> role="alert">
       	<% 	}
       		else {%>
       	<div class=<%="alert alert-warning alert-dismissible fade show"%> role="alert">

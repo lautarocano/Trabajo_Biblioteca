@@ -41,7 +41,7 @@ public class DevolucionServlet extends HttpServlet {
 					request.setAttribute("ListaPrestamo", pl.getAllPendientesBySocio(sl.getOne(Integer.parseInt(request.getParameter("id-socio")))));
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo obtener la lista de prestamos pendientes para ese socio");
 				}
 			}
 			else {
@@ -49,7 +49,7 @@ public class DevolucionServlet extends HttpServlet {
 					request.setAttribute("ListaPrestamo", pl.getAllPendientes());
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo obtener la lista de prestamos pendientes");
 				}
 			}
 			request.setAttribute("JSP", "Devolucion");
@@ -71,16 +71,18 @@ public class DevolucionServlet extends HttpServlet {
 					SocioLogic sl = new SocioLogic();
 					try {
 						sl.entregaPrestamo(prestamo);
+						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+						request.setAttribute("mensaje", "Se realizo la devolución del prestamo correctamente");
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						request.setAttribute("mensaje", "No se pudo registrar la devolución del prestamo");
 					}
 				} catch (NumberFormatException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo obtener el prestamo solicitado");
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					request.setAttribute("mensaje", "No se pudieron obtener el prestamo");
 				}
 			}
 			this.doGet(request, response);

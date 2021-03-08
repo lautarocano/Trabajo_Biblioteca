@@ -52,10 +52,10 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 					request.setAttribute("ejemplares", disponibles);
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo obtener los ejemplares");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo obtener los ejemplares");
 				}
 			}
 			request.setAttribute("JSP", "SeleccionEjemplar");
@@ -101,10 +101,10 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 					}
 				} catch (NumberFormatException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo obtener los ejemplares");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo obtener los ejemplares");
 				}
 			}
 			response.sendRedirect("RetiroServlet");

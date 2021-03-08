@@ -48,7 +48,7 @@ public class ReservaServlet extends HttpServlet {
 						genero = gl.getOne(Integer.parseInt(request.getParameter("genero")));
 					}
 					catch (NumberFormatException e) {
-						//response.sendRedirect("ReservaServlet");
+						request.setAttribute("mensaje", "No se pudo obtener el genero indicado");
 					}
 					if (genero!=null) {
 						if (request.getParameter("libro")!=null) {
