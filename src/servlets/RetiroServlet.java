@@ -38,7 +38,8 @@ public class RetiroServlet extends HttpServlet {
 					request.setAttribute("listaReserva", rl.getAllPendientesBySocio(Integer.parseInt(request.getParameter("id-socio"))));
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo obtener la lista de reservas para el socio solicitado");
+
 				}
 			}
 			else {
@@ -46,7 +47,7 @@ public class RetiroServlet extends HttpServlet {
 					request.setAttribute("listaReserva", rl.getAllPendientes());
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					request.setAttribute("mensaje", "No se pudo obtener la lista de reservas");
 				}
 			}
 			request.setAttribute("JSP", "Retiro");
