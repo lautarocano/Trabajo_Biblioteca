@@ -31,6 +31,15 @@ private UsuarioDAO _UsuarioDAO;
 		}
 	}
 	
+	public Usuario getOneBySocio(int idSocio) throws SQLException {
+		try {
+			return this._UsuarioDAO.getOneBySocio(idSocio);
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}
+	}
+	
 	public void insert(Usuario usuario) throws SQLException {
 		try {
 			if (!this.userAlreadyExists(usuario.getNombreUsuario())) 

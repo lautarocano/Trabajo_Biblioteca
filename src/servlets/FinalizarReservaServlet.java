@@ -66,6 +66,7 @@ public class FinalizarReservaServlet extends HttpServlet {
 						SocioLogic sl=new SocioLogic();
 						ArrayList<LibroReserva> librosReservas = new ArrayList<LibroReserva>();
 						LibroReserva lr = null;
+						Socio socio = (Socio) request.getSession().getAttribute("socio");
 						for(Libro l : libros) {
 							lr=new LibroReserva();
 							lr.setLibro(l);
@@ -73,12 +74,13 @@ public class FinalizarReservaServlet extends HttpServlet {
 						}
 						reserva.setLibros(librosReservas);
 						reserva.setFechaReserva(java.sql.Date.valueOf(request.getParameter("fecha")));
-						reserva.setSocio((Socio) request.getSession().getAttribute("socio"));
+						reserva.setSocio(socio);
 						try {
 							sl.realizaReserva(reserva);
 							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 							request.setAttribute("mensaje", "Reserva guardada.");
 							request.getSession().setAttribute("libros", null);
+							Servlet.enviarConGMail(socio.getEmail(), "Reserva Biblioteca", "Ha realizado una reserva con éxito");
 						} catch (SQLException e) {
 							request.setAttribute("mensaje", "Error en la base de datos, su reserva puede no haber sido realizada.");
 						}

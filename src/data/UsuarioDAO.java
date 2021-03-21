@@ -74,6 +74,29 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 		return usu;
 	}
 	
+	public Usuario getOneBySocio(int idSocio) throws SQLException {
+		Usuario usu = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("SELECT * FROM usuarios WHERE id_socio = ?");
+			pst.setInt(1, idSocio);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				usu = this.mapearUsuario(rs);
+			}
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+		return usu;
+	}
+	
 	public Usuario login(String username, String password) throws SQLException {
 		Usuario usu = null;
 		PreparedStatement pst = null;

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import logic.SocioLogic;
 import logic.UsuarioLogic;
+import model.Socio;
 import model.Usuario;
 import model.Usuario.tipoUsuario;
 
@@ -34,6 +35,21 @@ public class LoginServlet extends HttpServlet {
 	 */
     HttpSession sesion;
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if (request.getParameter("action-type") != null) {
+			if (request.getParameter("action-type").equals("recuperar")) {
+				String email = request.getParameter("email");
+				SocioLogic sl = new SocioLogic();
+				UsuarioLogic ul = new UsuarioLogic();
+				try {
+					Socio socio = sl.getOneByEmail(email);
+					Usuario usuario = ul.getOneBySocio(socio.getId());
+					Servlet.enviarConGMail(socio.getEmail(), "Recuperación de usuario", "Su usuario es: "+usuario.getNombreUsuario()+"\nSu contraseña es: "+usuario.getPassword());
+					request.setAttribute("mensaje", "Información de recuperación enviada.");
+				} catch (SQLException e) {
+					request.setAttribute("mensaje", "No existe usuario con ese email.");
+				}
+			}
+		}
 		try {
 			Usuario usActual = (Usuario) sesion.getAttribute("usuario");
 			if(usActual.getTipo()==tipoUsuario.Socio) {

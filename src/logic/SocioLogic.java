@@ -48,6 +48,14 @@ public class SocioLogic {
 		}
 	}
 	
+	public Socio getOneByEmail(String email) throws SQLException{
+		try {
+			return this._SocioDAO.getOneByEmail(email);
+		} catch (SQLException exception) {
+			throw exception;
+		}
+	}
+	
 	public void insert(Socio socio) throws SQLException {
 		try {
 			if (!this.dniAlreadyExists(socio.getDni())) 
