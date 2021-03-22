@@ -7,6 +7,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Login</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -92,10 +93,40 @@
                         <div class="form-group">
                             <input name="action-type" type="submit" class="btnSubmit" value="ingresar" />
                         </div>
-                        <div class="form-group">
-                            <a href="#" class="ForgetPwd">¿Olvidaste tu contraseña?</a>
-                        </div>
+               
                     </form>
+                    <div class="card-footer">
+	                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal2">
+						  ¿Olvidaste tu contraseña?
+						</button>
+					</div>
+					  <!-- Modal -->
+				<div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				    <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel2"></h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>		    
+				      <div class="modal-footer">
+				        <form action="LoginServlet" method="GET" name="Login">
+				            <div class="form-group">
+	                 			<input name="email" id="email" type="email" class="form-control" placeholder="Ingrese su email" required  />
+                 			</div>
+                 			<div class="form-group">
+				       			<button type="submit" name="action-type" value="recuperar" class="btn btn-primary">Aceptar</button>
+				            
+				        </form>
+				         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+				         </div>
+				        
+				      </div>
+				    </div>
+				  </div>
+				</div>
+				<!-- Modal -->
                 </div>
             </div>
         </div>

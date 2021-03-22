@@ -42,11 +42,19 @@ public class LoginServlet extends HttpServlet {
 				UsuarioLogic ul = new UsuarioLogic();
 				try {
 					Socio socio = sl.getOneByEmail(email);
-					Usuario usuario = ul.getOneBySocio(socio.getId());
-					Servlet.enviarConGMail(socio.getEmail(), "Recuperación de usuario", "Su usuario es: "+usuario.getNombreUsuario()+"\nSu contraseña es: "+usuario.getPassword());
-					request.setAttribute("mensaje", "Información de recuperación enviada.");
-				} catch (SQLException e) {
-					request.setAttribute("mensaje", "No existe usuario con ese email.");
+					try {
+						Usuario usuario = ul.getOneBySocio(socio.getId());
+						Servlet.enviarConGMail(socio.getEmail(), "Recuperación de usuario", "Su usuario es: "+usuario.getNombreUsuario()+"\nSu contraseña es: "+usuario.getPassword());
+						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+						request.setAttribute("mensaje", "Información de recuperación enviada.");
+					} catch (SQLException e) {
+						request.setAttribute("mensaje", "No existe usuario con ese email.");
+					}
+					
+				}
+				catch (SQLException e) {
+					
+					request.setAttribute("mensaje", "No existe un socio con ese mail");
 				}
 			}
 		}

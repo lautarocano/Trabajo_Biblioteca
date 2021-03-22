@@ -80,7 +80,7 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 		ResultSet rs = null;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("SELECT * FROM usuarios WHERE id_socio = ?");
+			pst = conn.prepareStatement("SELECT u.id_usuario,nombre_usuario,password,u.estado,tipo FROM socios s INNER JOIN usuarios u WHERE s.id_usuario=u.id_usuario AND id_socio=?");
 			pst.setInt(1, idSocio);
 			rs = pst.executeQuery();
 			if (rs.next()) {
