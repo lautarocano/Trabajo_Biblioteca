@@ -74,14 +74,11 @@ public class DevolucionServlet extends HttpServlet {
 						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 						request.setAttribute("mensaje", "Se realizo la devolución del prestamo correctamente");
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
 						request.setAttribute("mensaje", "No se pudo registrar la devolución del prestamo");
 					}
 				} catch (NumberFormatException e1) {
-					// TODO Auto-generated catch block
 					request.setAttribute("mensaje", "No se pudo obtener el prestamo solicitado");
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					request.setAttribute("mensaje", "No se pudieron obtener el prestamo");
 				}
 			}

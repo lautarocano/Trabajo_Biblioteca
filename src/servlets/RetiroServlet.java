@@ -39,7 +39,6 @@ public class RetiroServlet extends HttpServlet {
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					request.setAttribute("mensaje", "No se pudo obtener la lista de reservas para el socio solicitado");
-
 				}
 			}
 			else {

@@ -117,10 +117,9 @@
                  			</div>
                  			<div class="form-group">
 				       			<button type="submit" name="action-type" value="recuperar" class="btn btn-primary">Aceptar</button>
-				            
-				        </form>
 				         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 				         </div>
+				        </form>
 				        
 				      </div>
 				    </div>

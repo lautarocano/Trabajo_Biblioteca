@@ -58,6 +58,15 @@ private ReservaDAO _ReservaDAO;
 		}
 	}
 	
+	public void delete(Reserva res) throws SQLException {
+		try {
+			this._ReservaDAO.delete(res);
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}
+	}
+	
 	public void entregarReserva(Reserva res) throws SQLException {
 		try {
 			this._ReservaDAO.entregarReserva(res);;

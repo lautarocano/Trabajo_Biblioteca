@@ -28,10 +28,10 @@
       <div class="sidebar-heading">Menú Socio </div>
       <div class="list-group list-group-flush">
         <a href="ReservaServlet" class="list-group-item list-group-item-action bg-light">Reservas</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Mis Reservas</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Mis Préstamos</a>
+        <a href="ReservasSocioServlet" class="list-group-item list-group-item-action bg-light">Mis Reservas</a>
+        <a href="PrestamosSocioServlet" class="list-group-item list-group-item-action bg-light">Mis Préstamos</a>
         <a href="DatosSocioServlet" class="list-group-item list-group-item-action bg-light">Datos Personales</a>
-        <a href="FinalizarReservaServlet" class="list-group-item list-group-item-action bg-light">Carrito de compras</a>
+        <a href="FinalizarReservaServlet" class="list-group-item list-group-item-action bg-light">Carrito de reserva</a>
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -68,10 +68,13 @@
        <%} 
       	else if (request.getAttribute("JSP")=="FinalizarReserva"){ %>
        <%@ include file="/WEB-INF/FinalizarReserva.jsp"%>
-       <%}   else if (request.getAttribute("JSP")=="DatosSocio"){%>
+       <%}else if (request.getAttribute("JSP")=="DatosSocio"){%>
        <%@ include file="/WEB-INF/DatosSocio.jsp"%>
+       <%}else if (request.getAttribute("JSP")=="MisReservas"){%>
+       <%@ include file="/WEB-INF/MisReservas.jsp"%>
+       <%}else if (request.getAttribute("JSP")=="MisPrestamos"){%>
+       <%@ include file="/WEB-INF/MisPrestamos.jsp"%>
        <%}%>
-       
       </div>
     </div>
     <!-- /#page-content-wrapper -->
