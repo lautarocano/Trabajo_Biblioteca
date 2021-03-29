@@ -182,6 +182,37 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		return prestamos;
 	}
 	
+	public ArrayList<Prestamo> getAllPrestamosEnCurso() throws SQLException {
+		ArrayList<Prestamo> prestamos = new ArrayList<Prestamo>();
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("SELECT p.id_prestamo, p.fecha_prestamo, p.dias_prestamo, "
+					+ "p.estado, s.*, u.nombre_usuario, u.password, u.tipo, u.estado FROM prestamos p "
+					+ "INNER JOIN socios s ON p.id_socio = s.id_socio "
+					+ "INNER JOIN usuarios u ON s.id_usuario = u.id_usuario "
+					+ "WHERE p.estado = 0");
+			rs = pst.executeQuery();
+			while (rs.next()) {
+				prestamos.add(this.mapearPrestamo(rs, true));
+			}
+			rs.close();
+			pst.close();
+			for(Prestamo pres: prestamos) {
+				pres.setLineasPrestamo(this.getAllLineasPrestamo(pres, pst, rs));
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+		return prestamos;
+	}
+	
 	public ArrayList<Prestamo> getAllBySocio(Socio socio) throws SQLException {
 		ArrayList<Prestamo> prestamos = new ArrayList<Prestamo>();
 		PreparedStatement pst = null;
@@ -362,7 +393,6 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			pst = conn.prepareStatement("update lineasdeprestamo set devuelto=1 where id_prestamo=?");
 			pst.setInt(1,pres.getId());			
 			pst.executeUpdate();
-			
 		}
 		catch (SQLException e) {
 			e.printStackTrace();
@@ -371,5 +401,23 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 		finally {
 			this.closeConnection(pst);
 		}	
+	}
+	
+	public void actualizarEstado (Prestamo pres) throws SQLException {	
+		PreparedStatement pst = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("update prestamos set estado=1 where id_prestamo=?");
+			pst.setInt(1, pres.getId());
+			pst.executeUpdate();
+			pst.close();
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst);
+		}
 	}
 }
