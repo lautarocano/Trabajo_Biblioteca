@@ -18,7 +18,7 @@ public class EjemplarDAO  extends BaseDAO{
 		return e;
 	}
 
-	public void insert(Libro lib) throws SQLException {
+	public void insert(Libro lib) throws SQLException{
 		PreparedStatement pst = null;
 		try {
 			this.openConnection();
@@ -95,6 +95,31 @@ public class EjemplarDAO  extends BaseDAO{
 			this.closeConnection(pst, rs);
 		}
 		return ejemplares;
+	}
+	
+	public Ejemplar getOne(int idEjemplar) throws SQLException {
+		Ejemplar ejemplar = new Ejemplar();
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("SELECT e.id_ejemplar,l.*,g.descripcion FROM ejemplares e INNER JOIN libros l "
+					+ "ON e.id_libro=l.id_libro INNER JOIN generos g ON l.id_genero = g.id_genero "
+					+ "WHERE e.id_ejemplar = ?");
+			pst.setInt(1, idEjemplar);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				ejemplar = mapearEjemplar(rs);
+			}
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+		return ejemplar;
 	}
 	
 	public ArrayList<Ejemplar> getAllByLibro(int idLibro) throws SQLException {

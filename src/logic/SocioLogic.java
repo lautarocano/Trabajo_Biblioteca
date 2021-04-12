@@ -56,10 +56,14 @@ public class SocioLogic {
 		}
 	}
 	
-	public void insert(Socio socio) throws SQLException {
+	public void insert(Socio socio) throws SQLException,Exception {
 		try {
-			if (!this.dniAlreadyExists(socio.getDni())) 
+			if (!this.dniAlreadyExists(socio.getDni())) {
 				this._SocioDAO.insert(socio);
+			}
+			else {
+				throw new Exception("Ya existe un socio con el dni ingresado");
+			}
 		}
 		catch (SQLException exception) {
 			throw exception;

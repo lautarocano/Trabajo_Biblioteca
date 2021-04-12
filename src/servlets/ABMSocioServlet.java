@@ -2,6 +2,8 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -50,63 +52,122 @@ public class ABMSocioServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
 			if (request.getParameter("action-type").equals("agregar")) {	
-				Socio socio = new Socio();
-				socio.setNombre(request.getParameter("nombre"));
-				socio.setApellido(request.getParameter("apellido"));
-				socio.setEmail(request.getParameter("email"));
-				socio.setDni(Integer.parseInt(request.getParameter("dni")));
-				socio.setDomicilio(request.getParameter("domicilio"));
-				socio.setTelefono(request.getParameter("telefono"));
-				socio.setEstado(true);
-				Usuario user = new Usuario();
-				user.setTipo(tipoUsuario.Socio);
-				user.setNombreUsuario(Integer.toString(socio.getDni()));
-				user.setPassword(socio.getApellido());
-				user.setEstado(false);
-				SocioLogic sl = new SocioLogic();
-				UsuarioLogic ul = new UsuarioLogic();
-				try {
-					socio.setUsuario(ul.insertAndReturn(user));
-					sl.insert(socio);
-					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Socio agregado correctamente");
-				} catch (SQLException e) {
-					request.setAttribute("mensaje", "No se pudo agregar un socio");
+				if (ValidarDatos(request)) {
+					Socio socio = new Socio();
+					socio.setNombre(request.getParameter("nombre"));
+					socio.setApellido(request.getParameter("apellido"));
+					socio.setEmail(request.getParameter("email"));
+					socio.setDni(Integer.parseInt(request.getParameter("dni")));
+					socio.setDomicilio(request.getParameter("domicilio"));
+					socio.setTelefono(request.getParameter("telefono"));
+					socio.setEstado(true);
+					Usuario user = new Usuario();
+					user.setTipo(tipoUsuario.Socio);
+					user.setNombreUsuario(Integer.toString(socio.getDni()));
+					user.setPassword(socio.getApellido());
+					user.setEstado(false);
+					SocioLogic sl = new SocioLogic();
+					UsuarioLogic ul = new UsuarioLogic();
+					try {
+						socio.setUsuario(ul.insertAndReturn(user));
+						sl.insert(socio);
+						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+						request.setAttribute("mensaje", "Socio agregado correctamente");
+					} catch (SQLException e) {
+						request.setAttribute("mensaje", "No se pudo agregar un socio");
+					}
+					catch (Exception e) {
+						request.setAttribute("mensaje", e.getMessage());
+					}
 				}
 			}
 			else if (request.getParameter("action-type").equals("eliminar")) {	
-				Socio socio = new Socio();
-				socio.setId(Integer.parseInt(request.getParameter("id")));
+				Socio socio = null;
 				SocioLogic sl = new SocioLogic();
 				try {
-					sl.delete(socio);
-					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Socio eliminado correctamente");
+					socio = sl.getOne(Integer.parseInt(request.getParameter("id")));
+					if (socio != null) {
+						sl.delete(socio);
+						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+						request.setAttribute("mensaje", "Socio eliminado correctamente");
+					}
+					else {
+						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+						request.setAttribute("mensaje", "Id de socio inválida");
+					}
+				} catch (NumberFormatException e) {
+					request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Id de socio inválida");
 				} catch (SQLException e) {
 					request.setAttribute("mensaje", "No se pudo eliminar un socio");
 				}
 			}
 			else if (request.getParameter("action-type").equals("editar")) {	
-				Socio socio = new Socio();
-				socio.setId(Integer.parseInt(request.getParameter("id")));
-				socio.setNombre(request.getParameter("nombre"));
-				socio.setApellido(request.getParameter("apellido"));
-				socio.setEmail(request.getParameter("email"));
-				socio.setDni(Integer.parseInt(request.getParameter("dni")));
-				socio.setDomicilio(request.getParameter("domicilio"));
-				socio.setTelefono(request.getParameter("telefono"));
-				socio.setEstado(Boolean.parseBoolean(request.getParameter("estado")));
-				SocioLogic sl = new SocioLogic();
-				try {
-					sl.update(socio);
-					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Socio actualizado correctamente");
-				} catch (SQLException e) {
-					request.setAttribute("mensaje", "No se pudo actualizar un socio");
+				if (ValidarDatos(request)) {
+					SocioLogic sl = new SocioLogic();
+					Socio socio;
+					try {
+						socio = sl.getOne(Integer.parseInt(request.getParameter("id")));
+						if (socio != null) {
+							socio.setNombre(request.getParameter("nombre"));
+							socio.setApellido(request.getParameter("apellido"));
+							socio.setEmail(request.getParameter("email"));
+							socio.setDni(Integer.parseInt(request.getParameter("dni")));
+							socio.setDomicilio(request.getParameter("domicilio"));
+							socio.setTelefono(request.getParameter("telefono"));
+							socio.setEstado(Boolean.parseBoolean(request.getParameter("estado")));
+							sl.update(socio);
+							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Socio actualizado correctamente");
+						}
+						else {
+							request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Id de socio inválida");
+						}
+					} catch (NumberFormatException e) {
+						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+						request.setAttribute("mensaje", "Id de socio inválida");
+					} catch (SQLException e) {
+						request.setAttribute("mensaje", "No se pudo actualizar un socio");
+					}
 				}
 			}
 			this.doGet(request, response);
 		}
 	}
+	
+	private static Boolean ValidarDatos (HttpServletRequest request) {
+		if (request.getParameter("nombre")!=null && request.getParameter("apellido")!=null && 
+				request.getParameter("telefono")!=null && request.getParameter("domicilio")!=null &&
+				request.getParameter("dni")!=null && request.getParameter("email")!=null) {
+			if (ValidarMail(request.getParameter("email"))) {
+				try {
+					Integer.parseInt(request.getParameter("dni"));
+					Long.parseUnsignedLong(request.getParameter("telefono"));
+					return true;
+				}
+				catch (NumberFormatException e) {
+					request.setAttribute("mensaje", "Por favor, ingrese su dni y teléfono en formato numérico, sin puntos ni símbolos.");
+					return false;
+				}
+			}
+			else {
+				request.setAttribute("mensaje", "Por favor, ingrese una dirección de email válida.");
+				return false;
+			}
+		}
+		else {
+			request.setAttribute("mensaje", "Campos incompletos.");
+			return false;
+		}
+	}
+	
+	public static boolean ValidarMail(String email) {
+        // Patron para validar el email
+        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+ 
+        Matcher mather = pattern.matcher(email);
+        return mather.find();
+    }
 	
 }

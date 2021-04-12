@@ -14,6 +14,15 @@ private EjemplarDAO _EjemplarDAO;
 		this._EjemplarDAO = new EjemplarDAO();
 	}
 	
+	public Ejemplar getOne(int idEjemplar) throws SQLException {
+		try {
+			return this._EjemplarDAO.getOne(idEjemplar);
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}
+	}
+	
 	public ArrayList<Ejemplar> getAll() throws SQLException {
 		try {
 			return this._EjemplarDAO.getAll();

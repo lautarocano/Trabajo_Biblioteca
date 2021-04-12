@@ -64,7 +64,7 @@
 	        		<input name="domicilio" type="text" class="form-control" id="domicilio" placeholder="Domicilio" value=<%=s.getDomicilio() %> required>
 		    	</span>
 		    	<span class="td">
-	        		<input name="telefono" type="text" class="form-control" id="telefono" placeholder="telefono" value=<%=s.getTelefono() %> required>
+	        		<input name="telefono" type="number" class="form-control" id="telefono" placeholder="telefono" value=<%=s.getTelefono() %> required>
 		    	</span>
 		    	<span class="td">
 	        		<input name="estado" type="checkbox" class="form-control" id="estado" placeholder="Estado" <% if (s.getEstado()) { %> checked <%}%> value="True">
@@ -127,7 +127,7 @@
 		        		<input name="domicilio" type="text" class="form-control" id="domicilio" placeholder="Domicilio" required>
 			    	</span>
 			    	<span class="td">
-		        		<input name="telefono" type="text" class="form-control" id="telefono" placeholder="telefono" required>
+		        		<input name="telefono" type="number" class="form-control" id="telefono" placeholder="telefono" required>
 			    	</span>
 			    	<span class="td">
 		        		<input name="estado" type="checkbox" class="form-control" id="estado" placeholder="Estado" value="True">

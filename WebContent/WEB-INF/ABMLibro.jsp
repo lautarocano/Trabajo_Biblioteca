@@ -63,10 +63,10 @@
 	        		<input name="autor" type="text" class="form-control" id="autor" placeholder="Autor" value="<%=l.getAutor() %>" required>
 		    	</span>
 	        	<span class="td">
-	        		<input name="numero-edicion" type="text" class="form-control" id="numero-edicion" placeholder="N° de edición" value="<%=l.getNroEdicion() %>" required>
+	        		<input name="numero-edicion" type="number" class="form-control" id="numero-edicion" placeholder="N° de edición" value="<%=l.getNroEdicion() %>" required>
 		    	</span>
 	        	<span class="td">
-	        		<input name="fecha-edicion" type="text" class="form-control" id="datepicker" placeholder="Fecha edición" required>
+	        		<input name="fecha-edicion" type="text" class="form-control" id="datepicker" placeholder="Fecha edición" onkeydown="return false" required>
 	        		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 					<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 					<script>
@@ -140,10 +140,10 @@
 	        			<input name="autor" type="text" class="form-control" id="autor" placeholder="Autor" required>
 		    		</span>
 		    		<span class="td">
-	        			<input name="numero-edicion" type="text" class="form-control" id="numero-edicion" placeholder="N° de edición" required>
+	        			<input name="numero-edicion" type="number" class="form-control" id="numero-edicion" placeholder="N° de edición" required>
 		    		</span>
 		    		<span class="td">
-	        			<input name="fecha-edicion" type="text" class="form-control" id="datepicker2" placeholder="Fecha edición" required>
+	        			<input name="fecha-edicion" type="text" class="form-control" id="datepicker2" placeholder="Fecha edición" onkeydown="return false" required>
 		    		</span>
 		    		
 		    		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
