@@ -45,9 +45,9 @@
 	        <form class="tr" action="ABMPoliticaSancionServlet" method="POST" name="ABMPoliticaSancion">
 	        	<input name="id" type="hidden" class="form-control" id="id" placeholder="id" value=<%=ps.getId() %> required>
 	        	<span class="td"><%=ps.getId() %> </span>
-	        	<input name="dias_atraso_desde" type="text" class="form-control" id="dias_atraso_desde" placeholder="Dias atraso desde" value="<%=ps.getDiasDeAtrasoDesde()%>" required>
-	        	<input name="dias_atraso_hasta" type="text" class="form-control" id="dias_atraso_hasta" placeholder="Dias atraso hasta" value="<%=ps.getDiasDeAtrasoHasta() %>" required>
-	        	<input name="dias_sancion" type="text" class="form-control" id="dias_sancion" placeholder="Dias de sanción" value="<%=ps.getDiasDeSancion() %>" required>
+	        	<input name="dias_atraso_desde" type="number" class="form-control" id="dias_atraso_desde" placeholder="Dias atraso desde" value="<%=ps.getDiasDeAtrasoDesde()%>" required>
+	        	<input name="dias_atraso_hasta" type="number" class="form-control" id="dias_atraso_hasta" placeholder="Dias atraso hasta" value="<%=ps.getDiasDeAtrasoHasta() %>" required>
+	        	<input name="dias_sancion" type="number" class="form-control" id="dias_sancion" placeholder="Dias de sanción" value="<%=ps.getDiasDeSancion() %>" required>
 	        	<span class="td"><button type="submit" name="action-type" value="editar" class="btn btn-success btn-block" >Aceptar</button> </span>
 	        	<span class="td"><a class="btn btn-danger btn-block" href="ABMPoliticaSancionServlet">Cancelar</a></span>
 	        </form>
@@ -84,13 +84,13 @@
 		    	<form class="tr" action="ABMPoliticaSancionServlet" method="POST" name="ABMPoliticaSancion">
 		    		<span class="td"></span>
 		    		<span class="td">
-			    	<input name="dias_atraso_desde" type="text" class="form-control" id="dias_atraso_desde" placeholder="Dias atraso desde" required>
+			    	<input name="dias_atraso_desde" type="number" class="form-control" id="dias_atraso_desde" placeholder="Dias atraso desde" required>
 		        	</span>
 		        	<span class="td">
-		        	<input name="dias_atraso_hasta" type="text" class="form-control" id="dias_atraso_hasta" placeholder="Dias atraso hasta" required>
+		        	<input name="dias_atraso_hasta" type="number" class="form-control" id="dias_atraso_hasta" placeholder="Dias atraso hasta" required>
 		        	</span>
 		        	<span class="td">
-		        	<input name="dias_sancion" type="text" class="form-control" id="dias_sancion" placeholder="Dias de sanción"  required>
+		        	<input name="dias_sancion" type="number" class="form-control" id="dias_sancion" placeholder="Dias de sanción"  required>
 			    	</span>
 		    		<span class="td">
 		    			<button type="submit" name="action-type" value="agregar" class="btn btn-success btn-block" >Agregar</button>

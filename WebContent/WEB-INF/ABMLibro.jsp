@@ -163,7 +163,7 @@
 	        			</select>
 		    		</span>
 		    		<span class="td">
-	        			<input name="cant-ejemplares" type="text" class="form-control" id="cant-ejemplares" placeholder="Cantidad de Ejemp." required>
+	        			<input name="cant-ejemplares" type="number" class="form-control" id="cant-ejemplares" placeholder="Cantidad de Ejemp." required>
 		    		</span>
 		    		<span class="td">
 		    			<button type="submit" name="action-type" value="agregar" class="btn btn-success btn-block" >Agregar</button>

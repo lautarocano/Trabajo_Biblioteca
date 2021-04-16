@@ -65,8 +65,8 @@
 	        <form class="tr" action="ABMPoliticaPrestamoServlet" method="POST" name="ABMPoliticaPrestamo">
 	        	<input name="id" type="hidden" class="form-control" id="id" placeholder="id" value=<%=pp.getId() %> required>
 	        	<span class="td"><%=pp.getId() %> </span>
-	        	<input name="cant_max_libros_pend" type="text" class="form-control" id="cant_max_libros_pend" placeholder="Cant. maxima de libros pendientes" value="<%=pp.getCantMaxLibrosPend() %>" required>
-	        	<input name="fecha_politica_prestamo" type="text" class="form-control" id="datepicker" placeholder="Fecha" value="<%=pp.getFechaPoliticaPrestamo()%>" required>
+	        	<input name="cant_max_libros_pend" type="number" class="form-control" id="cant_max_libros_pend" placeholder="Cant. maxima de libros pendientes" value="<%=pp.getCantMaxLibrosPend() %>" required>
+	        	<input name="fecha_politica_prestamo" type="text" class="form-control" id="datepicker" placeholder="Fecha" value="<%=pp.getFechaPoliticaPrestamo()%>" onkeydown="return false"  required>
 	        		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 					<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 					<script>
@@ -77,7 +77,7 @@
 					  $( "#datepicker" ).datepicker( "setDate", "<%=pp.getFechaPoliticaPrestamo().toString()%>" );
 					} );
 					</script>
-	        	<input name="cant_dias_prestamo" type="text" class="form-control" id="cant_dias_prestamo" placeholder="Cant. dias de prestamo" value="<%=pp.getDiasPrestamo() %>" required>
+	        	<input name="cant_dias_prestamo" type="number" class="form-control" id="cant_dias_prestamo" placeholder="Cant. dias de prestamo" value="<%=pp.getDiasPrestamo() %>" required>
 	        	<span class="td"><button type="submit" name="action-type" value="editar" class="btn btn-success btn-block" >Aceptar</button> </span>
 	        	<span class="td"><a class="btn btn-danger btn-block" href="ABMPoliticaPrestamoServlet">Cancelar</a></span>
 	        </form>
@@ -113,10 +113,10 @@
 		    	<form class="tr" action="ABMPoliticaPrestamoServlet" method="POST" name="ABMPoliticaPrestamo">
 		    		<span class="td"></span>
 		    		<span class="td">
-		    			<input name="cant_max_libros_pend" type="text" class="form-control" id="cant_max_libros_pend" placeholder="Cant. maxima de libros pendientes" required>
+		    			<input name="cant_max_libros_pend" type="number" class="form-control" id="cant_max_libros_pend" placeholder="Cant. maxima de libros pendientes" required>
 		    		</span>
 		    		<span class="td">	
-		    			<input name="fecha_politica_prestamo" type="text" class="form-control" id="datepicker2" placeholder="Fecha" required>
+		    			<input name="fecha_politica_prestamo" type="text" class="form-control" id="datepicker2" placeholder="Fecha" onkeydown="return false" required>
 		    		</span>	
 		    		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 					<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -128,7 +128,7 @@
 					  } );
 					  </script>
 		    		<span class="td">
-		    			<input name="cant_dias_prestamo" type="text" class="form-control" id="cant_dias_prestamo" placeholder="Cant. dias de prestamo" required>
+		    			<input name="cant_dias_prestamo" type="number" class="form-control" id="cant_dias_prestamo" placeholder="Cant. dias de prestamo" required>
 		    		</span>
 		    			    		<span class="td">
 		    			<button type="submit" name="action-type" value="agregar" class="btn btn-success btn-block" >Agregar</button>

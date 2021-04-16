@@ -56,7 +56,7 @@
 	        		<input name="domicilio" type="text" class="form-control" id="domicilio" placeholder="Domicilio" value=<%=s.getDomicilio() %> required>
 		    	</span>
 		    	<span class="td">
-	        		<input name="telefono" type="text" class="form-control" id="telefono" placeholder="telefono" value=<%=s.getTelefono() %> required>
+	        		<input name="telefono" type="number" class="form-control" id="telefono" placeholder="telefono" value=<%=s.getTelefono() %> required>
 		    	</span>
 				<input name="estado" type="hidden" class="form-control" id="estado" placeholder="Estado" <% if (s.getEstado()) { %> checked <%}%> value="True">
 

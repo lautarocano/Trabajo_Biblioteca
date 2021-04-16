@@ -54,6 +54,8 @@ public class ABMLibroServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
 			if (request.getParameter("action-type").equals("agregar")) {	
+				if (ValidarDatos(request)) {
+
 				Libro libro=new Libro();
 				libro.setTitulo(request.getParameter("titulo"));
 				libro.setAutor(request.getParameter("autor"));
@@ -76,48 +78,99 @@ public class ABMLibroServlet extends HttpServlet {
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					request.setAttribute("mensaje", "No se pudo agregar un libro");
+				}
 
 				}
 			}
 			else if (request.getParameter("action-type").equals("eliminar")) {	
-				Libro libro=new Libro();
-				libro.setId(Integer.parseInt(request.getParameter("id")));
+				Libro libro=null;
 				LibroLogic ll=new LibroLogic();
 				try {
-					ll.delete(libro);
-					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Libro eliminado correctamente");
-				} catch (SQLException e) {
+					libro = ll.getOne(Integer.parseInt(request.getParameter("id")));
+					if(libro!=null) {
+						ll.delete(libro);
+						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+						request.setAttribute("mensaje", "Libro eliminado correctamente");
+					}
+					else
+					{
+						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+						request.setAttribute("mensaje", "Id de libro invalida");
+					}
+				
+				} 
+				catch (NumberFormatException e) {
+					request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Id de libro invalida");
+				}
+				catch (SQLException e) {
 					// TODO Auto-generated catch block
 					request.setAttribute("mensaje", "No se pudo eliminar un libro");
 				}
 			}
 			else if (request.getParameter("action-type").equals("editar")) {	
-				Libro libro=new Libro();
-				libro.setId(Integer.parseInt(request.getParameter("id")));
-				libro.setTitulo(request.getParameter("titulo"));
-				libro.setAutor(request.getParameter("autor"));
-				libro.setFechaEdicion(LocalDate.parse(request.getParameter("fecha-edicion")));
-				libro.setNroEdicion(request.getParameter("numero-edicion"));
-				int idGenero = (Integer.parseInt(request.getParameter("genero")));
-				GeneroLogic gl = new GeneroLogic();
-				try {
-					libro.setGenero(gl.getOne(idGenero));
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					request.setAttribute("mensaje", "No se pudo encontrar el genero indicado");
-				}
+				if (ValidarDatos(request)) {
 				LibroLogic ll=new LibroLogic();
+				Libro libro;
 				try {
-					ll.update(libro);
-					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Libro actualizado correctamente");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
+					libro = ll.getOne(Integer.parseInt(request.getParameter("id")));
+					if(libro!=null) {
+						libro.setId(Integer.parseInt(request.getParameter("id")));
+						libro.setTitulo(request.getParameter("titulo"));
+						libro.setAutor(request.getParameter("autor"));
+						libro.setFechaEdicion(LocalDate.parse(request.getParameter("fecha-edicion")));
+						libro.setNroEdicion(request.getParameter("numero-edicion"));
+						int idGenero = (Integer.parseInt(request.getParameter("genero")));
+						GeneroLogic gl = new GeneroLogic();
+						try {
+							libro.setGenero(gl.getOne(idGenero));
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							request.setAttribute("mensaje", "No se pudo encontrar el genero indicado");
+						}
+						ll.update(libro);
+						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+						request.setAttribute("mensaje", "Libro actualizado correctamente");
+					}
+					else {
+						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+						request.setAttribute("mensaje", "Id de libro invalida");
+					}
+				}
+				 catch (NumberFormatException e) {
+					request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+					request.setAttribute("mensaje", "Id de socio invalida");
+				}
+				catch (SQLException e) {
+				
+				// TODO Auto-generated catch block
 					request.setAttribute("mensaje", "No se pudo actualizar un libro");
 				}
 			}
+			}
 			this.doGet(request, response);
+		}
+	}
+	private static Boolean ValidarDatos (HttpServletRequest request) {
+		if (!request.getParameter("titulo").isBlank() && !request.getParameter("autor").isBlank() && 
+				!request.getParameter("fecha-edicion").isBlank() && !request.getParameter("numero-edicion").isBlank()&&
+				!request.getParameter("genero").isBlank()&&	!request.getParameter("cant-ejemplares").isBlank()) {
+				try {
+					Integer.parseInt(request.getParameter("numero-edicion"));
+					Integer.parseInt(request.getParameter("genero"));
+					Integer.parseInt(request.getParameter("cant-ejemplares"));
+					return true;
+				}
+				catch (NumberFormatException e) {
+					request.setAttribute("mensaje", "Por favor, ingrese el nro de edición y cantidad de ejemplares en formato numerico, sin puntos ni smbolos y seleccione un genero valido.");
+					return false;
+				}
+			
+		
+		}
+		else {
+			request.setAttribute("mensaje", "Campos incompletos.");
+			return false;
 		}
 	}
 	

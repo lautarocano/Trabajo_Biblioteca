@@ -62,9 +62,7 @@ public class ABMGeneroServlet extends HttpServlet {
 						// TODO Auto-generated catch block
 						request.setAttribute("mensaje", "No se pudo agregar un genero");
 					}
-					catch (Exception e) {
-						request.setAttribute("mensaje", e.getMessage());
-					}
+					
 				}
 			}
 			else if (request.getParameter("action-type").equals("eliminar")) {	
@@ -123,13 +121,14 @@ public class ABMGeneroServlet extends HttpServlet {
 	}
 	
 	private static Boolean ValidarDatos (HttpServletRequest request) {
-		if (request.getParameter("descripcion")!=null) {
+		if (!request.getParameter("descripcion").isBlank()) {
 			
-			request.setAttribute("mensaje", "Campos incompletos.");
-			return false;
+			return true;
 		}
 		else {
-			return true;
+			request.setAttribute("mensaje", "Campos incompletos.");
+			return false;
+
 		}
 	}
 	
