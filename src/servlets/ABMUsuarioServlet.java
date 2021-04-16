@@ -39,7 +39,8 @@ public class ABMUsuarioServlet extends HttpServlet {
 				request.setAttribute("mensaje", "No se pudo obtener el listado de usuarios");
 			}
 			request.setAttribute("JSP", "ABMUsuario");
-			request.getRequestDispatcher("WEB-INF/Administrador.jsp").forward(request, response);		}
+			request.getRequestDispatcher("WEB-INF/Administrador.jsp").forward(request, response);
+		}
 	}
 
 	/**
@@ -47,109 +48,103 @@ public class ABMUsuarioServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
-			if (request.getParameter("action-type").equals("agregar")) {
-				if (ValidarDatos(request)) {
-				Usuario usuario = new Usuario();
-				usuario.setNombreUsuario(request.getParameter("user"));
-				usuario.setPassword(request.getParameter("password"));
-				usuario.setEstado(Boolean.parseBoolean(request.getParameter("estado")));
-				switch(Integer.parseInt(request.getParameter("tipo"))) {
-				case (0):
-					usuario.setTipo(tipoUsuario.Socio);
-					break;
-				case (1):
-					usuario.setTipo(tipoUsuario.Bibliotecario);
-					break;
-				case (2):
-					usuario.setTipo(tipoUsuario.Administrador);
-					break;
-				default:
-					//Informar error
-					break;
-				}
-				UsuarioLogic ul = new UsuarioLogic();
-				try {
-					ul.insert(usuario);
-					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Usuario agregado correctamente");
-				} catch (SQLException e) {
-					request.setAttribute("mensaje", "No se pudo agregar un usuario");
-				}
-				}
-			}
-			else if (request.getParameter("action-type").equals("eliminar")) {	
-				Usuario usuario =null;
-				UsuarioLogic ul = new UsuarioLogic();
-				try {
-					usuario=ul.getOne(Integer.parseInt(request.getParameter("id")));
-					if(usuario!=null) {
-						ul.delete(usuario);
-						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-						request.setAttribute("mensaje", "Usuario eliminado correctamente");
-					}
-					else {
-						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
-						request.setAttribute("mensaje", "Id de usuario invalida");
-					}
-				}
-				catch (NumberFormatException e) {
-						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
-						request.setAttribute("mensaje", "Id de usuario invalida");
-				
-				} catch (SQLException e) {
-					request.setAttribute("mensaje", "No se pudo eliminar un usuario");
-				}
-			}
-			else if (request.getParameter("action-type").equals("editar")) {	
-				if (ValidarDatos(request)) {
-
-				Usuario usuario;
-				UsuarioLogic ul = new UsuarioLogic();
-				try {
-					usuario=ul.getOne(Integer.parseInt(request.getParameter("id")));
-					if(usuario!=null) {
-						usuario.setId(Integer.parseInt(request.getParameter("id")));
-						usuario.setNombreUsuario(request.getParameter("user"));
-						usuario.setPassword(request.getParameter("password"));
-						usuario.setEstado(Boolean.parseBoolean(request.getParameter("estado")));
-						switch(Integer.parseInt(request.getParameter("tipo"))) {
-						case (0):
-							usuario.setTipo(tipoUsuario.Socio);
-							break;
-						case (1):
-							usuario.setTipo(tipoUsuario.Bibliotecario);
-							break;
-						case (2):
-							usuario.setTipo(tipoUsuario.Administrador);
-							break;
-						default:
-							//Informar error
-							break;
+			if (request.getParameter("action-type")!=null) {
+				if (request.getParameter("action-type").equals("agregar")) {
+					if (ValidarDatos(request)) {
+						try {
+							Usuario usuario = new Usuario();
+							usuario.setNombreUsuario(request.getParameter("user"));
+							usuario.setPassword(request.getParameter("password"));
+							usuario.setEstado(Boolean.parseBoolean(request.getParameter("estado")));
+							switch(Integer.parseInt(request.getParameter("tipo"))) {
+							case (0):
+								usuario.setTipo(tipoUsuario.Socio);
+								break;
+							case (1):
+								usuario.setTipo(tipoUsuario.Bibliotecario);
+								break;
+							case (2):
+								usuario.setTipo(tipoUsuario.Administrador);
+								break;
+							default:
+								throw new Exception("Tipo de usuario inválido.");
+							}
+							UsuarioLogic ul = new UsuarioLogic();
+							ul.insert(usuario);
+							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Usuario agregado correctamente");
+						} catch (SQLException e) {
+							request.setAttribute("mensaje", "No se pudo agregar un usuario");
+						} catch (Exception e) {
+							request.setAttribute("mensaje", e.getMessage());
 						}
-						ul.update(usuario);
-						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-						request.setAttribute("mensaje", "Usuario actualizado correctamente");
-						
 					}
-					else {
-						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
-						request.setAttribute("mensaje", "Id de usuario invalida");
+				}
+				else if (request.getParameter("action-type").equals("eliminar")) {	
+					Usuario usuario =null;
+					UsuarioLogic ul = new UsuarioLogic();
+					try {
+						usuario=ul.getOne(Integer.parseInt(request.getParameter("id")));
+						if(usuario!=null) {
+							ul.delete(usuario);
+							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Usuario eliminado correctamente");
+						}
+						else {
+							request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Id de usuario invalida");
+						}
+					} catch (NumberFormatException e) {
+							request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Id de usuario invalida");
+					
+					} catch (SQLException e) {
+						request.setAttribute("mensaje", "No se pudo eliminar un usuario");
 					}
-
-
 				}
-				catch (NumberFormatException e) {
-					request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Id de usuario invalida");
-				}
-				
-				 catch (SQLException e) {
-					request.setAttribute("mensaje", "No se pudo actualizar un usuario");
+				else if (request.getParameter("action-type").equals("editar")) {	
+					if (ValidarDatos(request)) {
+						Usuario usuario;
+						UsuarioLogic ul = new UsuarioLogic();
+						try {
+							usuario=ul.getOne(Integer.parseInt(request.getParameter("id")));
+							if(usuario!=null) {
+								usuario.setId(Integer.parseInt(request.getParameter("id")));
+								usuario.setNombreUsuario(request.getParameter("user"));
+								usuario.setPassword(request.getParameter("password"));
+								usuario.setEstado(Boolean.parseBoolean(request.getParameter("estado")));
+								switch(Integer.parseInt(request.getParameter("tipo"))) {
+								case (0):
+									usuario.setTipo(tipoUsuario.Socio);
+									break;
+								case (1):
+									usuario.setTipo(tipoUsuario.Bibliotecario);
+									break;
+								case (2):
+									usuario.setTipo(tipoUsuario.Administrador);
+									break;
+								default:
+									throw new Exception("Tipo de usuario inválido.");
+								}
+								ul.update(usuario);
+								request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+								request.setAttribute("mensaje", "Usuario actualizado correctamente");
+							} else {
+								request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+								request.setAttribute("mensaje", "Id de usuario invalida");
+							}
+						} catch (NumberFormatException e) {
+							request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Id de usuario invalida");
+						} catch (SQLException e) {
+							request.setAttribute("mensaje", "No se pudo actualizar un usuario");
+						} catch (Exception e) {
+							request.setAttribute("mensaje", e.getMessage());
+						}
+					}
 				}
 			}
-			}
-			
-		this.doGet(request, response);
+			this.doGet(request, response);
 		}
 	}
 	
@@ -164,7 +159,6 @@ public class ABMUsuarioServlet extends HttpServlet {
 					request.setAttribute("mensaje", "Por favor, ingrese un tipo de usuario valido.");
 					return false;
 				}
-			
 		}
 		else {
 			request.setAttribute("mensaje", "Campos incompletos.");
@@ -172,5 +166,4 @@ public class ABMUsuarioServlet extends HttpServlet {
 		}
 	}
 	
-
 }

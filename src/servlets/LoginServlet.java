@@ -79,25 +79,27 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		if (request.getParameter("action-type").equals("ingresar")) {	
-			sesion = request.getSession();
-			Usuario usuario = null;
-			UsuarioLogic ul = new UsuarioLogic();
-			String nombreUsuario = request.getParameter("nombreUsuario");
-			String password = request.getParameter("password");
-			try {
-				usuario=ul.login(nombreUsuario,password);
-				if (usuario != null) {
-					sesion.setAttribute("usuario",usuario);
-					if(usuario.getTipo()==tipoUsuario.Socio) {
-						SocioLogic sl = new SocioLogic();
-						sesion.setAttribute("socio", sl.getOneByUser(usuario.getId()));
+		if (request.getParameter("action-type")!=null && request.getParameter("action-type").equals("ingresar")) {	
+			if (Servlet.parameterNotNullOrBlank(request.getParameter("nombreUsuario")) && Servlet.parameterNotNullOrBlank(request.getParameter("password"))) {
+				sesion = request.getSession();
+				Usuario usuario = null;
+				UsuarioLogic ul = new UsuarioLogic();
+				String nombreUsuario = request.getParameter("nombreUsuario");
+				String password = request.getParameter("password");
+				try {
+					usuario=ul.login(nombreUsuario,password);
+					if (usuario != null) {
+						sesion.setAttribute("usuario",usuario);
+						if(usuario.getTipo()==tipoUsuario.Socio) {
+							SocioLogic sl = new SocioLogic();
+							sesion.setAttribute("socio", sl.getOneByUser(usuario.getId()));
+						}
 					}
-				}
-				else request.setAttribute("mensaje", "Usuario y/o contraseña incorrectos.");
-			} catch (SQLException e) {
-				request.setAttribute("mensaje", "Error en la base de datos.");
-			}			
+					else request.setAttribute("mensaje", "Usuario y/o contraseña incorrectos.");
+				} catch (SQLException e) {
+					request.setAttribute("mensaje", "Error en la base de datos.");
+				}		
+			} else request.setAttribute("mensaje", "Campos incompletos.");
 		}
 		doGet(request, response);
 	}

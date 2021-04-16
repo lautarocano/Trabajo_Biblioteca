@@ -56,7 +56,6 @@ public class ReservaServlet extends HttpServlet {
 						}
 						else listaLibros = ll.getAllByGenero(genero);
 					}
-					//else response.sendRedirect("ReservaServlet");
 				}
 				else if (request.getParameter("libro")!=null) {
 					listaLibros = ll.getAllByTitulo(request.getParameter("libro"));
@@ -88,18 +87,24 @@ public class ReservaServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Socio)) {
-			if (request.getParameter("action-type").equals("reservar")) {	
+			if (request.getParameter("action-type")!=null && request.getParameter("action-type").equals("reservar")) {	
 				LibroLogic ll=new LibroLogic();
 				Libro libro;
 				try {
 					libro = ll.getOne(Integer.parseInt(request.getParameter("id_libro")));
-					if(request.getSession().getAttribute("libros") == null) {
-						ArrayList<Libro> libros=new ArrayList<Libro>(); 
-						request.getSession().setAttribute("libros", libros);
+					if (libro != null) {
+						if(request.getSession().getAttribute("libros") == null) {
+							ArrayList<Libro> libros=new ArrayList<Libro>(); 
+							request.getSession().setAttribute("libros", libros);
+						}
+						((ArrayList<Libro>)request.getSession().getAttribute("libros")).add(libro);
+						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+						request.setAttribute("mensaje", "Libro agregado correctamente");
 					}
-					((ArrayList<Libro>)request.getSession().getAttribute("libros")).add(libro);
-					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Libro agregado correctamente");
+					else {
+						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+						request.setAttribute("mensaje", "Id de libro invalida");
+					}
 				} catch (NumberFormatException e) {
 					request.setAttribute("mensaje", "Error en los datos suministrados.");
 				} catch (SQLException e) {

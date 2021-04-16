@@ -103,4 +103,12 @@ public class Servlet extends HttpServlet {
 	        me.printStackTrace();   //Si se produce un error
 	    }
 	}
+	
+	public static Boolean parameterNotNullOrBlank(String parametro) {
+		if (parametro != null) {
+			if (parametro.isBlank()) return false;
+			else return true;
+		}
+		else return false;
+	}
 }

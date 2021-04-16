@@ -51,78 +51,72 @@ public class ABMPoliticaSancionServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
-			if (request.getParameter("action-type").equals("agregar")) {
-				if (ValidarDatos(request)) {
-
-				PoliticaSancion ps=new PoliticaSancion();
-				ps.setDiasDeAtrasoDesde(Integer.parseInt(request.getParameter("dias_atraso_desde")));
-				ps.setDiasDeAtrasoHasta(Integer.parseInt(request.getParameter("dias_atraso_hasta")));
-				ps.setDiasDeSancion(Integer.parseInt(request.getParameter("dias_sancion")));
-				PoliticaSancionLogic psl=new PoliticaSancionLogic();
-				try {
-					psl.insert(ps);
-					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Politica de sanción agregada correctamente");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					request.setAttribute("mensaje", "No se pudo agregar la politica de sanción");
+			if (request.getParameter("action-type")!=null) {
+				if (request.getParameter("action-type").equals("agregar")) {
+					if (ValidarDatos(request)) {
+						PoliticaSancion ps=new PoliticaSancion();
+						ps.setDiasDeAtrasoDesde(Integer.parseInt(request.getParameter("dias_atraso_desde")));
+						ps.setDiasDeAtrasoHasta(Integer.parseInt(request.getParameter("dias_atraso_hasta")));
+						ps.setDiasDeSancion(Integer.parseInt(request.getParameter("dias_sancion")));
+						PoliticaSancionLogic psl=new PoliticaSancionLogic();
+						try {
+							psl.insert(ps);
+							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Politica de sanción agregada correctamente");
+						} catch (SQLException e) {
+							request.setAttribute("mensaje", "No se pudo agregar la politica de sanción");
+						}
+					}
 				}
-				}
-
-			}
-			else if (request.getParameter("action-type").equals("eliminar")) {	
-				PoliticaSancion ps=null;
-				PoliticaSancionLogic psl=new PoliticaSancionLogic();
-				try {
-					ps=psl.getOne(Integer.parseInt(request.getParameter("id")));
-					if (ps != null) {
-
-					psl.delete(ps);
-					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Politica de sanción eliminada correctamente");
-				} else {
-					request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Id de politica sanción invalida");
-				}
-				}
+				else if (request.getParameter("action-type").equals("eliminar")) {	
+					PoliticaSancion ps=null;
+					PoliticaSancionLogic psl=new PoliticaSancionLogic();
+					try {
+						ps=psl.getOne(Integer.parseInt(request.getParameter("id")));
+						if (ps != null) {
+						psl.delete(ps);
+						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+						request.setAttribute("mensaje", "Politica de sanción eliminada correctamente");
+						} else {
+							request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Id de politica sanción invalida");
+						}
+					}
 					catch (NumberFormatException e) {
-					request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Id de politica sanción invalida");
+						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+						request.setAttribute("mensaje", "Id de politica sanción invalida");
 					}
 					catch (SQLException e) {
-					// TODO Auto-generated catch block
-					request.setAttribute("mensaje", "No se pudo eliminar la politica de sanción");
+						request.setAttribute("mensaje", "No se pudo eliminar la politica de sanción");
+					}
 				}
-			}
-			else if (request.getParameter("action-type").equals("editar")) {	
-				if (ValidarDatos(request)) {
-
-				PoliticaSancionLogic psl=new PoliticaSancionLogic();
-				PoliticaSancion ps;
-				try {
-				ps=psl.getOne(Integer.parseInt(request.getParameter("id")));
-				if (ps != null) {
-					ps.setId(Integer.parseInt(request.getParameter("id")));
-					ps.setDiasDeAtrasoDesde(Integer.parseInt(request.getParameter("dias_atraso_desde")));
-					ps.setDiasDeAtrasoHasta(Integer.parseInt(request.getParameter("dias_atraso_hasta")));
-					ps.setDiasDeSancion(Integer.parseInt(request.getParameter("dias_sancion")));
-					psl.update(ps);
-					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Politica de sanción actualizada correctamente");
-				}
-				else {
-					request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Id de politica sanción invalida");
-				}
-				}
-				catch (NumberFormatException e) {
-					request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Id de politica sanción invalida");
-				}
-				 catch (SQLException e) {
-					// TODO Auto-generated catch block
-					request.setAttribute("mensaje", "No se pudo actualizar la politica de sanción");
-				}
+				else if (request.getParameter("action-type").equals("editar")) {	
+					if (ValidarDatos(request)) {
+						PoliticaSancionLogic psl=new PoliticaSancionLogic();
+						PoliticaSancion ps;
+						try {
+							ps=psl.getOne(Integer.parseInt(request.getParameter("id")));
+							if (ps != null) {
+								ps.setId(Integer.parseInt(request.getParameter("id")));
+								ps.setDiasDeAtrasoDesde(Integer.parseInt(request.getParameter("dias_atraso_desde")));
+								ps.setDiasDeAtrasoHasta(Integer.parseInt(request.getParameter("dias_atraso_hasta")));
+								ps.setDiasDeSancion(Integer.parseInt(request.getParameter("dias_sancion")));
+								psl.update(ps);
+								request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+								request.setAttribute("mensaje", "Politica de sanción actualizada correctamente");
+							}
+							else {
+								request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+								request.setAttribute("mensaje", "Id de politica sanción invalida");
+							}
+						}
+						catch (NumberFormatException e) {
+							request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Id de politica sanción invalida");
+						} catch (SQLException e) {
+							request.setAttribute("mensaje", "No se pudo actualizar la politica de sanción");
+						}
+					}
 				}
 			}
 			this.doGet(request, response);
@@ -142,10 +136,7 @@ public class ABMPoliticaSancionServlet extends HttpServlet {
 					request.setAttribute("mensaje", "Por favor, ingrese los dias de atraso/hasta  y sanción en formato numericos, sin puntos ni simbolos.");
 					return false;
 				}
-			
-	
-		}
-		else {
+		} else {
 			request.setAttribute("mensaje", "Campos incompletos.");
 			return false;
 		}

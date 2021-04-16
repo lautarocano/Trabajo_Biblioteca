@@ -38,8 +38,8 @@ public class DatosSocioServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Socio)) 
 		{
-		request.setAttribute("JSP", "DatosSocio");
-		request.getRequestDispatcher("WEB-INF/Socio.jsp").forward(request, response);
+			request.setAttribute("JSP", "DatosSocio");
+			request.getRequestDispatcher("WEB-INF/Socio.jsp").forward(request, response);
 		}
 	}
 
@@ -48,42 +48,42 @@ public class DatosSocioServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Socio)) {
-			if (request.getParameter("action-type").equals("editar")) {	
+			if (request.getParameter("action-type")!=null && request.getParameter("action-type").equals("editar")) {	
 				if (ValidarDatos(request)) {
-				SocioLogic sl = new SocioLogic();
-				Socio socio;
-				sesion = request.getSession();
-				try {
-					socio = sl.getOne(Integer.parseInt(request.getParameter("id")));
-				    if(socio!=null) {
-						socio.setId(Integer.parseInt(request.getParameter("id")));
-						socio.setNombre(request.getParameter("nombre"));
-						socio.setApellido(request.getParameter("apellido"));
-						socio.setEmail(request.getParameter("email"));
-						socio.setDni(Integer.parseInt(request.getParameter("dni")));
-						socio.setDomicilio(request.getParameter("domicilio"));
-						socio.setTelefono(request.getParameter("telefono"));
-						socio.setEstado(Boolean.parseBoolean(request.getParameter("estado")));
-						sesion.setAttribute("socio", socio );
-						sl.update(socio);
-						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-						request.setAttribute("mensaje", "Datos actualizados correctamente");
-				    }
-				    else {
-				    	request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+					SocioLogic sl = new SocioLogic();
+					Socio socio;
+					sesion = request.getSession();
+					try {
+						socio = sl.getOne(Integer.parseInt(request.getParameter("id")));
+					    if(socio!=null) {
+							socio.setId(Integer.parseInt(request.getParameter("id")));
+							socio.setNombre(request.getParameter("nombre"));
+							socio.setApellido(request.getParameter("apellido"));
+							socio.setEmail(request.getParameter("email"));
+							socio.setDni(Integer.parseInt(request.getParameter("dni")));
+							socio.setDomicilio(request.getParameter("domicilio"));
+							socio.setTelefono(request.getParameter("telefono"));
+							socio.setEstado(Boolean.parseBoolean(request.getParameter("estado")));
+							sesion.setAttribute("socio", socio );
+							sl.update(socio);
+							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Datos actualizados correctamente");
+					    }
+					    else {
+					    	request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Id de socio invalida");
+					    }
+			
+					}
+					catch (NumberFormatException e) {
+						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
 						request.setAttribute("mensaje", "Id de socio invalida");
-				    }
+					}
 		
+					catch (SQLException e) {
+						request.setAttribute("mensaje", "No se pudieron actualizar los datos");
+					}
 				}
-				catch (NumberFormatException e) {
-					request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Id de socio invalida");
-				}
-	
-				catch (SQLException e) {
-					request.setAttribute("mensaje", "No se pudieron actualizar los datos");
-				}
-			}
 			}
 			this.doGet(request, response);
 		}

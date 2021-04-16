@@ -39,7 +39,6 @@ public class PrestamosSocioServlet extends HttpServlet {
 				request.setAttribute("ListaPrestamo", pl.getAllPendientesBySocio(socio));
 			} catch (SQLException e) {
 				request.setAttribute("mensaje", "No se pudo obtener la lista de prestamos pendientes para ese socio");
-				e.printStackTrace();
 			}
 			request.setAttribute("JSP", "MisPrestamos");
 			request.getRequestDispatcher("WEB-INF/Socio.jsp").forward(request, response);

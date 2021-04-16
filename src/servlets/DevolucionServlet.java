@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import logic.PrestamoLogic;
 import logic.SocioLogic;
 import model.Prestamo;
+import model.Socio;
 import model.Usuario;
 
 /**
@@ -36,10 +37,21 @@ public class DevolucionServlet extends HttpServlet {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Bibliotecario)) {
 			PrestamoLogic pl = new PrestamoLogic();
 			SocioLogic sl = new SocioLogic();
+			Socio socio = null;
 			if (request.getParameter("id-socio")!=null) {
 				try {
-					request.setAttribute("ListaPrestamo", pl.getAllPendientesBySocio(sl.getOne(Integer.parseInt(request.getParameter("id-socio")))));
-				} catch (SQLException e) {
+					socio = sl.getOne(Integer.parseInt(request.getParameter("id-socio")));
+					if (socio != null) {
+						request.setAttribute("ListaPrestamo", pl.getAllPendientesBySocio(socio));
+					}
+					else {
+						request.setAttribute("ListaPrestamo", pl.getAllPendientes());
+						request.setAttribute("mensaje", "No existe socio para la id ingresada");
+					}
+				} catch (NumberFormatException e) {
+					request.setAttribute("mensaje", "Id de socio debe ser un número.");
+				}
+				catch (SQLException e) {
 					// TODO Auto-generated catch block
 					request.setAttribute("mensaje", "No se pudo obtener la lista de prestamos pendientes para ese socio");
 				}
@@ -63,23 +75,28 @@ public class DevolucionServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Bibliotecario)) {
-			if (request.getParameter("action-type").equals("devolver")) {	
+			if (request.getParameter("action-type")!=null && request.getParameter("action-type").equals("devolver")) {	
 				PrestamoLogic pl = new PrestamoLogic();
 				Prestamo prestamo;
 				try {
 					prestamo = pl.getOne(Integer.parseInt(request.getParameter("id_prestamo")));
-					SocioLogic sl = new SocioLogic();
-					try {
-						sl.entregaPrestamo(prestamo);
-						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-						request.setAttribute("mensaje", "Se realizo la devolución del prestamo correctamente");
-					} catch (SQLException e) {
-						request.setAttribute("mensaje", "No se pudo registrar la devolución del prestamo");
+					if (prestamo != null) {
+						SocioLogic sl = new SocioLogic();
+						try {
+							sl.entregaPrestamo(prestamo);
+							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Se realizo la devolución del prestamo correctamente");
+						} catch (SQLException e) {
+							request.setAttribute("mensaje", "No se pudo registrar la devolución del prestamo");
+						}
 					}
-				} catch (NumberFormatException e1) {
-					request.setAttribute("mensaje", "No se pudo obtener el prestamo solicitado");
-				} catch (SQLException e1) {
-					request.setAttribute("mensaje", "No se pudieron obtener el prestamo");
+					else {
+						request.setAttribute("mensaje", "Error en los datos suministrados. El préstamo no existe.");
+					}
+				} catch (NumberFormatException e) {
+					request.setAttribute("mensaje", "Error en los datos suministrados.");
+				} catch (SQLException e) {
+					request.setAttribute("mensaje", "Error en la base de datos.");
 				}
 			}
 			this.doGet(request, response);

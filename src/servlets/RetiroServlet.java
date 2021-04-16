@@ -36,8 +36,9 @@ public class RetiroServlet extends HttpServlet {
 			if (request.getParameter("id-socio")!=null) {
 				try {
 					request.setAttribute("listaReserva", rl.getAllPendientesBySocio(Integer.parseInt(request.getParameter("id-socio"))));
+				} catch (NumberFormatException e) {
+					request.setAttribute("mensaje", "Error en los datos suministrados, id debe ser un número.");
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					request.setAttribute("mensaje", "No se pudo obtener la lista de reservas para el socio solicitado");
 				}
 			}
@@ -45,7 +46,6 @@ public class RetiroServlet extends HttpServlet {
 				try {
 					request.setAttribute("listaReserva", rl.getAllPendientes());
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					request.setAttribute("mensaje", "No se pudo obtener la lista de reservas");
 				}
 			}

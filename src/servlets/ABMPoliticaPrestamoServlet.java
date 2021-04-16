@@ -2,8 +2,6 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -50,85 +48,76 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
-			if (request.getParameter("action-type").equals("agregar")) {	
-				if (ValidarDatos(request)) {
-
-				PoliticaPrestamo pp=new PoliticaPrestamo();
-				pp.setCantMaxLibrosPend(Integer.parseInt(request.getParameter("cant_max_libros_pend")));
-				pp.setFechaPoliticaPrestamo(java.sql.Date.valueOf(request.getParameter("fecha_politica_prestamo")));
-				pp.setDiasPrestamo(Integer.parseInt(request.getParameter("cant_dias_prestamo")));
-				PoliticaPrestamoLogic ppl=new PoliticaPrestamoLogic();
-				try {
-					ppl.insert(pp);
-					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Politica de prestamo agregada correctamente");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					request.setAttribute("mensaje", "No se pudo agregar la politica de prestamo");
-				}
+			if (request.getParameter("action-type")!=null) {
+				if (request.getParameter("action-type").equals("agregar")) {	
+					if (ValidarDatos(request)) {
+						PoliticaPrestamo pp=new PoliticaPrestamo();
+						pp.setCantMaxLibrosPend(Integer.parseInt(request.getParameter("cant_max_libros_pend")));
+						pp.setFechaPoliticaPrestamo(java.sql.Date.valueOf(request.getParameter("fecha_politica_prestamo")));
+						pp.setDiasPrestamo(Integer.parseInt(request.getParameter("cant_dias_prestamo")));
+						PoliticaPrestamoLogic ppl=new PoliticaPrestamoLogic();
+						try {
+							ppl.insert(pp);
+							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Politica de prestamo agregada correctamente");
+						} catch (SQLException e) {
+							request.setAttribute("mensaje", "No se pudo agregar la politica de prestamo");
+						}
 					}
-				}
-			
-			else if (request.getParameter("action-type").equals("eliminar")) {	
-				PoliticaPrestamo pp=null;
-				PoliticaPrestamoLogic ppl=new PoliticaPrestamoLogic();
-				try {
-					pp=ppl.getOne(Integer.parseInt(request.getParameter("id")));
-					if (pp != null) {
-
-					ppl.delete(pp);
-					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Politica de prestamo eliminada correctamente");
 				} 
-					else {
-						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
-						request.setAttribute("mensaje", "Id de politica prestamo invalida");
-					}
-				}
-					catch (NumberFormatException e) {
-						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
-						request.setAttribute("mensaje", "Id de politica prestamo invalida");
-					} 
-					catch (SQLException e) {
-					// TODO Auto-generated catch block
-					request.setAttribute("mensaje", "No se pudo eliminar la politica de prestamo");
-				}
-			}
-			else if (request.getParameter("action-type").equals("editar")) {	
-				if (ValidarDatos(request)) {
+				else if (request.getParameter("action-type").equals("eliminar")) {	
+					PoliticaPrestamo pp=null;
 					PoliticaPrestamoLogic ppl=new PoliticaPrestamoLogic();
-					PoliticaPrestamo pp;
 					try {
 						pp=ppl.getOne(Integer.parseInt(request.getParameter("id")));
-						if(pp!=null)
-						{
-
-							pp.setId(Integer.parseInt(request.getParameter("id")));
-							pp.setCantMaxLibrosPend(Integer.parseInt(request.getParameter("cant_max_libros_pend")));
-							pp.setFechaPoliticaPrestamo(java.sql.Date.valueOf(request.getParameter("fecha_politica_prestamo")));
-							pp.setDiasPrestamo(Integer.parseInt(request.getParameter("cant_dias_prestamo")));
-							ppl.update(pp);
+						if (pp != null) {
+							ppl.delete(pp);
 							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-							request.setAttribute("mensaje", "Politica de prestamo actualizada correctamente");	
-					}
+							request.setAttribute("mensaje", "Politica de prestamo eliminada correctamente");
+						} 
 						else {
 							request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
 							request.setAttribute("mensaje", "Id de politica prestamo invalida");
 						}
-					
-
 					} catch (NumberFormatException e) {
 						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
 						request.setAttribute("mensaje", "Id de politica prestamo invalida");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					request.setAttribute("mensaje", "No se pudo actualizar la politica de prestamo");
+					} catch (SQLException e) {
+						request.setAttribute("mensaje", "No se pudo eliminar la politica de prestamo");
+					}
 				}
-			 }
+				else if (request.getParameter("action-type").equals("editar")) {	
+					if (ValidarDatos(request)) {
+						PoliticaPrestamoLogic ppl=new PoliticaPrestamoLogic();
+						PoliticaPrestamo pp;
+						try {
+							pp=ppl.getOne(Integer.parseInt(request.getParameter("id")));
+							if(pp!=null) {
+								pp.setId(Integer.parseInt(request.getParameter("id")));
+								pp.setCantMaxLibrosPend(Integer.parseInt(request.getParameter("cant_max_libros_pend")));
+								pp.setFechaPoliticaPrestamo(java.sql.Date.valueOf(request.getParameter("fecha_politica_prestamo")));
+								pp.setDiasPrestamo(Integer.parseInt(request.getParameter("cant_dias_prestamo")));
+								ppl.update(pp);
+								request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+								request.setAttribute("mensaje", "Politica de prestamo actualizada correctamente");	
+							} else {
+								request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+								request.setAttribute("mensaje", "Id de politica prestamo invalida");
+							}
+						} catch (NumberFormatException e) {
+							request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Id de politica prestamo invalida");
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							request.setAttribute("mensaje", "No se pudo actualizar la politica de prestamo");
+						}
+					}
+				}
 			}
 			this.doGet(request, response);
 		}
 	}
+	
 	private static Boolean ValidarDatos (HttpServletRequest request) {
 		if (!request.getParameter("cant_max_libros_pend").isBlank() && !request.getParameter("fecha_politica_prestamo").isBlank() && 
 				!request.getParameter("cant_dias_prestamo").isBlank() ) {
@@ -141,7 +130,6 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 					request.setAttribute("mensaje", "Por favor, ingrese la cantidad maxima de libros pendientes y cantidad dias de prestamo en formato numerico, sin puntos ni simbolos.");
 					return false;
 				}
-			
 		}
 		else {
 			request.setAttribute("mensaje", "Campos incompletos.");

@@ -46,20 +46,25 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 				try {
 					ArrayList<ArrayList<Ejemplar>> disponibles = new ArrayList<ArrayList<Ejemplar>>();
 					Reserva reserva = rl.getOne(Integer.parseInt(request.getParameter("id_reserva")));
-					for (LibroReserva lr : reserva.getLibros()) {
-						disponibles.add(el.getAllDisponibles(lr.getLibro()));
+					if (reserva != null) {
+						for (LibroReserva lr : reserva.getLibros()) {
+							disponibles.add(el.getAllDisponibles(lr.getLibro()));
+						}
+						request.setAttribute("ejemplares", disponibles);
+						request.setAttribute("JSP", "SeleccionEjemplar");
+						request.getRequestDispatcher("WEB-INF/Bibliotecario.jsp").forward(request, response);
 					}
-					request.setAttribute("ejemplares", disponibles);
+					else {
+						request.setAttribute("mensaje", "No se pudo obtener los ejemplares. La reserva no existe.");
+						response.sendRedirect("RetiroServlet");
+					}
 				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
 					request.setAttribute("mensaje", "No se pudo obtener los ejemplares");
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					request.setAttribute("mensaje", "No se pudo obtener los ejemplares");
 				}
 			}
-			request.setAttribute("JSP", "SeleccionEjemplar");
-			request.getRequestDispatcher("WEB-INF/Bibliotecario.jsp").forward(request, response);
+			else response.sendRedirect("RetiroServlet");
 		}
 	}
 
@@ -93,18 +98,15 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 							}
 						}
 					}
-					if(!lineasdp.isEmpty())
-					{
+					if(!lineasdp.isEmpty()) {
 						prestamo.setLineasPrestamo(lineasdp);
 						sl.realizaPrestamo(prestamo);
 						rl.entregarReserva(reserva);
 					}
 				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					request.setAttribute("mensaje", "No se pudo obtener los ejemplares");
+					request.setAttribute("mensaje", "No se pudo obtener los ejemplares debido a un error en los datos suministrados.");
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					request.setAttribute("mensaje", "No se pudo obtener los ejemplares");
+					request.setAttribute("mensaje", "No se pudo obtener los ejemplares debido a un error en la base de datos.");
 				}
 			}
 			response.sendRedirect("RetiroServlet");

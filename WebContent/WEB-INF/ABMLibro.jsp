@@ -176,13 +176,5 @@
 						<%} %>
 </div>
 
-  
-   <script>
-  $( function() {
-    $( "#datepicker2" ).datepicker({maxDate: -1,changeMonth: true,
-        changeYear: true});
-    $( "#datepicker2" ).datepicker( "option", "dateFormat","yy-mm-dd");
-  } );
-  </script>
 </body>
 </html>

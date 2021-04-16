@@ -70,17 +70,20 @@ public class ReservasSocioServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Socio)) {
-			if (request.getParameter("action").equals("cancel")) {
+			if (request.getParameter("action")!=null && request.getParameter("action").equals("cancel") && request.getParameter("reserva")!=null) {
 				ReservaLogic rl = new ReservaLogic();
 				try {
 					Reserva reserva = rl.getOne(Integer.parseInt(request.getParameter("reserva")));
-					rl.delete(reserva);
-					request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-					request.setAttribute("mensaje", "Se canceló la reserva");
+					if (reserva!=null) {
+						rl.delete(reserva);
+						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+						request.setAttribute("mensaje", "Se canceló la reserva");
+					}
+					else request.setAttribute("mensaje", "Error, la reserva no existe.");
 				} catch (NumberFormatException e) {
-					request.setAttribute("mensaje", "No se pudo cancelar la reserva");
+					request.setAttribute("mensaje", "Error en los datos suministrados.");
 				} catch (SQLException e) {
-					request.setAttribute("mensaje", "No se pudo cancelar la reserva");
+					request.setAttribute("mensaje", "No se pudo cancelar la reserva.");
 				}
 			}
 			doGet(request, response);

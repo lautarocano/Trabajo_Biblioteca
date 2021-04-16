@@ -74,46 +74,46 @@ public class ABMEjemplarServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
-			if (request.getParameter("action-type").equals("agregar")) {	
-				Ejemplar ejemplar = new Ejemplar();
-				LibroLogic ll = new LibroLogic();
-				EjemplarLogic el = new EjemplarLogic();
-				try {
-					int idLibro = (Integer.parseInt(request.getParameter("IdLibro")));
-					ejemplar.setLibro(ll.getOne(idLibro));
-					if (ejemplar.getLibro() == null) {
-						request.setAttribute("mensaje", "Id de libro inválida");
+			if (request.getParameter("action-type")!=null) {
+				if (request.getParameter("action-type").equals("agregar")) {	
+					Ejemplar ejemplar = new Ejemplar();
+					LibroLogic ll = new LibroLogic();
+					EjemplarLogic el = new EjemplarLogic();
+					try {
+						int idLibro = (Integer.parseInt(request.getParameter("IdLibro")));
+						ejemplar.setLibro(ll.getOne(idLibro));
+						if (ejemplar.getLibro() == null) {
+							request.setAttribute("mensaje", "Id de libro inválida");
+						}
+						else {
+							el.insert(ejemplar);
+							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Ejemplar agregado correctamente");
+						}
+					} catch (NumberFormatException e) {
+						request.setAttribute("mensaje", "Error en los datos ingresados");
+					} catch (SQLException e) {
+						request.setAttribute("mensaje", "No se pudo agregar el ejemplar");
 					}
-					else {
-						el.insert(ejemplar);
-						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-						request.setAttribute("mensaje", "Ejemplar agregado correctamente");
-					}
-				} catch (NumberFormatException e) {
-					request.setAttribute("mensaje", "Error en los datos ingresados");
-				} catch (SQLException e) {
-					request.setAttribute("mensaje", "No se pudo agregar el ejemplar");
 				}
-			}
-			else if (request.getParameter("action-type").equals("eliminar")) {	
-				Ejemplar ejemplar = null;
-				EjemplarLogic el = new EjemplarLogic();
-				try {
-					ejemplar = el.getOne(Integer.parseInt(request.getParameter("id")));
-					if (ejemplar != null){
-						el.delete(ejemplar);
-						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-						request.setAttribute("mensaje", "Ejemplar eliminado correctamente");
+				else if (request.getParameter("action-type").equals("eliminar")) {	
+					Ejemplar ejemplar = null;
+					EjemplarLogic el = new EjemplarLogic();
+					try {
+						ejemplar = el.getOne(Integer.parseInt(request.getParameter("id")));
+						if (ejemplar != null){
+							el.delete(ejemplar);
+							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Ejemplar eliminado correctamente");
+						}
+						else {
+							request.setAttribute("mensaje", "Id de ejemplar inválida");
+						}
+					} catch (NumberFormatException e) {
+						request.setAttribute("mensaje", "Error en los datos ingresados");
+					} catch (SQLException e) {
+						request.setAttribute("mensaje", "No se pudo eliminar el ejemplar");
 					}
-					else {
-						request.setAttribute("mensaje", "Id de ejemplar inválida");
-					}
-				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					request.setAttribute("mensaje", "Error en los datos ingresados");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					request.setAttribute("mensaje", "No se pudo eliminar el ejemplar");
 				}
 			}
 			this.doGet(request, response);
