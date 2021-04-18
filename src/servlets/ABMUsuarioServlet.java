@@ -149,8 +149,8 @@ public class ABMUsuarioServlet extends HttpServlet {
 	}
 	
 	private static Boolean ValidarDatos (HttpServletRequest request) {
-		if (!request.getParameter("user").isBlank() && !request.getParameter("password").isBlank() && 
-				!request.getParameter("tipo").isBlank()) {
+		if (Servlet.parameterNotNullOrBlank(request.getParameter("user")) && Servlet.parameterNotNullOrBlank(request.getParameter("password")) && 
+				Servlet.parameterNotNullOrBlank(request.getParameter("tipo"))) {
 				try {
 					Integer.parseInt(request.getParameter("tipo"));
 					return true;

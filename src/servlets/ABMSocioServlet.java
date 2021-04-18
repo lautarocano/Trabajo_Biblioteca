@@ -139,9 +139,9 @@ public class ABMSocioServlet extends HttpServlet {
 	}
 	
 	private static Boolean ValidarDatos (HttpServletRequest request) {
-		if (!request.getParameter("nombre").isBlank() && !request.getParameter("apellido").isBlank() && 
-				!request.getParameter("telefono").isBlank() && !request.getParameter("domicilio").isBlank() &&
-				!request.getParameter("dni").isBlank() && !request.getParameter("email").isBlank()) {
+		if (Servlet.parameterNotNullOrBlank(request.getParameter("nombre")) && Servlet.parameterNotNullOrBlank(request.getParameter("apellido")) && 
+				Servlet.parameterNotNullOrBlank(request.getParameter("telefono")) && Servlet.parameterNotNullOrBlank(request.getParameter("domicilio")) &&
+				Servlet.parameterNotNullOrBlank(request.getParameter("dni")) && Servlet.parameterNotNullOrBlank(request.getParameter("email"))) {
 			if (ValidarMail(request.getParameter("email"))) {
 				try {
 					Integer.parseInt(request.getParameter("dni"));

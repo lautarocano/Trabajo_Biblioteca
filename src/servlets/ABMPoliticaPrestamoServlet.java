@@ -119,8 +119,8 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 	}
 	
 	private static Boolean ValidarDatos (HttpServletRequest request) {
-		if (!request.getParameter("cant_max_libros_pend").isBlank() && !request.getParameter("fecha_politica_prestamo").isBlank() && 
-				!request.getParameter("cant_dias_prestamo").isBlank() ) {
+		if (Servlet.parameterNotNullOrBlank(request.getParameter("cant_max_libros_pend")) && Servlet.parameterNotNullOrBlank(request.getParameter("fecha_politica_prestamo")) && 
+				Servlet.parameterNotNullOrBlank(request.getParameter("cant_dias_prestamo")) ) {
 				try {
 					Integer.parseInt(request.getParameter("cant_max_libros_pend"));
 					Integer.parseInt(request.getParameter("cant_dias_prestamo"));

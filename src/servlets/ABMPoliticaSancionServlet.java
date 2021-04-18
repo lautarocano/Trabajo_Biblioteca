@@ -124,8 +124,8 @@ public class ABMPoliticaSancionServlet extends HttpServlet {
 	}
 	
 	private static Boolean ValidarDatos (HttpServletRequest request) {
-		if (!request.getParameter("dias_atraso_desde").isBlank() && !request.getParameter("dias_atraso_hasta").isBlank() && 
-				!request.getParameter("dias_sancion").isBlank() ) {
+		if (Servlet.parameterNotNullOrBlank(request.getParameter("dias_atraso_desde")) && Servlet.parameterNotNullOrBlank(request.getParameter("dias_atraso_hasta")) && 
+				Servlet.parameterNotNullOrBlank(request.getParameter("dias_sancion")) ) {
 				try {
 					Integer.parseInt(request.getParameter("dias_atraso_desde"));
 					Integer.parseInt(request.getParameter("dias_atraso_hasta"));
