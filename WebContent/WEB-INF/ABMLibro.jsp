@@ -39,6 +39,7 @@
 		        <span class="td">Fecha de Edición</span>
 		        <span class="td">Genero</span>
 		        <span class="td">Ejemplares</span>
+		        <span class="td">Imagen</span>
 		        <span class="td"></span>
 		        <span class="td"></span>
 		    </div>
@@ -93,9 +94,44 @@
 		    	<span class="td">
 	        		<a href="ABMEjemplarServlet?IdLibro=<%=l.getId() %>">Ver ejemplares</a>
 		    	</span>
+		    	<span class="td">
+	        		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal<%=l.getId()%>">
+					  Ver Imagen
+					</button>
+		    	</span>
 	        	<span class="td"><button type="submit" name="action-type" value="editar" class="btn btn-success btn-block" >Aceptar</button> </span>
 	        	<span class="td"><a class="btn btn-danger btn-block" href="ABMLibroServlet">Cancelar</a></span>
 	        </form>
+	        <!-- Modal -->
+				<div class="modal fade" id="modal<%=l.getId()%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel<%=l.getId()%>" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				    <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel<%=l.getId()%>"><%=l.getTitulo()%></h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				    </div>
+				    <div class="modal-body">
+					  <img class="card-img-top" src="ImagesServlet?id=<%=l.getId()%>" alt="">
+					</div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+				        <form action="ImagesServlet" method="POST" name="DeleteImage">
+				        <input name="id" type="hidden" class="form-control" id="id" value="<%=l.getId() %>"  required>
+				        <input name="image" type="hidden" class="form-control" id="image" value="<%=l.getId()+".jpg" %>"  required>
+				        <button type="submit" name="action" value="eliminar" class="btn btn-primary">Eliminar imagen</button>
+				        </form>
+				        <form action="ImagesServlet" method="POST" enctype="multipart/form-data" name="UploadImage">
+				        <input name="id" type="hidden" class="form-control" id="id" value="<%=l.getId() %>"  required>
+				        <input name="image" type="file" class="form-control" id="image" required>
+				        <button type="submit" name="action" value="agregar" class="btn btn-primary">Agregar imagen</button>
+				        </form>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+				<!-- Modal -->
 	        <%  	} 
 	    			else {
 	        %><form class="tr" action="ABMLibroServlet" method="POST" name="ABMLibro">

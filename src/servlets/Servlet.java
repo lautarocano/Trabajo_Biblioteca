@@ -61,10 +61,27 @@ public class Servlet extends HttpServlet {
 		}	
 		else return true;
 	}
+	
+	public static Boolean VerificarUsuario(HttpServletRequest request,HttpServletResponse response) throws IOException, ServletException{
+		//Si el Usuario es un tipo de usuario incorrecto se lo manda a la pagina de inicio.
+		HttpSession sesion = request.getSession();
+		if(((Usuario)(sesion.getAttribute("usuario")))==null) {
+			response.sendRedirect("LoginServlet");
+			return false;
+		}
+		else return true;
+	}
 
 	public static Boolean VerificarSesionYUsuario(HttpServletRequest request, HttpServletResponse response, Usuario.tipoUsuario tipoUsuario) throws ServletException, IOException {			
 		if (VerificarSesion(request, response)) {
 			return VerificarUsuario(request, response, tipoUsuario);
+		}
+		else return false;
+	}
+	
+	public static Boolean VerificarSesionYUsuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {			
+		if (VerificarSesion(request, response)) {
+			return VerificarUsuario(request, response);
 		}
 		else return false;
 	}
