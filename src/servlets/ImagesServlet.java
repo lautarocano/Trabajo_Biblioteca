@@ -61,7 +61,7 @@ public class ImagesServlet extends HttpServlet {
 							System.out.println("2");
 							String aFileName = new String(request.getParameter("image").getBytes( 
 							        "iso8859-1"), "gbk"); 
-						    File file = new File("WEB-INF/Images/", aFileName); 
+						    File file = new File("Images/", aFileName); 
 						    if (!file.isDirectory()) { 
 						    	System.out.println(file.getAbsolutePath());
 						      file.delete(); 
@@ -93,7 +93,7 @@ public class ImagesServlet extends HttpServlet {
 							        String fileName = fi.getName(); 
 							        if (fileName != null) { 
 							          File fullFile = new File(fi.getName()); 
-							          File savedFile = new File("WEB-INF/Images/", fullFile.getName()); 
+							          File savedFile = new File("Images/", fullFile.getName()); 
 							          fi.write(savedFile); 
 							          request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 									request.setAttribute("mensaje", "Imagen agregada correctamente");

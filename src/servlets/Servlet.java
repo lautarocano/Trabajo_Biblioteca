@@ -113,7 +113,7 @@ public class Servlet extends HttpServlet {
 	        transport.sendMessage(message, message.getAllRecipients());
 	        transport.close();
 		} catch (AddressException e) {
-			// TODO Auto-generated catch block
+			// Hacer el throw please
 			e.printStackTrace();
 		}
 	    catch (MessagingException me) {
@@ -123,8 +123,8 @@ public class Servlet extends HttpServlet {
 	
 	public static Boolean parameterNotNullOrBlank(String parametro) {
 		if (parametro != null) {
-			if (parametro.isBlank()) return false;
-			else return true;
+			/*if (parametro.isBlank()) return false;
+			else*/ return true;
 		}
 		else return false;
 	}
