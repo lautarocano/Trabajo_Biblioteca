@@ -219,31 +219,24 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 	public Boolean isSancionado(Socio socio) throws SQLException {
 		PreparedStatement pst = null;
 		ResultSet rs = null;
+		Boolean sancionado = false;
 		try {
 			this.openConnection();
-			pst = conn.prepareStatement("call Is_Sancionado(1)");
-			//pst.setInt(1, socio.getId());
-			//pst.setInt(2, socio.getId());
+			pst = conn.prepareStatement("SELECT DATEDIFF(CURDATE(),fecha_sancion) AS diferencia,dias_sancion FROM sanciones WHERE id_socio = ?");
+			pst.setInt(1, socio.getId());
 			rs = pst.executeQuery();
-			if (rs.next()) {
-				if(rs.getInt("diferencia")<rs.getInt("dias_sancion")) {
-					return false;
-				}
-				else {
-					return true;
-				}
+			while (rs.next()) {
+				if(rs.getInt("diferencia")<rs.getInt("dias_sancion"))
+					sancionado = true;
 			}
-			else {
-				return true;
-			}
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			throw e;
 		}
 		finally {
 			this.closeConnection(pst, rs);
 		}
+		return sancionado;
 	}	
 	
 	public int getNotReturnedBooks(Socio socio) throws SQLException {

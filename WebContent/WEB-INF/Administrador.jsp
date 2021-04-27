@@ -32,7 +32,8 @@
         <a href="ABMSocioServlet" class="list-group-item list-group-item-action bg-light">ABM Socio</a>
         <a href="ABMUsuarioServlet" class="list-group-item list-group-item-action bg-light">ABM Usuario</a>
         <a href="ABMPoliticaPrestamoServlet" class="list-group-item list-group-item-action bg-light">ABM Politica Prestamo</a>
-        <a href="ABMPoliticaSancionServlet" class="list-group-item list-group-item-action bg-light">ABM Politica Sanción</a>       
+        <a href="ABMPoliticaSancionServlet" class="list-group-item list-group-item-action bg-light">ABM Politica Sanción</a>  
+        <a href="LogsServlet" target="_blank" class="list-group-item list-group-item-action bg-light">Abrir log de errores</a>     
       </div>
     </div>
     <!-- /#sidebar-wrapper -->

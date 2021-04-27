@@ -3,9 +3,9 @@ package util;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.logging.ConsoleHandler;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -15,18 +15,17 @@ public class Bitacora {
 
     private static Logger LOGGER;
     
-    private static Logger getBitacora() {
+    private static Logger getBitacora(String rootDirectory) {
     	if (LOGGER == null) {
     		LOGGER = Logger.getLogger("bitacora");
     		try {
-                Handler consoleHandler = new ConsoleHandler();
-                FileHandler fileHandler = new FileHandler("C:/Users/Danisa/repositories/Trabajo_Biblioteca/resources/bitacora.txt", true);
+                Path path = Paths.get(rootDirectory + "/WEB-INF/bitacora.txt");
+                FileHandler fileHandler = new FileHandler(path.toString(), true);
                 SimpleFormatter simpleFormatter = new SimpleFormatter();
                 fileHandler.setFormatter(simpleFormatter);
-                LOGGER.addHandler(consoleHandler);
                 LOGGER.addHandler(fileHandler);
-                consoleHandler.setLevel(Level.ALL);
                 fileHandler.setLevel(Level.ALL);
+                LOGGER.setLevel(Level.ALL);
                 LOGGER.log(Level.INFO, "Bitacora inicializada");
             } catch (IOException ex) {
                 LOGGER.log(Level.SEVERE, "Error de IO");
@@ -37,8 +36,8 @@ public class Bitacora {
     	return LOGGER;
     }
     
-    public static void log(java.util.logging.Level level, String mensaje) {
-    	getBitacora().log(level, mensaje);
+    public static void log(java.util.logging.Level level, String mensaje, String rootDirectory) {
+    	getBitacora(rootDirectory).log(level, mensaje);
     }
 
     /**

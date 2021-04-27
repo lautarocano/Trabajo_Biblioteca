@@ -50,10 +50,8 @@ public class LoginServlet extends HttpServlet {
 					} catch (SQLException e) {
 						request.setAttribute("mensaje", "No existe usuario con ese email.");
 					}
-					
 				}
-				catch (SQLException e) {
-					
+				catch (SQLException e) {	
 					request.setAttribute("mensaje", "No existe un socio con ese mail");
 				}
 			}

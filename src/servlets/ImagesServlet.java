@@ -2,6 +2,8 @@ package servlets;
 
 import java.io.File; 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.Iterator; 
 import java.util.List; 
@@ -41,7 +43,7 @@ public class ImagesServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(Servlet.VerificarSesionYUsuario(request, response)) {
 			if(request.getParameter("id")!=null) {
-				request.getRequestDispatcher("WEB-INF/Images/"+request.getParameter("id")+".jpg").forward(request, response);
+				request.getRequestDispatcher("WEB-INF/images/"+request.getParameter("id")+".jpg").forward(request, response);
 			}
 		}
 	}
@@ -61,7 +63,9 @@ public class ImagesServlet extends HttpServlet {
 							System.out.println("2");
 							String aFileName = new String(request.getParameter("image").getBytes( 
 							        "iso8859-1"), "gbk"); 
-						    File file = new File("Images/", aFileName); 
+							String rootDirectory = request.getSession().getServletContext().getRealPath("/");
+						    Path path = Paths.get(rootDirectory + "/WEB-INF/images/");
+						    File file = new File(path.toString(), aFileName); 
 						    if (!file.isDirectory()) { 
 						    	System.out.println(file.getAbsolutePath());
 						      file.delete(); 
@@ -93,7 +97,9 @@ public class ImagesServlet extends HttpServlet {
 							        String fileName = fi.getName(); 
 							        if (fileName != null) { 
 							          File fullFile = new File(fi.getName()); 
-							          File savedFile = new File("Images/", fullFile.getName()); 
+							          String rootDirectory = request.getSession().getServletContext().getRealPath("/");
+									  Path path = Paths.get(rootDirectory + "/WEB-INF/images/");
+							          File savedFile = new File(path.toString(), fullFile.getName()); 
 							          fi.write(savedFile); 
 							          request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 									request.setAttribute("mensaje", "Imagen agregada correctamente");

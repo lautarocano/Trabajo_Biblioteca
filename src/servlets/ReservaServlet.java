@@ -72,7 +72,8 @@ public class ReservaServlet extends HttpServlet {
 				request.setAttribute("ListaLibros", listaLibros);
 			} catch (SQLException e) {
 				request.setAttribute("mensaje", "Error en la base de datos.");
-				Bitacora.log(Level.SEVERE, Bitacora.getStackTrace(e));
+				String rootDirectory = request.getSession().getServletContext().getRealPath("/");
+				Bitacora.log(Level.SEVERE, Bitacora.getStackTrace(e), rootDirectory);
 				request.setAttribute("ListaLibros", new ArrayList<Libro>());
 				request.setAttribute("ListaGeneros", new ArrayList<Genero>());
 			}
