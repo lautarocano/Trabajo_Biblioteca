@@ -53,7 +53,7 @@ if (request.getParameter("libro")!=null) {
 			<%for (Libro l : listaLibro) {%>
 	          <div class="col-lg-4 col-md-6 mb-4">
 	            <div class="card h-100">
-	              <a href="#"><img class="card-img-top" src="ImagesServlet?id=1" alt=""></a>
+	              <a href="#"><img class="card-img-top" src="ImagesServlet?id=<%=l.getId()%>" alt=""></a>
 	              <div class="card-body">
 	                <h4 class="card-title">
 	                  <a href="#"><%=l.getTitulo() %></a>
@@ -81,7 +81,7 @@ if (request.getParameter("libro")!=null) {
 					    <div class="container-fluid">
 						    <div class="row">
 						      <div class="col-md-6">
-						      	<img class="card-img-top" src="ImagesServlet?id=1" alt="">
+						      	<img class="card-img-top" src="ImagesServlet?id=<%=l.getId()%>" alt="">
 						      </div>
 						      <div class="col">
 						      	<p>Autor: <%=l.getAutor() %></p>

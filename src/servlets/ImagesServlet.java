@@ -1,9 +1,6 @@
 package servlets;
 
-import java.io.File; 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.Iterator; 
 import java.util.List; 
@@ -17,6 +14,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem; 
 import org.apache.commons.fileupload.disk.DiskFileItemFactory; 
 import org.apache.commons.fileupload.servlet.ServletFileUpload; 
+
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+
 
 import logic.LibroLogic;
 import model.Libro;
@@ -36,6 +43,15 @@ public class ImagesServlet extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
+    
+    private static final String BUCKET_URL = "https://imagenesbibliotecabucket.s3-sa-east-1.amazonaws.com/";
+    private static final int THRESHOLD_SIZE = 1024 * 1024 * 3;  // 3MB
+    private static final int MAX_FILE_SIZE = 1024 * 1024 * 140; // 140MB
+    private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 150; // 150MB
+    private static final String UUID_STRING = "uuid";
+    private static final String AWS_ACCESS_KEY_ID = "AKIA6NS42AHIMPYBU7EU";
+    private static final String AWS_SECRET_ACCESS_KEY = "";
+    private static final String BUCKET_NAME = "imagenesbibliotecabucket";
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -43,7 +59,7 @@ public class ImagesServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(Servlet.VerificarSesionYUsuario(request, response)) {
 			if(request.getParameter("id")!=null) {
-				request.getRequestDispatcher("WEB-INF/images/"+request.getParameter("id")+".jpg").forward(request, response);
+				response.sendRedirect(BUCKET_URL+request.getParameter("id")+".jpg");
 			}
 		}
 	}
@@ -53,25 +69,24 @@ public class ImagesServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
+            System.setProperty("aws.accessKeyId", AWS_ACCESS_KEY_ID);
+            System.setProperty("aws.secretKey", AWS_SECRET_ACCESS_KEY);
+			final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.SA_EAST_1).build();
 			if (request.getParameter("action")!=null && request.getParameter("action").equals("eliminar")) {	
 					Libro libro=null;
 					LibroLogic ll=new LibroLogic();
-					System.out.println("1");
 					try {
 						libro = ll.getOne(Integer.parseInt(request.getParameter("id")));
 						if (libro != null) {
-							System.out.println("2");
 							String aFileName = new String(request.getParameter("image").getBytes( 
 							        "iso8859-1"), "gbk"); 
-							String rootDirectory = request.getSession().getServletContext().getRealPath("/");
-						    Path path = Paths.get(rootDirectory + "/WEB-INF/images/");
-						    File file = new File(path.toString(), aFileName); 
-						    if (!file.isDirectory()) { 
-						    	System.out.println(file.getAbsolutePath());
-						      file.delete(); 
-						      request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+							try {
+							    s3.deleteObject(BUCKET_NAME, aFileName);
+							    request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 								request.setAttribute("mensaje", "Imagen eliminada.");
-						    }
+							} catch (AmazonServiceException ase) {
+								System.out.println(aFileName + ":error:" + ase.getMessage());
+							}
 						}
 						else {
 							request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
@@ -79,40 +94,75 @@ public class ImagesServlet extends HttpServlet {
 						}
 					} catch (NumberFormatException e) {
 						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
-						request.setAttribute("mensaje", "Id de libro inválida");
+						request.setAttribute("mensaje", "Id de libro invï¿½lida");
 					} catch (SQLException e) {
 						request.setAttribute("mensaje", "No se pudo eliminar la imagen");
 					} 
 				}
 				else {
-					try {
-							      // Create a factory for disk-based file items 
-							      DiskFileItemFactory factory = new DiskFileItemFactory(); 
-							      // Create a new file upload handler 
-							      ServletFileUpload upload = new ServletFileUpload(factory); 
-							      List < FileItem > items = upload. parseRequest (request); // Get all the files 
-							      Iterator<FileItem> i = items.iterator(); 
-							      while (i.hasNext()) { 
-							        FileItem fi = (FileItem) i.next(); 
-							        String fileName = fi.getName(); 
-							        if (fileName != null) { 
-							          File fullFile = new File(fi.getName()); 
-							          String rootDirectory = request.getSession().getServletContext().getRealPath("/");
-									  Path path = Paths.get(rootDirectory + "/WEB-INF/images/");
-							          File savedFile = new File(path.toString(), fullFile.getName()); 
-							          fi.write(savedFile); 
-							          request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-									request.setAttribute("mensaje", "Imagen agregada correctamente");
-							        } 
-							      }
-					} catch (SQLException e) {
-						request.setAttribute("mensaje", "No se pudo agregar la imagen");
-					}
-					catch (Exception e) { 
-					      // You can jump to the wrong page 
-					      e.printStackTrace(); 
-					    } 
-			}
+					if (ServletFileUpload.isMultipartContent(request)) {
+						DiskFileItemFactory factory = new DiskFileItemFactory();
+				        factory.setSizeThreshold(THRESHOLD_SIZE);
+				 
+				        ServletFileUpload upload = new ServletFileUpload(factory);
+				        upload.setFileSizeMax(MAX_FILE_SIZE);
+				        upload.setSizeMax(MAX_REQUEST_SIZE);
+				 
+				        String uuidValue = "";
+				        FileItem itemFile = null;
+				 
+				        try {
+				            // parses the request's content to extract file data
+				            List<FileItem> formItems = upload.parseRequest(request);
+				            Iterator<FileItem> iter = formItems.iterator();
+				 
+				            // iterates over form's fields to get UUID Value
+				            while (iter.hasNext()) {
+				                FileItem item = (FileItem) iter.next();
+				                if (item.isFormField()) {
+				                    if (item.getFieldName().equalsIgnoreCase(UUID_STRING)) {
+				                        uuidValue = item.getString();
+				                    }
+				                }
+				                // processes only fields that are not form fields
+				                if (!item.isFormField()) {
+				                    itemFile = item;
+				                }
+				            }
+				 
+				            if (itemFile != null) {
+				                // get item inputstream to upload file into s3 aws
+				 
+				                //BasicAWSCredentials awsCredentials = new BasicAWSCredentials(AMAZON_ACCESS_KEY, AMAZON_SECRET_KEY);
+				 
+				                //AmazonS3 s3client = new AmazonS3Client(awsCredentials);
+				                try {
+				 
+				                    ObjectMetadata om = new ObjectMetadata();
+				                    om.setContentLength(itemFile.getSize());
+				                    String keyName = uuidValue + ".jpg";
+				 
+				                    s3.putObject(new PutObjectRequest(BUCKET_NAME, keyName, itemFile.getInputStream(), om));
+				                    s3.setObjectAcl(BUCKET_NAME, keyName, CannedAccessControlList.PublicRead);
+				 
+				                } catch (AmazonServiceException ase) {
+				                    System.out.println(uuidValue + ":error:" + ase.getMessage());
+				 
+				                } catch (AmazonClientException ace) {
+				                	System.out.println(uuidValue + ":error:" + ace.getMessage());
+				                }
+				 
+				 
+				            } else {
+				            	System.out.println(uuidValue + ":error:" + "No Upload file");
+				            }
+				 
+				        } catch (Exception ex) {
+				        	System.out.println(uuidValue + ":" + ":error: " + ex.getMessage());
+				        }
+				        System.out.println(uuidValue + ":Upload done");
+			        }
+				}
 			request.getRequestDispatcher("ABMLibroServlet").forward(request, response);
 		}
 	}

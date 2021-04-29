@@ -38,6 +38,11 @@ public class ReservaServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Socio)) {
+			// Set standard HTTP/1.1 no-cache headers.
+			response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
+
+			// Set standard HTTP/1.0 no-cache header.
+			response.setHeader("Pragma", "no-cache");
 			LibroLogic ll = new LibroLogic();
 			GeneroLogic gl = new GeneroLogic();
 			Genero genero = null;
