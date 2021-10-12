@@ -41,9 +41,6 @@
       <div class="list-group list-group-flush">
         <a href="RetiroServlet" class="list-group-item list-group-item-action bg-light">Retiro reserva</a>
         <a href="DevolucionServlet" class="list-group-item list-group-item-action bg-light">Devolución</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
       </div>
     </div>
     <!-- /#sidebar-wrapper -->

@@ -29,7 +29,7 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
   $( function() {
-    $( "#datepicker" ).datepicker({maxDate: -1,changeMonth: true,
+    $( "#datepicker" ).datepicker({minDate: +1,changeMonth: true,
         changeYear: true});
     $( "#datepicker" ).datepicker( "option", "dateFormat","yy-mm-dd");
   } );
