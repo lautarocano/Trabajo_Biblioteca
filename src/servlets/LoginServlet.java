@@ -42,13 +42,18 @@ public class LoginServlet extends HttpServlet {
 				UsuarioLogic ul = new UsuarioLogic();
 				try {
 					Socio socio = sl.getOneByEmail(email);
+					if (socio!=null){
 					try {
 						Usuario usuario = ul.getOneBySocio(socio.getId());
 						Servlet.enviarConGMail(socio.getEmail(), "Recuperación de usuario", "Su usuario es: "+usuario.getNombreUsuario()+"\nSu contraseña es: "+usuario.getPassword());
 						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 						request.setAttribute("mensaje", "Información de recuperación enviada.");
 					} catch (SQLException e) {
-						request.setAttribute("mensaje", "No existe usuario con ese email.");
+						request.setAttribute("mensaje", "No existe socio con ese email.");
+					}
+					}
+					else {
+						request.setAttribute("mensaje", "No existe socio con ese email.");	
 					}
 				}
 				catch (SQLException e) {	
@@ -58,14 +63,21 @@ public class LoginServlet extends HttpServlet {
 		}
 		try {
 			Usuario usActual = (Usuario) sesion.getAttribute("usuario");
-			if(usActual.getTipo()==tipoUsuario.Socio) {
-				response.sendRedirect("ReservaServlet");
+			if(usActual.getEstado()==true) {
+				if(usActual.getTipo()==tipoUsuario.Socio) {
+					response.sendRedirect("ReservaServlet");
+				}
+				else if(usActual.getTipo()==tipoUsuario.Bibliotecario) {
+					response.sendRedirect("RetiroServlet");
+				}
+				else if(usActual.getTipo()==tipoUsuario.Administrador) {
+					response.sendRedirect("ABMLibroServlet");
+				}
 			}
-			else if(usActual.getTipo()==tipoUsuario.Bibliotecario) {
-				response.sendRedirect("RetiroServlet");
-			}
-			else if(usActual.getTipo()==tipoUsuario.Administrador) {
-				response.sendRedirect("ABMLibroServlet");
+			else
+			{
+				request.setAttribute("mensaje", "Usuario dado de baja");
+				request.getRequestDispatcher("WEB-INF/Login.jsp").forward(request, response);
 			}
 		}
 		catch(java.lang.NullPointerException e) {
