@@ -10,7 +10,7 @@
 <title>Mis Préstamos</title>
 </head>
 <body>
-<h1>Reservas pendientes de entrega</h1>
+<h1>Prestamos actuales</h1>
 <div class="card-deck">
 <%
 @SuppressWarnings("unchecked")
