@@ -1,6 +1,7 @@
 package logic;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import data.LibroDAO;
@@ -86,4 +87,14 @@ private LibroDAO _LibroDAO;
 			throw exception;
 		}
 	}
+	
+	public ArrayList<LocalDate> getFechasDisponible(Libro lib, int cantMeses) throws SQLException {
+		try {
+			return this._LibroDAO.getFechasDisponible(lib, cantMeses);
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}
+	}
+	
 }

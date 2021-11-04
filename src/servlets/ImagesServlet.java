@@ -132,12 +132,7 @@ public class ImagesServlet extends HttpServlet {
 				 
 				            if (itemFile != null) {
 				                // get item inputstream to upload file into s3 aws
-				 
-				                //BasicAWSCredentials awsCredentials = new BasicAWSCredentials(AMAZON_ACCESS_KEY, AMAZON_SECRET_KEY);
-				 
-				                //AmazonS3 s3client = new AmazonS3Client(awsCredentials);
 				                try {
-				 
 				                    ObjectMetadata om = new ObjectMetadata();
 				                    om.setContentLength(itemFile.getSize());
 				                    String keyName = uuidValue + ".jpg";
@@ -150,9 +145,7 @@ public class ImagesServlet extends HttpServlet {
 				 
 				                } catch (AmazonClientException ace) {
 				                	System.out.println(uuidValue + ":error:" + ace.getMessage());
-				                }
-				 
-				 
+				                }				 
 				            } else {
 				            	System.out.println(uuidValue + ":error:" + "No Upload file");
 				            }

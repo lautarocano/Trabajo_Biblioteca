@@ -97,10 +97,11 @@ public class SocioLogic {
 		}
 	}
 	//Falta agregar validación de disponibilidad de libros
-	public void realizaPrestamo(Prestamo pres) throws SQLException {
+	public void retiraReservaYRealizaPrestamo(Prestamo pres, Reserva reserva) throws SQLException {
 		int cantMaxLibrosPend;
 		try {
 			PrestamoLogic pLogic = new PrestamoLogic();
+			ReservaLogic rl = null;
 			cantMaxLibrosPend = pLogic.getLimiteLibrosPendientes();
 			if (this._SocioDAO.isSancionado(pres.getSocio())) {
 				
@@ -113,6 +114,8 @@ public class SocioLogic {
 			}
 			else {
 				pLogic.insert(pres);
+				rl = new ReservaLogic();
+				rl.entregarReserva(reserva);
 			}
 		}
 		catch (SQLException exception) {

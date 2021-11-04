@@ -100,8 +100,10 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 					}
 					if(!lineasdp.isEmpty()) {
 						prestamo.setLineasPrestamo(lineasdp);
-						sl.realizaPrestamo(prestamo);
-						rl.entregarReserva(reserva);
+						sl.retiraReservaYRealizaPrestamo(prestamo, reserva);
+					}
+					else {
+						request.setAttribute("mensaje", "Error: reserva vacía o datos erróneos.");
 					}
 				} catch (NumberFormatException e) {
 					request.setAttribute("mensaje", "No se pudo obtener los ejemplares debido a un error en los datos suministrados.");

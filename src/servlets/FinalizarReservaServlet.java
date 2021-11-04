@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import logic.SocioLogic;
+import logic.LibroLogic;
 import model.Libro;
 import model.LibroReserva;
 import model.Reserva;
@@ -35,11 +36,25 @@ public class FinalizarReservaServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+    @SuppressWarnings("unchecked")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Socio)) {
 			if (request.getSession().getAttribute("libros")!=null) {
-				request.setAttribute("JSP", "FinalizarReserva");
-				request.getRequestDispatcher("WEB-INF/Socio.jsp").forward(request, response);
+				ArrayList<Libro> libros=((ArrayList<Libro>)request.getSession().getAttribute("libros"));
+				if (libros.size() > 0) {
+					LibroLogic ll = new LibroLogic();
+					try {
+						request.setAttribute("availableDays", ll.getFechasDisponible(ll.getOne(1), 2));
+					} catch (SQLException e) {
+						request.setAttribute("mensaje", "Error en la base de datos, inténtelo nuevamente en unos minutos.");
+					}
+					request.setAttribute("JSP", "FinalizarReserva");
+					request.getRequestDispatcher("WEB-INF/Socio.jsp").forward(request, response);
+				}
+				else {
+					request.setAttribute("mensaje", "Carrito vacío, por favor agregue al menos un elemento.");
+					request.getRequestDispatcher("ReservaServlet").forward(request,response);
+				}
 			}
 			else {
 				request.setAttribute("mensaje", "Carrito vacío, por favor agregue al menos un elemento.");
