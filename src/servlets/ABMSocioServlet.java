@@ -65,7 +65,7 @@ public class ABMSocioServlet extends HttpServlet {
 						Usuario user = new Usuario();
 						user.setTipo(tipoUsuario.Socio);
 						user.setNombreUsuario(Integer.toString(socio.getDni()));
-						user.setPassword(socio.getApellido());
+						user.setPassword(socio.getApellido()+"123");
 						user.setEstado(false);
 						SocioLogic sl = new SocioLogic();
 						UsuarioLogic ul = new UsuarioLogic();

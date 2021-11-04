@@ -54,7 +54,7 @@ CREATE TABLE `generos` (
   `id_genero` int NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(125) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id_genero`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +63,7 @@ CREATE TABLE `generos` (
 
 LOCK TABLES `generos` WRITE;
 /*!40000 ALTER TABLE `generos` DISABLE KEYS */;
-INSERT INTO `generos` VALUES (1,'Comedia'),(2,'Terror'),(3,'Drama'),(4,'Suspenso'),(5,'Fantasia');
+INSERT INTO `generos` VALUES (1,'Ciencia ficción'),(2,'Terror'),(3,'Drama'),(4,'Suspenso'),(5,'Fantasia'),(6,'Drama adolescente');
 /*!40000 ALTER TABLE `generos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -92,7 +92,6 @@ CREATE TABLE `libro_reserva` (
 
 LOCK TABLES `libro_reserva` WRITE;
 /*!40000 ALTER TABLE `libro_reserva` DISABLE KEYS */;
-INSERT INTO `libro_reserva` VALUES (1,2,1),(2,1,2),(3,3,2),(4,3,3),(5,3,3),(6,2,3),(7,3,4),(8,3,4),(9,2,4),(10,3,5),(11,3,6);
 /*!40000 ALTER TABLE `libro_reserva` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +112,7 @@ CREATE TABLE `libros` (
   PRIMARY KEY (`id_libro`),
   KEY `fk_libros_generos_idx` (`id_genero`),
   CONSTRAINT `fk_libros_generos` FOREIGN KEY (`id_genero`) REFERENCES `generos` (`id_genero`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +121,7 @@ CREATE TABLE `libros` (
 
 LOCK TABLES `libros` WRITE;
 /*!40000 ALTER TABLE `libros` DISABLE KEYS */;
-INSERT INTO `libros` VALUES (1,'Tomas','La laguna','1','2020-06-07',2),(2,'Lautaro','La horca','1','2020-02-04',2),(3,'Julio Chavez','Los miserables','1','2020-01-01',3),(4,'Marcos Penia','Bajo la misma estrella','2','2018-01-03',1),(5,'asdasd','asdasd','1','2021-02-01',2);
+INSERT INTO `libros` VALUES (1,'Isaac Asimov','Yo, robot','1','2020-06-07',1),(2,'Andrzej Sapkowski','El último deseo','1','2002-02-04',5),(3,'J. R. R. Tolkien','La Comunidad del Anillo','6','2021-06-01',5),(4,'John Green','Ciudades de papel','2','2018-01-03',6),(5,'Stephen King','IT','6','2019-02-01',2),(6,'John Green','Bajo la misma estrella','4','2020-04-21',3);
 /*!40000 ALTER TABLE `libros` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -152,7 +151,6 @@ CREATE TABLE `lineasdeprestamo` (
 
 LOCK TABLES `lineasdeprestamo` WRITE;
 /*!40000 ALTER TABLE `lineasdeprestamo` DISABLE KEYS */;
-INSERT INTO `lineasdeprestamo` VALUES (1,1,1,_binary ''),(2,1,1,_binary '');
 /*!40000 ALTER TABLE `lineasdeprestamo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -169,7 +167,7 @@ CREATE TABLE `politicaprestamo` (
   `fecha_politica_prestamo` datetime NOT NULL,
   `cant_dias_prestamo` int NOT NULL,
   PRIMARY KEY (`idpoliticaprestamo`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,7 +176,7 @@ CREATE TABLE `politicaprestamo` (
 
 LOCK TABLES `politicaprestamo` WRITE;
 /*!40000 ALTER TABLE `politicaprestamo` DISABLE KEYS */;
-INSERT INTO `politicaprestamo` VALUES (1,5,'2000-02-15 00:00:00',3),(2,10,'2002-01-16 00:00:00',4),(3,40,'2002-01-17 00:00:00',2),(4,50,'2002-01-19 00:00:00',7),(5,3,'2002-01-20 00:00:00',6),(7,4,'1997-03-10 00:00:00',3),(8,2,'2002-01-25 00:00:00',2),(9,55,'2002-01-16 00:00:00',8);
+INSERT INTO `politicaprestamo` VALUES (1,3,'2010-02-17 00:00:00',4),(10,2,'2015-04-15 00:00:00',3),(11,4,'2019-09-18 00:00:00',5),(12,5,'2021-04-09 00:00:00',4);
 /*!40000 ALTER TABLE `politicaprestamo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -204,7 +202,7 @@ CREATE TABLE `politicasancion` (
 
 LOCK TABLES `politicasancion` WRITE;
 /*!40000 ALTER TABLE `politicasancion` DISABLE KEYS */;
-INSERT INTO `politicasancion` VALUES (1,1,5,3),(2,6,10,5),(3,11,15,7),(4,16,2000,100);
+INSERT INTO `politicasancion` VALUES (1,1,5,3),(2,6,10,5),(3,11,15,7),(4,16,20,10);
 /*!40000 ALTER TABLE `politicasancion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,7 +232,6 @@ CREATE TABLE `prestamos` (
 
 LOCK TABLES `prestamos` WRITE;
 /*!40000 ALTER TABLE `prestamos` DISABLE KEYS */;
-INSERT INTO `prestamos` VALUES (1,'2019-01-01',5,2,1,NULL),(2,'2020-01-01',6,2,1,NULL),(3,'2019-05-03',7,0,1,NULL),(4,'2019-04-03',9,1,1,NULL);
 /*!40000 ALTER TABLE `prestamos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -262,7 +259,6 @@ CREATE TABLE `reservas` (
 
 LOCK TABLES `reservas` WRITE;
 /*!40000 ALTER TABLE `reservas` DISABLE KEYS */;
-INSERT INTO `reservas` VALUES (1,'2021-01-30',_binary '\0',1),(2,'2021-01-29',_binary '\0',1),(3,'2021-01-21',_binary '\0',1),(4,'2021-01-22',_binary '\0',1),(5,'2021-01-06',_binary '\0',1),(6,'2021-01-30',_binary '\0',1);
 /*!40000 ALTER TABLE `reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -290,7 +286,6 @@ CREATE TABLE `sanciones` (
 
 LOCK TABLES `sanciones` WRITE;
 /*!40000 ALTER TABLE `sanciones` DISABLE KEYS */;
-INSERT INTO `sanciones` VALUES (1,1,'2019-07-01',5),(2,1,'2019-09-05',10);
 /*!40000 ALTER TABLE `sanciones` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -314,7 +309,7 @@ CREATE TABLE `socios` (
   PRIMARY KEY (`id_socio`),
   KEY `fk_socios_usuarios_idx` (`id_usuario`),
   CONSTRAINT `fk_socios_usuarios` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -323,7 +318,7 @@ CREATE TABLE `socios` (
 
 LOCK TABLES `socios` WRITE;
 /*!40000 ALTER TABLE `socios` DISABLE KEYS */;
-INSERT INTO `socios` VALUES (1,'Tomás','Ponce','tpopo@gmailox.com','nose12345','4445566333',41602902,_binary '',1),(2,'Lautaro','Cano','lau@gmail.com','asdasd333','1313123',4105150,_binary '\0',2);
+INSERT INTO `socios` VALUES (1,'Tomas','Ponce','poncetomaseduardo@gmail.com','Chaco','3412826001',41602902,_binary '\0',1),(2,'Lautaro','Cano','lautarojuancano@gmail.com','Cochabamba 1234','3412636021',40504604,_binary '\0',2),(3,'Juan','Perez','jperez12345679@gmail.com','Falso 123','341260312',40235505,_binary '\0',3);
 /*!40000 ALTER TABLE `socios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -341,7 +336,7 @@ CREATE TABLE `usuarios` (
   `estado` bit(1) NOT NULL,
   `tipo` int NOT NULL,
   PRIMARY KEY (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -350,7 +345,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'backtomas','1234567',_binary '\0',0),(2,'lautarogod','32659877',_binary '',1),(3,'germanneitormaster','487951',_binary '\0',1),(4,'alicebrancketivocih','1111111',_binary '',0);
+INSERT INTO `usuarios` VALUES (1,'tponce','123456789',_binary '\0',0),(2,'lcano','123456789',_binary '\0',1),(3,'admin','admin',_binary '\0',2),(5,'glorenzo','123456789',_binary '',0),(6,'nfernandez','123456789',_binary '',0);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -387,4 +382,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-02-11 19:43:22
+-- Dump completed on 2021-09-26 21:17:06

@@ -160,11 +160,11 @@ public class ABMLibroServlet extends HttpServlet {
 	private static Boolean ValidarDatos (HttpServletRequest request) {
 		if (Servlet.parameterNotNullOrBlank(request.getParameter("titulo")) && Servlet.parameterNotNullOrBlank(request.getParameter("autor")) && 
 				Servlet.parameterNotNullOrBlank(request.getParameter("fecha-edicion")) && Servlet.parameterNotNullOrBlank(request.getParameter("numero-edicion"))&&
-				Servlet.parameterNotNullOrBlank(request.getParameter("genero"))&& Servlet.parameterNotNullOrBlank(request.getParameter("cant-ejemplares"))) {
+				Servlet.parameterNotNullOrBlank(request.getParameter("genero"))/*&& Servlet.parameterNotNullOrBlank(request.getParameter("cant-ejemplares"))*/) {
 				try {
 					Integer.parseInt(request.getParameter("numero-edicion"));
 					Integer.parseInt(request.getParameter("genero"));
-					Integer.parseInt(request.getParameter("cant-ejemplares"));
+					/*Integer.parseInt(request.getParameter("cant-ejemplares"));*/
 					LocalDate.parse(request.getParameter("fecha-edicion"));
 					return true;
 				}

@@ -37,7 +37,7 @@
   
    <script>
   $( function() {
-    $( "#datepicker2" ).datepicker({maxDate: -1,changeMonth: true,
+    $( "#datepicker2" ).datepicker({minDate:+0,changeMonth: true,
         changeYear: true});
     $( "#datepicker2" ).datepicker( "option", "dateFormat","yy-mm-dd");
   } );

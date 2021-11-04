@@ -50,10 +50,10 @@
 <div class="table">
 		<div class="theader">
 		    <div class="tr">
-		        <span class="td">Título</span>
+		        <span class="td">Tï¿½tulo</span>
 		        <span class="td">Autor</span>
-		        <span class="td">Nro de Edición</span>
-		        <span class="td">Fecha de Edición</span>
+		        <span class="td">Nro de Ediciï¿½n</span>
+		        <span class="td">Fecha de Ediciï¿½n</span>
 		        <span class="td">Genero</span>
 		        <span class="td"></span>
 		        <span class="td"></span>

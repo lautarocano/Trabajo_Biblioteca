@@ -57,7 +57,6 @@ public class FinalizarReservaServlet extends HttpServlet {
 				}
 			}
 			else {
-				request.setAttribute("mensaje", "Carrito vacío, por favor agregue al menos un elemento.");
 				request.getRequestDispatcher("ReservaServlet").forward(request,response);
 			}
 		}
@@ -99,8 +98,8 @@ public class FinalizarReservaServlet extends HttpServlet {
 								sl.realizaReserva(reserva);
 								request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 								request.setAttribute("mensaje", "Reserva guardada.");
-								request.getSession().setAttribute("libros", null);
 								Servlet.enviarConGMail(socio.getEmail(), "Reserva Biblioteca", "Ha realizado una reserva con éxito");
+								request.getSession().setAttribute("libros", null);
 							} catch (SQLException e) {
 								request.setAttribute("mensaje", "Error en la base de datos, su reserva puede no haber sido realizada.");
 							}
