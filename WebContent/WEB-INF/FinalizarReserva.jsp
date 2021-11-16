@@ -28,11 +28,7 @@
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
-  $( function() {
-    $( "#datepicker" ).datepicker({minDate: 0, maxDate: "+2M",changeMonth: true,
-        changeYear: true});
-    $( "#datepicker" ).datepicker( "option", "dateFormat","yy-mm-dd");
-  } );
+
   var disabledDays = <%=request.getAttribute("availableDays") %>;
 
   function disableAllTheseDays(date) {
@@ -43,7 +39,15 @@
     	   return [false,"","unAvailable"];
        }
   }
-  $('#datepicker').datepicker({ beforeShowDay: available });
+  
+  $( function() {
+    $( "#datepicker" ).datepicker({minDate: 0, maxDate: "+2M",changeMonth: true,
+        changeYear: true});
+    $( "#datepicker" ).datepicker( "option", "dateFormat","yy-mm-dd");
+    $('#datepicker').datepicker({ beforeShowDay: disableAllTheseDays });
+
+  } );
+
   </script>
 </head>
 <body>

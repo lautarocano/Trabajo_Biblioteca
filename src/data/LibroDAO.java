@@ -241,14 +241,15 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 	}
 	
 	public ArrayList<LocalDate> getFechasDisponible(Libro lib, int cantMeses) throws SQLException {
+		LocalDate date = LocalDate.now();
 		ArrayList<LocalDate> fechas = new ArrayList<LocalDate>();
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		int ejemplaresDisponibles = 0;
-		System.out.println("Arranque");
 		try {
 			this.openConnection();
-			for (LocalDate date = LocalDate.now(); date.isBefore(LocalDate.now().plusMonths(cantMeses)) ; date.plusDays(1)) {
+			while (date.isBefore(LocalDate.now().plusMonths(cantMeses))) {
+				
 				pst = conn.prepareStatement("SELECT e.id_ejemplar FROM prestamos p "
 						+ "INNER JOIN lineasdeprestamo lp ON p.id_prestamo = lp.id_prestamo "
 						+ "RIGHT JOIN ejemplares e ON lp.id_ejemplar = e.id_ejemplar "
@@ -258,30 +259,27 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 				pst.setInt(1, lib.getId());
 				pst.setObject(2, date);
 				rs=pst.executeQuery();
-				System.out.println(rs.getStatement().toString());
-				while (rs != null) 
+				while (rs.next()) 
 				{
 				  ejemplaresDisponibles += 1;
-				  System.out.println(11);
-				  rs.close();
 				}
+				rs.close();
 				pst.close();
-				System.out.println(2);
 				pst = conn.prepareStatement("SELECT count(lr.id_libro) AS cantreservas FROM reservas r "
 						+ "INNER JOIN libro_reserva lr ON lr.id_reserva = r.id_reserva "
-						+ "WHERE lr.id_libro = ? AND ? BETWEEN r.fecha_reserva AND date_add(r.fecha_reserva, INTERVAL (select cant_dias_prestamo from politicaprestamo where fecha_politica_prestamo in ( select max(fecha_politica_prestamo) from politicaprestamo)) DAY) AND ? >= now()");
+						+ "WHERE lr.id_libro = ? AND ? BETWEEN r.fecha_reserva AND date_add(r.fecha_reserva, INTERVAL (select cant_dias_prestamo from politicaprestamo where fecha_politica_prestamo in ( select max(fecha_politica_prestamo) from politicaprestamo)) DAY) ");
 				pst.setInt(1, lib.getId());
 				pst.setObject(2, date);
 				rs=pst.executeQuery();
-				System.out.println(3);
-				if (rs != null) 
+				if (rs.next()) 
 					ejemplaresDisponibles -= rs.getInt("cantreservas");
 				if (ejemplaresDisponibles > 0) {
 					fechas.add(date);
 					System.out.print(date);
 					System.out.print(" disponible");
-				} else System.out.print(date);
+				} 
 				ejemplaresDisponibles = 0;
+				date=date.plusDays(1);
 			}
 		}
 		catch (SQLException e) {
