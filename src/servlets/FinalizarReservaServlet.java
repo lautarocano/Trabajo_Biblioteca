@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import logic.SocioLogic;
 import logic.LibroLogic;
+import logic.BusinessLogicException;
 import model.Libro;
 import model.LibroReserva;
 import model.Reserva;
@@ -44,7 +45,9 @@ public class FinalizarReservaServlet extends HttpServlet {
 				if (libros.size() > 0) {
 					LibroLogic ll = new LibroLogic();
 					try {
-						request.setAttribute("availableDays", ll.getFechasDisponible(ll.getOne(3), 2));
+						for(Libro l : libros) {
+							request.setAttribute("availableDays", ll.getFechasDisponible(l, 2));
+						}
 					} catch (SQLException e) {
 						request.setAttribute("mensaje", "Error en la base de datos, inténtelo nuevamente en unos minutos.");
 					}
@@ -98,8 +101,10 @@ public class FinalizarReservaServlet extends HttpServlet {
 								sl.realizaReserva(reserva);
 								request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 								request.setAttribute("mensaje", "Reserva guardada.");
-								Servlet.enviarConGMail(socio.getEmail(), "Reserva Biblioteca", "Ha realizado una reserva con éxito");
+								Servlet.enviarConGMail(socio.getEmail(), "Reserva Biblioteca", "Ha realizado una reserva con éxito", request);
 								request.getSession().setAttribute("libros", null);
+							} catch (BusinessLogicException ble) {
+								request.setAttribute("mensaje", ble.getMessage());
 							} catch (SQLException e) {
 								request.setAttribute("mensaje", "Error en la base de datos, su reserva puede no haber sido realizada.");
 							}

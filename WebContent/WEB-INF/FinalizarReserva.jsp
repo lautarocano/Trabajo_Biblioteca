@@ -32,20 +32,23 @@
   var disabledDays = <%=request.getAttribute("availableDays") %>;
 
   function disableAllTheseDays(date) {
-	  dmy = date.getDate() + "-" + (date.getMonth()+1) + "-" + date.getFullYear();
-       if($.inArray(dmy,disabledDays) != -1) {
-    	    return [true, "","Available"];
-       } else {
-    	   return [false,"","unAvailable"];
-       }
-  }
+  	  var ymd = $.datepicker.formatDate('yy-mm-dd', date);
+      if($.inArray(ymd,disabledDays) != -1) {
+    	return [true,"","Disponible"];
+      } else {
+    	return [false, "","No disponible"];
+      }
+ }
   
   $( function() {
-    $( "#datepicker" ).datepicker({minDate: 0, maxDate: "+2M",changeMonth: true,
-        changeYear: true});
-    $( "#datepicker" ).datepicker( "option", "dateFormat","yy-mm-dd");
-    $('#datepicker').datepicker({ beforeShowDay: disableAllTheseDays });
-
+    $( "#datepicker" ).datepicker({
+    	minDate: 0,
+    	maxDate: "+2M",
+    	changeMonth: true,
+        changeYear: true,
+        dateFormat: "yy-mm-dd",
+        beforeShowDay: disableAllTheseDays
+        });
   } );
 
   </script>

@@ -45,7 +45,7 @@ public class LoginServlet extends HttpServlet {
 					if (socio!=null){
 					try {
 						Usuario usuario = ul.getOneBySocio(socio.getId());
-						Servlet.enviarConGMail(socio.getEmail(), "Recuperación de usuario", "Su usuario es: "+usuario.getNombreUsuario()+"\nSu contraseña es: "+usuario.getPassword());
+						Servlet.enviarConGMail(socio.getEmail(), "Recuperación de usuario", "Su usuario es: "+usuario.getNombreUsuario()+"\nSu contraseña es: "+usuario.getPassword(), request);
 						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 						request.setAttribute("mensaje", "Información de recuperación enviada.");
 					} catch (SQLException e) {
@@ -80,7 +80,7 @@ public class LoginServlet extends HttpServlet {
 				request.getRequestDispatcher("WEB-INF/Login.jsp").forward(request, response);
 			}
 		}
-		catch(java.lang.NullPointerException e) {
+		catch(Exception e) {
 			request.getRequestDispatcher("WEB-INF/Login.jsp").forward(request, response);
 		}
 	}

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import logic.BusinessLogicException;
 import logic.EjemplarLogic;
 import logic.ReservaLogic;
 import logic.SocioLogic;
@@ -107,6 +108,8 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 					}
 				} catch (NumberFormatException e) {
 					request.setAttribute("mensaje", "No se pudo obtener los ejemplares debido a un error en los datos suministrados.");
+				} catch (BusinessLogicException ble) {
+					request.setAttribute("mensaje", ble.getMessage());
 				} catch (SQLException e) {
 					request.setAttribute("mensaje", "No se pudo obtener los ejemplares debido a un error en la base de datos.");
 				}

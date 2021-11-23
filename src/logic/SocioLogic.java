@@ -96,21 +96,21 @@ public class SocioLogic {
 			throw exception;
 		}
 	}
-	//Falta agregar validación de disponibilidad de libros
-	public void retiraReservaYRealizaPrestamo(Prestamo pres, Reserva reserva) throws SQLException {
+	//Falta agregar validación de disponibilidad de libros y de fecha de reserva
+	public void retiraReservaYRealizaPrestamo(Prestamo pres, Reserva reserva) throws SQLException, BusinessLogicException {
 		int cantMaxLibrosPend;
 		try {
 			PrestamoLogic pLogic = new PrestamoLogic();
 			ReservaLogic rl = null;
 			cantMaxLibrosPend = pLogic.getLimiteLibrosPendientes();
 			if (this._SocioDAO.isSancionado(pres.getSocio())) {
-				
+				throw new BusinessLogicException("El socio no puede retirar libros debido a que está sancionado.");
 			}
 			else if (this._SocioDAO.hasOverdueLoan(pres.getSocio())) {
-				
+				throw new BusinessLogicException("El socio tiene préstamos atrasados pendientes de devolución.");
 			}
 			else if (this._SocioDAO.getNotReturnedBooks(pres.getSocio())+pres.getLineasPrestamo().size() > cantMaxLibrosPend) {
-				
+				throw new BusinessLogicException("La cantidad ingresada sumada a los libros pendientes de devolución supera el límite establecido.");
 			}
 			else {
 				pLogic.insert(pres);
@@ -123,20 +123,13 @@ public class SocioLogic {
 		}
 	}
 	
-	public void realizaReserva(Reserva res) throws SQLException {
-		int cantMaxLibrosPend;
-		try {
-			PrestamoLogic pLogic = new PrestamoLogic();
-			cantMaxLibrosPend = pLogic.getLimiteLibrosPendientes();
-			
+	public void realizaReserva(Reserva res) throws SQLException, BusinessLogicException {
+		try {			
 			if (this._SocioDAO.isSancionado(res.getSocio())) {
-				
+				throw new BusinessLogicException("No puede realizar reservas debido a que está sancionado.");
 			}
 			else if (this._SocioDAO.hasOverdueLoan(res.getSocio())) {
-				
-			}
-			else if (this._SocioDAO.getNotReturnedBooks(res.getSocio())+res.getLibros().size() > cantMaxLibrosPend) {
-				
+				throw new BusinessLogicException("Usted tiene préstamos atrasados pendientes de devolución, entréguelos para poder realizar reservas.");
 			}
 			else {
 				ReservaDAO rDAO = new ReservaDAO();
