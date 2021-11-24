@@ -1,9 +1,12 @@
 package logic;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
+import util.Bitacora;
 
 public class UpdateLoansJob implements Job {
 
@@ -13,8 +16,7 @@ public class UpdateLoansJob implements Job {
 			pl.updateLoans();
 			System.out.println("El estado de los préstamos ha sido actualizado en la base de datos.");
 		} catch (SQLException e) {
-			// Hay que ver como informar el error
-			e.printStackTrace();
+			Bitacora.log(Level.SEVERE, Bitacora.getStackTrace(e));
 		}
 	}
 

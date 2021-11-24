@@ -212,6 +212,6 @@ public class Servlet extends HttpServlet {
 	
 	public static void log(java.util.logging.Level level, Exception e, HttpServletRequest request) {
 		String rootDirectory = request.getSession().getServletContext().getRealPath("/");
-		Bitacora.log(level, Bitacora.getStackTrace(e), rootDirectory);
+		Bitacora.log(level, Bitacora.getStackTrace(e), rootDirectory);	
 	}
 }
