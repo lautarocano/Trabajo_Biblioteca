@@ -85,7 +85,8 @@ public class ImagesServlet extends HttpServlet {
 							    request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 								request.setAttribute("mensaje", "Imagen eliminada.");
 							} catch (AmazonServiceException ase) {
-								System.out.println(aFileName + ":error:" + ase.getMessage());
+								
+								System.out.println(aFileName + ":error:" + ase.getMessage());						
 							}
 						}
 						else {

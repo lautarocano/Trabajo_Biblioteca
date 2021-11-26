@@ -1,5 +1,6 @@
 package data;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -15,7 +16,7 @@ public class LogsDAO extends BaseDAO{
 					+ "  VALUES(?,?,?)");
 			pst.setString(1, log.getLevel());
 			pst.setString(2, log.getStack());
-			pst.setDate(3, (java.sql.Date) log.getFecha());
+			pst.setDate(3, (Date) log.getFecha());
 			pst.executeUpdate();
 			this.closeConnection(pst);
 		}

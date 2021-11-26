@@ -60,6 +60,7 @@ public class FinalizarReservaServlet extends HttpServlet {
 				}
 			}
 			else {
+		//		request.setAttribute("mensaje", "Carrito vacío, por favor agregue al menos un elemento."); Lo toma mal luego de realizar una reserva
 				request.getRequestDispatcher("ReservaServlet").forward(request,response);
 			}
 		}

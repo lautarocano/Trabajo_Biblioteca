@@ -52,7 +52,8 @@ public class Bitacora {
     	Log log=new Log();
     	log.setLevel(level.toString());
     	log.setStack(mensaje);
-    	log.setFecha(Calendar. getInstance(). getTime());
+    	java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
+    	log.setFecha(sqlDate);
     	try {
 			logsDAO.insert(log);
 		} catch (SQLException e) {

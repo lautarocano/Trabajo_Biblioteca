@@ -130,6 +130,7 @@
 					  Imagen
 					</button>
 		    	</span>
+		    	<input name="image2" type="hidden" class="form-control" id="image2" value="<%=l.getId()+".jpg" %>"  required>	    	
 	        	<span class="td"><a class="btn btn-primary btn-block" href="ABMLibroServlet?editId=<%=l.getId() %>">Editar</a> </span>
 	        	<span class="td"><button type="submit" name="action-type" value="eliminar" class="btn btn-danger btn-block">Eliminar</button></span>
 	        </form>
