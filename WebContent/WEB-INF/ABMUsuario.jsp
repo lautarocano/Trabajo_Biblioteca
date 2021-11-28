@@ -47,7 +47,6 @@
 	        	<span class="td"><%=u.getId() %> </span>
 	        	<span class="td">
 		    		<select name="tipo" class="form-control" id="tipo">
-	        			<option value="0"> Socio </option>
 	        			<option value="1"> Bibliotecario </option>
 	        			<option value="2"> Administrador </option>
 	        		</select>
@@ -102,7 +101,6 @@
 		    		<span class="td"></span>
 		    		<span class="td">
 		    		<select name="tipo" class="form-control" id="tipo">
-	        			<option value="0"> Socio </option>
 	        			<option value="1"> Bibliotecario </option>
 	        			<option value="2"> Administrador </option>
 	        		</select>

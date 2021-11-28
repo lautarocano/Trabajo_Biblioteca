@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import logic.PoliticaPrestamoLogic;
 import model.PoliticaPrestamo;
 import model.Usuario;
-import util.Bitacora;
 
 /**
  * Servlet implementation class ABMPoliticaPrestamoServlet
@@ -37,8 +36,7 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 			try {
 				request.setAttribute("ListaPoliticasPrestamos", ppl.getAll());
 			} catch (SQLException e) {
-				String rootDirectory = request.getSession().getServletContext().getRealPath("/");
-				Bitacora.log(Level.SEVERE, Bitacora.getStackTrace(e), rootDirectory);
+				Servlet.log(Level.SEVERE, e, request);
 				request.setAttribute("mensaje", "No se pudieron obtener las politicas de prestamo");
 			}
 			request.setAttribute("JSP", "ABMPoliticaPrestamo");

@@ -11,11 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.amazonaws.AmazonServiceException;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-
 import logic.GeneroLogic;
 import logic.LibroLogic;
 import model.Libro;
@@ -35,10 +30,6 @@ public class ABMLibroServlet extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-
-    private static final String BUCKET_NAME = "imagenesbibliotecabucket";
-    private static final String AWS_ACCESS_KEY_ID = "AKIA6NS42AHIMPYBU7EU";
-    private static final String AWS_SECRET_ACCESS_KEY = "";
 
 
 	/**
@@ -98,25 +89,15 @@ public class ABMLibroServlet extends HttpServlet {
 					}
 				}
 				else if (request.getParameter("action-type").equals("eliminar")) {	
-		            System.setProperty("aws.accessKeyId", AWS_ACCESS_KEY_ID);
-		            System.setProperty("aws.secretKey", AWS_SECRET_ACCESS_KEY);
 					Libro libro=null;
 					LibroLogic ll=new LibroLogic();
-					final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.SA_EAST_1).build();
 					try {
 						libro = ll.getOne(Integer.parseInt(request.getParameter("id"))); 
-						if(libro!=null) {
-							String aFileName = new String(request.getParameter("image2").getBytes( 
-							        "iso8859-1"), "gbk"); 
-							try {
-						    s3.deleteObject(BUCKET_NAME, aFileName);							
-							}
-						 catch (AmazonServiceException ase) {
-							System.out.println(aFileName + ":error:" + ase.getMessage());
-						 	}							
+						if(libro!=null) {					
 							ll.delete(libro);
 							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 							request.setAttribute("mensaje", "Libro eliminado correctamente");
+							request.getRequestDispatcher("ImagesServlet").forward(request, response);
 						}
 						else
 						{
@@ -175,7 +156,10 @@ public class ABMLibroServlet extends HttpServlet {
 					}
 				}
 			}
-			this.doGet(request, response);
+			if (request.getParameter("action-type")!=null && request.getParameter("action-type").equals("eliminar")) {
+				
+			}
+			else this.doGet(request, response);
 		}
 	}
 	private static Boolean ValidarDatos (HttpServletRequest request) {

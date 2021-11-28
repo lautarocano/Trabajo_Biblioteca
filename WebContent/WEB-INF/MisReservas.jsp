@@ -10,11 +10,19 @@
 <title>Mis Reservas</title>
 </head>
 <body>
-<h1>Reservas pendientes de entrega</h1>
-<div class="card-deck">
 <%
 @SuppressWarnings("unchecked")
 ArrayList<Reserva> listaReserva=(ArrayList<Reserva>)request.getAttribute("listaReserva");
+if (listaReserva.isEmpty()) {
+%>
+<h1>No tenés eservas pendientes de entrega</h1>
+<%	
+}
+else {
+%>
+<h1>Reservas pendientes de entrega</h1>
+<div class="card-deck">
+<%
 for (Reserva r : listaReserva) {
 	if (r.isEntregada()) {%>
 <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
@@ -45,5 +53,6 @@ for (Reserva r : listaReserva) {
 </div>
 <%} %>
 </div>
+<%} %>
 </body>
 </html>

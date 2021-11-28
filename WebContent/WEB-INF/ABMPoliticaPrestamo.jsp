@@ -44,6 +44,14 @@
   </script>
 </head>
 <body>
+<%
+@SuppressWarnings("unchecked")
+ArrayList<PoliticaPrestamo> ListaPoliticasPrestamos=(ArrayList<PoliticaPrestamo>)request.getAttribute("ListaPoliticasPrestamos");
+if (ListaPoliticasPrestamos == null || ListaPoliticasPrestamos.isEmpty()) { %>
+<p style="font-size: 16px;">No hay resultados</p>
+<%}
+else {
+%>
 <div class="d-flex">
 	<div class="table">
 		<div class="theader">
@@ -56,8 +64,6 @@
 	    </div>
 	    <div class="tbody">
 	    	<%
-	    	@SuppressWarnings("unchecked")
-	    	ArrayList<PoliticaPrestamo> ListaPoliticasPrestamos=(ArrayList<PoliticaPrestamo>)request.getAttribute("ListaPoliticasPrestamos");
 	    	if (request.getParameter("editId") != null) {
 		    	for (PoliticaPrestamo pp : ListaPoliticasPrestamos) {
 		    		if (Integer.parseInt(request.getParameter("editId")) == pp.getId()) {
@@ -136,9 +142,8 @@
 		    	</form>
 	    </div>
 	</div>
-	<% if (ListaPoliticasPrestamos.isEmpty()) { %>
-							<p style="font-size: 16px;">No hay resultados</p>
-						<%} %>
+<%}
+%>
 </div>
 </body>
 </html>

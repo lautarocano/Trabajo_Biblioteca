@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<html>
+<html lang="es_AR">
 <head>
 
   <meta charset="utf-8">
@@ -64,7 +64,7 @@
       	<div <%=request.getAttribute("clase-mensaje")%> role="alert">
       	<% 	}
       		else {%>
-      	<div class=<%="alert alert-warning alert-dismissible fade show"%> role="alert">
+      	<div class="alert alert-warning alert-dismissible fade show" role="alert">
       	<%	} %>
 		  <%=request.getAttribute("mensaje")%>
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">

@@ -130,7 +130,7 @@
 					  Imagen
 					</button>
 		    	</span>
-		    	<input name="image2" type="hidden" class="form-control" id="image2" value="<%=l.getId()+".jpg" %>"  required>	    	
+		    	<input name="image" type="hidden" class="form-control" id="image" value="<%=l.getId()+".jpg" %>"  required>	    	
 	        	<span class="td"><a class="btn btn-primary btn-block" href="ABMLibroServlet?editId=<%=l.getId() %>">Editar</a> </span>
 	        	<span class="td"><button type="submit" name="action-type" value="eliminar" class="btn btn-danger btn-block">Eliminar</button></span>
 	        </form>
@@ -152,12 +152,12 @@
 				        <form action="ImagesServlet" method="POST" name="DeleteImage">
 				        <input name="id" type="hidden" class="form-control" id="id" value="<%=l.getId() %>"  required>
 				        <input name="image" type="hidden" class="form-control" id="image" value="<%=l.getId()+".jpg" %>"  required>
-				        <button type="submit" name="action" value="eliminar" class="btn btn-primary">Eliminar imagen</button>
+				        <button type="submit" name="action-type" value="eliminar" class="btn btn-primary">Eliminar imagen</button>
 				        </form>
 				        <form action="ImagesServlet" method="POST" enctype="multipart/form-data" name="UploadImage">
 				        <input name="uuid" type="hidden" class="form-control" id="uuid" value="<%=l.getId() %>"  required>
 				        <input name="image" type="file" class="form-control" id="image" required>
-				        <button type="submit" name="action" value="agregar" class="btn btn-primary">Agregar imagen</button>
+				        <button type="submit" name="action-type" value="agregar" class="btn btn-primary">Agregar imagen</button>
 				        </form>
 				      </div>
 				    </div>

@@ -10,11 +10,19 @@
 <title>Mis Préstamos</title>
 </head>
 <body>
-<h1>Prestamos actuales</h1>
-<div class="card-deck">
 <%
 @SuppressWarnings("unchecked")
 ArrayList<Prestamo> listaPrestamo=(ArrayList<Prestamo>)request.getAttribute("ListaPrestamo");
+if (listaPrestamo.isEmpty()) {
+%>
+<h1>No tienes préstamos en curso</h1>
+<%
+}
+else {
+%>
+<h1>Prestamos actuales</h1>
+<div class="card-deck">
+<%
 for (Prestamo p : listaPrestamo) {
 	if (p.getEstado() == Prestamo.estadoPrestamo.EnCurso) {%>
 <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
@@ -37,5 +45,6 @@ for (Prestamo p : listaPrestamo) {
 </div>
 <%} %>
 </div>
+<%} %>
 </body>
 </html>

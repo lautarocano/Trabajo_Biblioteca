@@ -43,7 +43,7 @@
 	        	<input name="id" type="hidden" class="form-control" id="id" placeholder="id" value=<%=g.getId() %> required>
 	        	<span class="td"><%=g.getId() %> </span>
 	        	<span class="td">
-	        		<input name="descripcion" type="text" class="form-control" id="descripcion" placeholder="descripcion" value=<%=g.getDescripcion() %> required>
+	        		<input name="descripcion" type="text" class="form-control" id="descripcion" placeholder="descripcion" value="<%=g.getDescripcion() %>" required>
 		    	</span>
 	        	<span class="td"><button type="submit" name="action-type" value="editar" class="btn btn-success btn-block" >Aceptar</button> </span>
 	        	<span class="td"><a class="btn btn-danger btn-block" href="ABMGeneroServlet">Cancelar</a></span>

@@ -60,7 +60,7 @@ public class FinalizarReservaServlet extends HttpServlet {
 				}
 			}
 			else {
-		//		request.setAttribute("mensaje", "Carrito vacío, por favor agregue al menos un elemento."); Lo toma mal luego de realizar una reserva
+				request.setAttribute("mensaje", "Carrito vacío, por favor agregue al menos un elemento.");
 				request.getRequestDispatcher("ReservaServlet").forward(request,response);
 			}
 		}
@@ -80,6 +80,7 @@ public class FinalizarReservaServlet extends HttpServlet {
 					} catch (NumberFormatException e) {
 						request.setAttribute("mensaje", "Error en los datos suministrados. Id de libro inválida.");
 					}
+					this.doGet(request, response);
 				}
 				else if(request.getParameter("action-type").equals("finalizar")) {
 					ArrayList<Libro> libros=((ArrayList<Libro>)request.getSession().getAttribute("libros"));
@@ -117,9 +118,10 @@ public class FinalizarReservaServlet extends HttpServlet {
 					else {
 						request.setAttribute("mensaje", "No se pudo agregar una reserva si el carrito está vacío.");
 					}
+					request.getRequestDispatcher("ReservaServlet").forward(request,response);
 				}
 			}
-			this.doGet(request, response);
+			else this.doGet(request, response);
 		}
 	}
 	

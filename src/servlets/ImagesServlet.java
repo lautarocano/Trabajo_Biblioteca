@@ -72,7 +72,7 @@ public class ImagesServlet extends HttpServlet {
             System.setProperty("aws.accessKeyId", AWS_ACCESS_KEY_ID);
             System.setProperty("aws.secretKey", AWS_SECRET_ACCESS_KEY);
 			final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.SA_EAST_1).build();
-			if (request.getParameter("action")!=null && request.getParameter("action").equals("eliminar")) {	
+			if (request.getParameter("action-type")!=null && request.getParameter("action-type").equals("eliminar")) {	
 					Libro libro=null;
 					LibroLogic ll=new LibroLogic();
 					try {
