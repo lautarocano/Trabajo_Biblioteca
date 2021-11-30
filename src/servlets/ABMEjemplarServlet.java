@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -44,6 +45,7 @@ public class ABMEjemplarServlet extends HttpServlet {
 				} catch (NumberFormatException e) {
 					
 				} catch (SQLException e) {
+        			Servlet.log(Level.SEVERE,e, request);
 					request.setAttribute("mensaje", "No se pudieron obtener los ejemplares");
 				}
 				if (libro != null) {
@@ -51,6 +53,7 @@ public class ABMEjemplarServlet extends HttpServlet {
 					try {
 						request.setAttribute("ListaEjemplares", el.getAllByLibro(libro.getId()));
 					} catch (SQLException e) {
+	        			Servlet.log(Level.SEVERE,e, request);
 						request.setAttribute("mensaje", "No se pudieron obtener los ejemplares");
 					}
 					request.setAttribute("JSP", "ABMEjemplar");
@@ -93,6 +96,7 @@ public class ABMEjemplarServlet extends HttpServlet {
 					} catch (NumberFormatException e) {
 						request.setAttribute("mensaje", "Error en los datos ingresados");
 					} catch (SQLException e) {
+	        			Servlet.log(Level.SEVERE,e, request);
 						request.setAttribute("mensaje", "No se pudo agregar el ejemplar");
 					}
 				}
@@ -112,6 +116,7 @@ public class ABMEjemplarServlet extends HttpServlet {
 					} catch (NumberFormatException e) {
 						request.setAttribute("mensaje", "Error en los datos ingresados");
 					} catch (SQLException e) {
+	        			Servlet.log(Level.SEVERE,e, request);
 						request.setAttribute("mensaje", "No se pudo eliminar el ejemplar");
 					}
 				}

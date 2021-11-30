@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -53,6 +54,7 @@ public class DevolucionServlet extends HttpServlet {
 				}
 				catch (SQLException e) {
 					// TODO Auto-generated catch block
+        			Servlet.log(Level.SEVERE,e, request);
 					request.setAttribute("mensaje", "No se pudo obtener la lista de prestamos pendientes para ese socio");
 				}
 			}
@@ -61,6 +63,7 @@ public class DevolucionServlet extends HttpServlet {
 					request.setAttribute("ListaPrestamo", pl.getAllPendientes());
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
+        			Servlet.log(Level.SEVERE,e, request);
 					request.setAttribute("mensaje", "No se pudo obtener la lista de prestamos pendientes");
 				}
 			}
@@ -96,6 +99,7 @@ public class DevolucionServlet extends HttpServlet {
 				} catch (NumberFormatException e) {
 					request.setAttribute("mensaje", "Error en los datos suministrados.");
 				} catch (SQLException e) {
+        			Servlet.log(Level.SEVERE,e, request);
 					request.setAttribute("mensaje", "Error en la base de datos.");
 				}
 			}

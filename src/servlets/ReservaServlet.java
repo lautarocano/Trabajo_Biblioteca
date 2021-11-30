@@ -76,6 +76,7 @@ public class ReservaServlet extends HttpServlet {
 				}
 				request.setAttribute("ListaLibros", listaLibros);
 			} catch (SQLException e) {
+    			Servlet.log(Level.SEVERE,e, request);
 				request.setAttribute("mensaje", "Error en la base de datos.");
 				String rootDirectory = request.getSession().getServletContext().getRealPath("/");
 				Bitacora.log(Level.SEVERE, Bitacora.getStackTrace(e), rootDirectory);
@@ -114,6 +115,7 @@ public class ReservaServlet extends HttpServlet {
 				} catch (NumberFormatException e) {
 					request.setAttribute("mensaje", "Error en los datos suministrados.");
 				} catch (SQLException e) {
+        			Servlet.log(Level.SEVERE,e, request);
 					request.setAttribute("mensaje", "Error en la base de datos.");
 				}
 			}

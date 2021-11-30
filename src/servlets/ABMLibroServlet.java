@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -75,6 +76,7 @@ public class ABMLibroServlet extends HttpServlet {
 							libro.setGenero(gl.getOne(idGenero));
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
+							Servlet.log(Level.SEVERE, e, request);
 							request.setAttribute("mensaje", "No se pudo encontrar el genero indicado");
 						}
 						LibroLogic ll = new LibroLogic();
@@ -84,6 +86,7 @@ public class ABMLibroServlet extends HttpServlet {
 							request.setAttribute("mensaje", "Libro agregado correctamente");
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
+							Servlet.log(Level.SEVERE, e, request);
 							request.setAttribute("mensaje", "No se pudo agregar un libro");
 						}
 					}
@@ -112,6 +115,7 @@ public class ABMLibroServlet extends HttpServlet {
 					}
 					catch (SQLException e) {
 						// TODO Auto-generated catch block
+						Servlet.log(Level.SEVERE, e, request);
 						request.setAttribute("mensaje", "No se pudo eliminar un libro");
 					}
 				}
@@ -133,6 +137,7 @@ public class ABMLibroServlet extends HttpServlet {
 									libro.setGenero(gl.getOne(idGenero));
 								} catch (SQLException e) {
 									// TODO Auto-generated catch block
+									Servlet.log(Level.SEVERE, e, request);
 									request.setAttribute("mensaje", "No se pudo encontrar el genero indicado");
 								}
 								ll.update(libro);
@@ -151,6 +156,7 @@ public class ABMLibroServlet extends HttpServlet {
 						catch (SQLException e) {
 						
 						// TODO Auto-generated catch block
+							Servlet.log(Level.SEVERE, e, request);
 							request.setAttribute("mensaje", "No se pudo actualizar un libro");
 						}
 					}

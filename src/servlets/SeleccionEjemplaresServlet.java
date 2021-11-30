@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -62,6 +63,7 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 				} catch (NumberFormatException e) {
 					request.setAttribute("mensaje", "No se pudo obtener los ejemplares");
 				} catch (SQLException e) {
+        			Servlet.log(Level.SEVERE,e, request);
 					request.setAttribute("mensaje", "No se pudo obtener los ejemplares");
 				}
 			}
@@ -111,6 +113,7 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 				} catch (BusinessLogicException ble) {
 					request.setAttribute("mensaje", ble.getMessage());
 				} catch (SQLException e) {
+        			Servlet.log(Level.SEVERE,e, request);
 					request.setAttribute("mensaje", "No se pudo obtener los ejemplares debido a un error en la base de datos.");
 				}
 			}

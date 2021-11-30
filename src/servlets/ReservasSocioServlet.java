@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -58,6 +59,7 @@ public class ReservasSocioServlet extends HttpServlet {
 				}
 				request.setAttribute("listaReserva", reservas);
 			} catch (SQLException e) {
+    			Servlet.log(Level.SEVERE,e, request);
 				request.setAttribute("mensaje", "No se pudo obtener la lista de reservas para el socio solicitado");
 			}
 			request.setAttribute("JSP", "MisReservas");
@@ -83,6 +85,7 @@ public class ReservasSocioServlet extends HttpServlet {
 				} catch (NumberFormatException e) {
 					request.setAttribute("mensaje", "Error en los datos suministrados.");
 				} catch (SQLException e) {
+        			Servlet.log(Level.SEVERE,e, request);
 					request.setAttribute("mensaje", "No se pudo cancelar la reserva.");
 				}
 			}

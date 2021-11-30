@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -81,6 +83,7 @@ public class DatosSocioServlet extends HttpServlet {
 					}
 		
 					catch (SQLException e) {
+	        			Servlet.log(Level.SEVERE,e, request);
 						request.setAttribute("mensaje", "No se pudieron actualizar los datos");
 					}
 				}

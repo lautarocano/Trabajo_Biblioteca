@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,6 +37,7 @@ public class ABMUsuarioServlet extends HttpServlet {
 			try {
 				request.setAttribute("ListaUsuarios", ul.getAll());
 			} catch (SQLException e) {
+    			Servlet.log(Level.SEVERE,e, request);
 				request.setAttribute("mensaje", "No se pudo obtener el listado de usuarios");
 			}
 			request.setAttribute("JSP", "ABMUsuario");
@@ -74,6 +76,7 @@ public class ABMUsuarioServlet extends HttpServlet {
 							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 							request.setAttribute("mensaje", "Usuario agregado correctamente");
 						} catch (SQLException e) {
+		        			Servlet.log(Level.SEVERE,e, request);
 							request.setAttribute("mensaje", "No se pudo agregar un usuario");
 						} catch (Exception e) {
 							request.setAttribute("mensaje", e.getMessage());
@@ -99,6 +102,7 @@ public class ABMUsuarioServlet extends HttpServlet {
 							request.setAttribute("mensaje", "Id de usuario invalida");
 					
 					} catch (SQLException e) {
+	        			Servlet.log(Level.SEVERE,e, request);
 						request.setAttribute("mensaje", "No se pudo eliminar un usuario");
 					}
 				}
@@ -137,6 +141,7 @@ public class ABMUsuarioServlet extends HttpServlet {
 							request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
 							request.setAttribute("mensaje", "Id de usuario invalida");
 						} catch (SQLException e) {
+		        			Servlet.log(Level.SEVERE,e, request);
 							request.setAttribute("mensaje", "No se pudo actualizar un usuario");
 						} catch (Exception e) {
 							request.setAttribute("mensaje", e.getMessage());

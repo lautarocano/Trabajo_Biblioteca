@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,6 +37,7 @@ public class ABMGeneroServlet extends HttpServlet {
 			try {
 				request.setAttribute("ListaGeneros", gl.getAll());
 			} catch (SQLException e) {
+    			Servlet.log(Level.SEVERE,e, request);
 				request.setAttribute("mensaje", "No se pudieron obtener los generos");
 			}
 			request.setAttribute("JSP", "ABMGenero");
@@ -59,6 +61,7 @@ public class ABMGeneroServlet extends HttpServlet {
 							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 							request.setAttribute("mensaje", "Genero agregado correctamente");
 						} catch (SQLException e) {
+		        			Servlet.log(Level.SEVERE,e, request);
 							request.setAttribute("mensaje", "No se pudo agregar un genero");
 						}
 					}
@@ -81,6 +84,7 @@ public class ABMGeneroServlet extends HttpServlet {
 						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
 						request.setAttribute("mensaje", "Id de genero invalida");
 					} catch (SQLException e) {
+	        			Servlet.log(Level.SEVERE,e, request);
 						request.setAttribute("mensaje", "No se pudo eliminar un genero");
 					}
 				}
@@ -105,6 +109,7 @@ public class ABMGeneroServlet extends HttpServlet {
 									request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
 									request.setAttribute("mensaje", "Id de genero invalida");
 						} catch (SQLException e) {
+		        			Servlet.log(Level.SEVERE,e, request);
 							 request.setAttribute("mensaje", "No se pudo actualizar el genero");
 					 	}	
 					}

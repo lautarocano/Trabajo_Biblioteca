@@ -62,6 +62,7 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 							request.setAttribute("mensaje", "Politica de prestamo agregada correctamente");
 						} catch (SQLException e) {
+		        			Servlet.log(Level.SEVERE,e, request);
 							request.setAttribute("mensaje", "No se pudo agregar la politica de prestamo");
 						}
 					}
@@ -84,6 +85,7 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
 						request.setAttribute("mensaje", "Id de politica prestamo invalida");
 					} catch (SQLException e) {
+	        			Servlet.log(Level.SEVERE,e, request);
 						request.setAttribute("mensaje", "No se pudo eliminar la politica de prestamo");
 					}
 				}
@@ -110,6 +112,7 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 							request.setAttribute("mensaje", "Id de politica prestamo invalida");
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
+		        			Servlet.log(Level.SEVERE,e, request);
 							request.setAttribute("mensaje", "No se pudo actualizar la politica de prestamo");
 						}
 					}

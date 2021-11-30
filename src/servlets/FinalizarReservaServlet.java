@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -49,6 +50,7 @@ public class FinalizarReservaServlet extends HttpServlet {
 							request.setAttribute("availableDays", ll.getFechasDisponible(l, 2));
 						}
 					} catch (SQLException e) {
+	        			Servlet.log(Level.SEVERE,e, request);
 						request.setAttribute("mensaje", "Error en la base de datos, inténtelo nuevamente en unos minutos.");
 					}
 					request.setAttribute("JSP", "FinalizarReserva");
@@ -108,6 +110,7 @@ public class FinalizarReservaServlet extends HttpServlet {
 							} catch (BusinessLogicException ble) {
 								request.setAttribute("mensaje", ble.getMessage());
 							} catch (SQLException e) {
+			        			Servlet.log(Level.SEVERE,e, request);
 								request.setAttribute("mensaje", "Error en la base de datos, su reserva puede no haber sido realizada.");
 							}
 						}

@@ -2,7 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -39,6 +39,7 @@ public class ABMPoliticaSancionServlet extends HttpServlet {
 				request.setAttribute("ListaPoliticasSanciones", psl.getAll());
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
+    			Servlet.log(Level.SEVERE,e, request);
 				request.setAttribute("mensaje", "No se pudieron obtener las politicas de sanción");
 			}
 			request.setAttribute("JSP", "ABMPoliticaSancion");
@@ -64,6 +65,7 @@ public class ABMPoliticaSancionServlet extends HttpServlet {
 							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 							request.setAttribute("mensaje", "Politica de sanción agregada correctamente");
 						} catch (SQLException e) {
+		        			Servlet.log(Level.SEVERE,e, request);
 							request.setAttribute("mensaje", "No se pudo agregar la politica de sanción");
 						}
 					}
@@ -87,6 +89,7 @@ public class ABMPoliticaSancionServlet extends HttpServlet {
 						request.setAttribute("mensaje", "Id de politica sanción invalida");
 					}
 					catch (SQLException e) {
+	        			Servlet.log(Level.SEVERE,e, request);
 						request.setAttribute("mensaje", "No se pudo eliminar la politica de sanción");
 					}
 				}
@@ -114,6 +117,7 @@ public class ABMPoliticaSancionServlet extends HttpServlet {
 							request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
 							request.setAttribute("mensaje", "Id de politica sanción invalida");
 						} catch (SQLException e) {
+		        			Servlet.log(Level.SEVERE,e, request);
 							request.setAttribute("mensaje", "No se pudo actualizar la politica de sanción");
 						}
 					}

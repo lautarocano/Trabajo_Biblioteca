@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,6 +39,7 @@ public class PrestamosSocioServlet extends HttpServlet {
 			try {
 				request.setAttribute("ListaPrestamo", pl.getAllPendientesBySocio(socio));
 			} catch (SQLException e) {
+    			Servlet.log(Level.SEVERE,e, request);
 				request.setAttribute("mensaje", "No se pudo obtener la lista de prestamos pendientes para ese socio");
 			}
 			request.setAttribute("JSP", "MisPrestamos");

@@ -3,7 +3,8 @@ package servlets;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Iterator; 
-import java.util.List; 
+import java.util.List;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -85,7 +86,7 @@ public class ImagesServlet extends HttpServlet {
 							    request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 								request.setAttribute("mensaje", "Imagen eliminada.");
 							} catch (AmazonServiceException ase) {
-								
+								Servlet.log(Level.SEVERE, ase, request);
 								System.out.println(aFileName + ":error:" + ase.getMessage());						
 							}
 						}
@@ -97,6 +98,7 @@ public class ImagesServlet extends HttpServlet {
 						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
 						request.setAttribute("mensaje", "Id de libro inv�lida");
 					} catch (SQLException e) {
+						Servlet.log(Level.SEVERE, e, request);
 						request.setAttribute("mensaje", "No se pudo eliminar la imagen");
 					} 
 				}
@@ -142,9 +144,11 @@ public class ImagesServlet extends HttpServlet {
 				                    s3.setObjectAcl(BUCKET_NAME, keyName, CannedAccessControlList.PublicRead);
 				 
 				                } catch (AmazonServiceException ase) {
+				        			Servlet.log(Level.SEVERE, ase, request);
 				                    System.out.println(uuidValue + ":error:" + ase.getMessage());
 				 
 				                } catch (AmazonClientException ace) {
+				        			Servlet.log(Level.SEVERE, ace, request);
 				                	System.out.println(uuidValue + ":error:" + ace.getMessage());
 				                }				 
 				            } else {
@@ -152,6 +156,7 @@ public class ImagesServlet extends HttpServlet {
 				            }
 				 
 				        } catch (Exception ex) {
+		        			Servlet.log(Level.SEVERE,ex, request);
 				        	System.out.println(uuidValue + ":" + ":error: " + ex.getMessage());
 				        }
 				        System.out.println(uuidValue + ":Upload done");

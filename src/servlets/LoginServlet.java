@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -107,6 +108,7 @@ public class LoginServlet extends HttpServlet {
 					}
 					else request.setAttribute("mensaje", "Usuario y/o contraseña incorrectos.");
 				} catch (SQLException e) {
+        			Servlet.log(Level.SEVERE,e, request);
 					request.setAttribute("mensaje", "Error en la base de datos.");
 				}		
 			} else request.setAttribute("mensaje", "Campos incompletos.");
