@@ -101,11 +101,60 @@
 				</div>
 </div>
 <form action="FinalizarReservaServlet" method="POST" name="FinalizarReserva">
+<p>Tipo de reserva:</p>
+<div>
+  <input type="radio" id="individual" name="tipo" value="individual"
+         checked>
+  <label for="individual">Individual</label>
+</div>
+
+<div>
+  <input type="radio" id="conjunta" name="tipo" value="conjunta">
+  <label for="conjunta">Conjunta</label>
+</div>
 <input name="fecha" type="text" class="form-control" id="datepicker" placeholder="Fecha de retiro" required>
 <span ><button type="submit" name="action-type" value="finalizar" class="btn btn-primary btn-block" >Finalizar Reservas</button> </span>
+<h1>O reserva tus libros individualmente:</h1>
+<div class="card-deck">
+<%
+for (Libro l : listaLibro) {
+%>
+ <script>
+ var disabledDays<%=l.getId()%> = <%=request.getAttribute("availableDays"+l.getId()) %>;
+
+ function disableAllTheseDays(date) {
+ 	  var ymd = $.datepicker.formatDate('yy-mm-dd', date);
+     if($.inArray(ymd,disabledDays<%=l.getId()%>) != -1) {
+   	return [true,"","Disponible"];
+     } else {
+   	return [false, "","No disponible"];
+     }
+}
+ 
+ $( function() {
+   $( "#datepicker"<%=l.getId()%> ).datepicker({
+   	minDate: 0,
+   	maxDate: "+2M",
+   	changeMonth: true,
+       changeYear: true,
+       dateFormat: "yy-mm-dd",
+       beforeShowDay: disableAllTheseDays
+       });
+ } );
+
+ </script>
+<div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title"><%=l.getTitulo()%></h5>
+    <p class="card-text">Autor: <%=l.getAutor()%></p>
+	<p class="card-text">Edición:  <%=l.getFechaEdicion()%></p>
+  </div>
+  <div class="card-footer">
+  	<input name="fecha<%=l.getId()%>" type="text" class="form-control" id="datepicker<%=l.getId()%>" placeholder="Fecha de retiro" required>
+  </div>
+</div>
+<%} %>
+</div>
 </form>
-	<% if (listaLibro.isEmpty()) { %>
-							<p style="font-size: 16px;">No hay resultados</p>
-						<%} %>
 </body>
 </html>

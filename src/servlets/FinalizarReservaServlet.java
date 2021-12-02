@@ -46,8 +46,9 @@ public class FinalizarReservaServlet extends HttpServlet {
 				if (libros.size() > 0) {
 					LibroLogic ll = new LibroLogic();
 					try {
+						request.setAttribute("availableDays", ll.getFechasDisponible(libros, 2));
 						for(Libro l : libros) {
-							request.setAttribute("availableDays", ll.getFechasDisponible(l, 2));
+							request.setAttribute("availableDays"+l.getId(), ll.getFechasDisponible(l, 2));
 						}
 					} catch (SQLException e) {
 	        			Servlet.log(Level.SEVERE,e, request);
