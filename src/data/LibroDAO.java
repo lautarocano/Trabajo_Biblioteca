@@ -267,7 +267,7 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 				pst.close();
 				pst = conn.prepareStatement("SELECT count(lr.id_libro) AS cantreservas FROM reservas r "
 						+ "INNER JOIN libro_reserva lr ON lr.id_reserva = r.id_reserva "
-						+ "WHERE lr.id_libro = ? AND ? BETWEEN r.fecha_reserva AND date_add(r.fecha_reserva, INTERVAL (select cant_dias_prestamo from politicaprestamo where fecha_politica_prestamo in ( select max(fecha_politica_prestamo) from politicaprestamo where fecha_politica_prestamo <= ?)) DAY) ");
+						+ "WHERE r.entregada = FALSE AND lr.id_libro = ? AND ? BETWEEN r.fecha_reserva AND date_add(r.fecha_reserva, INTERVAL (select cant_dias_prestamo from politicaprestamo where fecha_politica_prestamo in ( select max(fecha_politica_prestamo) from politicaprestamo where fecha_politica_prestamo <= ?)) DAY) ");
 				pst.setInt(1, lib.getId());
 				pst.setObject(2, date);
 				pst.setObject(3, date);

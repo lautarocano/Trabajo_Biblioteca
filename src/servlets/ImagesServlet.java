@@ -162,6 +162,7 @@ public class ImagesServlet extends HttpServlet {
 				        System.out.println(uuidValue + ":Upload done");
 			        }
 				}
+			request.setAttribute("action-type", null);
 			request.getRequestDispatcher("ABMLibroServlet").forward(request, response);
 		}
 	}

@@ -29,11 +29,11 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
 
-  var disabledDays = <%=request.getAttribute("availableDays") %>;
+  var availableDays = <%=request.getAttribute("availableDays") %>;
 
-  function disableAllTheseDays(date) {
+  function disableDays(date) {
   	  var ymd = $.datepicker.formatDate('yy-mm-dd', date);
-      if($.inArray(ymd,disabledDays) != -1) {
+      if($.inArray(ymd,availableDays) != -1) {
     	return [true,"","Disponible"];
       } else {
     	return [false, "","No disponible"];
@@ -47,13 +47,47 @@
     	changeMonth: true,
         changeYear: true,
         dateFormat: "yy-mm-dd",
-        beforeShowDay: disableAllTheseDays
+        beforeShowDay: disableDays
         });
   } );
 
-  </script>
+  </script> 
+<%
+@SuppressWarnings("unchecked")
+ArrayList<Libro> listaLibro=(ArrayList<Libro>)session.getAttribute("libros");
+String datepicker;
+for (Libro l : listaLibro) {
+	datepicker="\"#datepicker"+l.getId()+'"';
+%>
+ <script>
+ var availableDays<%=l.getId() %> = <%=request.getAttribute("availableDays"+l.getId()) %>;
+
+ function disableDays<%=l.getId() %>(date) {
+ 	  var ymd = $.datepicker.formatDate('yy-mm-dd', date);
+     if(eval(<%="$.inArray(ymd,availableDays"+l.getId()+") != -1" %>)) {
+   	return [true,"","Disponible"];
+     } else {
+   	return [false, "","No disponible"];
+     }
+}
+ 
+ $( function() {
+   $( <%=datepicker%> ).datepicker({
+   	minDate: 0,
+   	maxDate: "+2M",
+   	changeMonth: true,
+       changeYear: true,
+       dateFormat: "yy-mm-dd",
+       beforeShowDay: eval('disableDays'+<%=l.getId() %>)
+       });
+ } );
+
+ </script>
+<%} %> 
 </head>
 <body>
+disabledDays
+
 <div class="table">
 		<div class="theader">
 		    <div class="tr">
@@ -68,8 +102,6 @@
 	    </div>
 	    <div class="tbody">
 	    	<%
-	    	@SuppressWarnings("unchecked")
-	    	ArrayList<Libro> listaLibro=(ArrayList<Libro>)session.getAttribute("libros");
 		    	for (Libro l : listaLibro) {
 	        %>
 	        <form class="tr" action="FinalizarReservaServlet" method="POST" name="FinalizarReserva">
@@ -112,37 +144,13 @@
   <input type="radio" id="conjunta" name="tipo" value="conjunta">
   <label for="conjunta">Conjunta</label>
 </div>
-<input name="fecha" type="text" class="form-control" id="datepicker" placeholder="Fecha de retiro" required>
+<input name="fecha" type="text" class="form-control" id="datepicker" placeholder="Fecha de retiro" >
 <span ><button type="submit" name="action-type" value="finalizar" class="btn btn-primary btn-block" >Finalizar Reservas</button> </span>
 <h1>O reserva tus libros individualmente:</h1>
 <div class="card-deck">
 <%
 for (Libro l : listaLibro) {
 %>
- <script>
- var disabledDays<%=l.getId()%> = <%=request.getAttribute("availableDays"+l.getId()) %>;
-
- function disableAllTheseDays(date) {
- 	  var ymd = $.datepicker.formatDate('yy-mm-dd', date);
-     if($.inArray(ymd,disabledDays<%=l.getId()%>) != -1) {
-   	return [true,"","Disponible"];
-     } else {
-   	return [false, "","No disponible"];
-     }
-}
- 
- $( function() {
-   $( "#datepicker"<%=l.getId()%> ).datepicker({
-   	minDate: 0,
-   	maxDate: "+2M",
-   	changeMonth: true,
-       changeYear: true,
-       dateFormat: "yy-mm-dd",
-       beforeShowDay: disableAllTheseDays
-       });
- } );
-
- </script>
 <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
   <div class="card-body">
     <h5 class="card-title"><%=l.getTitulo()%></h5>
@@ -150,7 +158,7 @@ for (Libro l : listaLibro) {
 	<p class="card-text">Edición:  <%=l.getFechaEdicion()%></p>
   </div>
   <div class="card-footer">
-  	<input name="fecha<%=l.getId()%>" type="text" class="form-control" id="datepicker<%=l.getId()%>" placeholder="Fecha de retiro" required>
+  	<input name="fecha<%=l.getId()%>" type="text" class="form-control" id="datepicker<%=l.getId()%>" placeholder="Fecha de retiro">
   </div>
 </div>
 <%} %>

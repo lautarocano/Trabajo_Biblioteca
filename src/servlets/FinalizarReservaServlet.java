@@ -75,7 +75,7 @@ public class FinalizarReservaServlet extends HttpServlet {
 	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Socio)) {
-			if (request.getSession().getAttribute("libros")!=null && request.getParameter("action-type")!=null) {
+			if (request.getSession().getAttribute("libros")!=null && request.getParameter("action-type")!=null && request.getParameter("tipo")!=null) {
 				if (request.getParameter("action-type").equals("borrar")) {	
 					try {
 						int id=Integer.parseInt(request.getParameter("id_libro"));
@@ -87,36 +87,70 @@ public class FinalizarReservaServlet extends HttpServlet {
 				}
 				else if(request.getParameter("action-type").equals("finalizar")) {
 					ArrayList<Libro> libros=((ArrayList<Libro>)request.getSession().getAttribute("libros"));
+					Socio socio = (Socio) request.getSession().getAttribute("socio");
+					SocioLogic sl = new SocioLogic();
+					Reserva reserva;
+					ArrayList<LibroReserva> librosReservas;
+					LibroReserva lr;
 					if (libros.size() > 0) {
-						Reserva reserva=new Reserva();
-						SocioLogic sl=new SocioLogic();
-						ArrayList<LibroReserva> librosReservas = new ArrayList<LibroReserva>();
-						LibroReserva lr = null;
-						Socio socio = (Socio) request.getSession().getAttribute("socio");
-						for(Libro l : libros) {
-							lr=new LibroReserva();
-							lr.setLibro(l);
-							librosReservas.add(lr);
-						}
-						reserva.setLibros(librosReservas);
-						try {
-							reserva.setFechaReserva(java.sql.Date.valueOf(request.getParameter("fecha")));
-							reserva.setSocio(socio);
+						if (request.getParameter("tipo").equals("conjunta")) {
+							reserva=new Reserva();
+							librosReservas = new ArrayList<LibroReserva>();
+							for(Libro l : libros) {
+								lr=new LibroReserva();
+								lr.setLibro(l);
+								librosReservas.add(lr);
+							}
+							reserva.setLibros(librosReservas);
 							try {
-								sl.realizaReserva(reserva);
-								request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-								request.setAttribute("mensaje", "Reserva guardada.");
-								Servlet.enviarConGMail(socio.getEmail(), "Reserva Biblioteca", "Ha realizado una reserva con éxito", request);
-								request.getSession().setAttribute("libros", null);
-							} catch (BusinessLogicException ble) {
-								request.setAttribute("mensaje", ble.getMessage());
-							} catch (SQLException e) {
-			        			Servlet.log(Level.SEVERE,e, request);
-								request.setAttribute("mensaje", "Error en la base de datos, su reserva puede no haber sido realizada.");
+								reserva.setFechaReserva(java.sql.Date.valueOf(request.getParameter("fecha")));
+								reserva.setSocio(socio);
+								try {
+									sl.realizaReserva(reserva);
+									request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+									request.setAttribute("mensaje", "Reserva guardada.");
+									Servlet.enviarConGMail(socio.getEmail(), "Reserva Biblioteca", "Ha realizado una reserva con éxito", request);
+									request.getSession().setAttribute("libros", null);
+								} catch (BusinessLogicException ble) {
+									request.setAttribute("mensaje", ble.getMessage());
+								} catch (SQLException e) {
+				        			Servlet.log(Level.SEVERE,e, request);
+									request.setAttribute("mensaje", "Error en la base de datos, su reserva puede no haber sido realizada.");
+								}
+							}
+							catch (IllegalArgumentException e ) {
+								e.printStackTrace();
+								request.setAttribute("mensaje", "El formato de fecha ingresado es inválido");
 							}
 						}
-						catch (IllegalArgumentException e ) {
-							request.setAttribute("mensaje", "El formato de fecha ingresado es inválido");
+						else if (request.getParameter("tipo").equals("individual")) {
+							for(Libro l :libros) {
+								reserva=new Reserva();
+								librosReservas = new ArrayList<LibroReserva>();
+								lr=new LibroReserva();
+								lr.setLibro(l);
+								librosReservas.add(lr);
+								reserva.setLibros(librosReservas);
+								try {
+									reserva.setFechaReserva(java.sql.Date.valueOf(request.getParameter("fecha"+l.getId())));
+									reserva.setSocio(socio);
+									try {
+										sl.realizaReserva(reserva);
+										request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+										request.setAttribute("mensaje", "Reserva guardada.");
+										Servlet.enviarConGMail(socio.getEmail(), "Reserva Biblioteca", "Ha realizado una reserva con éxito", request);
+										request.getSession().setAttribute("libros", null);
+									} catch (BusinessLogicException ble) {
+										request.setAttribute("mensaje", ble.getMessage());
+									} catch (SQLException e) {
+					        			Servlet.log(Level.SEVERE,e, request);
+										request.setAttribute("mensaje", "Error en la base de datos, su reserva puede no haber sido realizada.");
+									}
+								}
+								catch (IllegalArgumentException e ) {
+									request.setAttribute("mensaje", "El formato de fecha ingresado es inválido");
+								}
+							}
 						}
 					}
 					else {

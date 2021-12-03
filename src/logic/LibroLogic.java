@@ -104,16 +104,19 @@ private LibroDAO _LibroDAO;
 		ArrayList<String> fechasLibro = new ArrayList<String>();
 		try {
 			while (date.isBefore(LocalDate.now().plusMonths(cantMeses))) {
-				fechas.add(date.toString());
+				fechas.add('"'+date.toString()+'"');
 				date=date.plusDays(1);
 			}
 			for (Libro l : libros) {
 				fechasLibro = this._LibroDAO.getFechasDisponible(l, cantMeses);
 				for (String fecha : fechas) {
+					System.out.print(fecha);
 					if (!fechasLibro.contains(fecha)) {
 						fechasAux.add(fecha);
+						System.out.print("No disponible");
 					}
 				}
+				System.out.println("Fin");
 			}
 			fechas.removeAll(fechasAux);
 			return fechas;
