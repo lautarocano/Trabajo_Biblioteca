@@ -91,7 +91,7 @@ for (Libro l : listaLibro) {
 	        var test = $(this).val();
 
 	        $("div.desc").hide();
-	        $("#"+test).show();
+	        $(eval(test)).show();
 	    });
 	});
   </script>
@@ -133,7 +133,7 @@ for (Libro l : listaLibro) {
 		    		<%=l.getGenero().getDescripcion() %>
 		    	</span>
 
-	        	<span class="td"><button type="submit" name="action-type" value="borrar" class="btn btn-danger btn-block" >Borrar Reserva</button> </span>
+	        	<span class="td"><button type="submit" name="action-type" value="borrar" class="btn btn-danger btn-block" >Quitar libro</button> </span>
 	        </form>
 	        <%
 	          	
@@ -145,21 +145,18 @@ for (Libro l : listaLibro) {
 <form action="FinalizarReservaServlet" method="POST" name="FinalizarReserva">
 <p>Tipo de reserva:</p>
 <div>
-  <input type="radio" id="individual" name="tipo" value="individual" checked>
-  <label for="individual">Individual</label>
+  <input type="radio" id="conjunta" name="tipo" value="conjunta" checked>
+  <label for="conjunta">Conjunta</label>
 </div>
 
 <div>
-  <input type="radio" id="conjunta" name="tipo" value="conjunta">
-  <label for="conjunta">Conjunta</label>
+  <input type="radio" id="individual" name="tipo" value="individual">
+  <label for="individual">Individual</label>
 </div>
 
 <div id="conjunta" class="desc">
 <input name="fecha" type="text" class="form-control" id="datepicker" placeholder="Fecha de retiro" >
 </div>
-
-<span ><button type="submit" name="action-type" value="finalizar" class="btn btn-primary btn-block" >Finalizar Reservas</button> </span>
-<h1>O reserva tus libros individualmente:</h1>
 <div id="individual" class="desc card-deck" style="display: none">
 <%
 for (Libro l : listaLibro) {
@@ -176,6 +173,7 @@ for (Libro l : listaLibro) {
 </div>
 <%} %>
 </div>
+<span ><button type="submit" name="action-type" value="finalizar" class="btn btn-primary btn-block" >Finalizar Reservas</button> </span>
 </form>
 </body>
 </html>
