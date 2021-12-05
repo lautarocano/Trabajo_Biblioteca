@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
+
+import model.Libro;
 import model.LibroReserva;
 import model.Reserva;
 
@@ -341,5 +344,59 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 				+ "WHERE id_libro_reserva = ?");
 		pst.setInt(1, libRes.getId());
 		pst.executeUpdate();
+	}
+	
+	public ArrayList<String> getFechasDisponible(Libro lib, int cantMeses) throws SQLException {
+		LocalDate date = LocalDate.now();
+		ArrayList<String> fechas = new ArrayList<String>();
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		int ejemplaresDisponibles = 0;
+		try {
+			this.openConnection();
+			while (date.isBefore(LocalDate.now().plusMonths(cantMeses))) {
+				
+				pst = conn.prepareStatement("SELECT e.id_ejemplar FROM prestamos p "
+						+ "INNER JOIN lineasdeprestamo lp ON p.id_prestamo = lp.id_prestamo "
+						+ "RIGHT JOIN ejemplares e ON lp.id_ejemplar = e.id_ejemplar "
+						+ "WHERE e.id_libro = ?  "
+						+ "GROUP BY e.id_ejemplar  "
+						+ "HAVING (sum(if(((date_add(ifnull(p.fecha_prestamo, now()), INTERVAL ifnull(p.dias_prestamo, 0) DAY) >= ?) OR (date_add(ifnull(p.fecha_prestamo, now()), INTERVAL ifnull(p.dias_prestamo, 0) DAY) < now() )) AND (ifnull(lp.devuelto, 1)=0), 1, 0))= 0)");
+				pst.setInt(1, lib.getId());
+				pst.setObject(2, date);
+				rs=pst.executeQuery();
+				while (rs.next()) 
+				{
+				  ejemplaresDisponibles += 1;
+				}
+				rs.close();
+				pst.close();
+				pst = conn.prepareStatement("SELECT count(lr.id_libro) AS cantreservas FROM reservas r "
+						+ "INNER JOIN libro_reserva lr ON lr.id_reserva = r.id_reserva "
+						+ "WHERE r.entregada = FALSE AND lr.id_libro = ? AND ? BETWEEN r.fecha_reserva AND date_add(r.fecha_reserva, INTERVAL (select cant_dias_prestamo from politicaprestamo where fecha_politica_prestamo in ( select max(fecha_politica_prestamo) from politicaprestamo where fecha_politica_prestamo <= ?)) DAY) ");
+				pst.setInt(1, lib.getId());
+				pst.setObject(2, date);
+				pst.setObject(3, date);
+				rs=pst.executeQuery();
+				if (rs.next()) 
+					ejemplaresDisponibles -= rs.getInt("cantreservas");
+				if (ejemplaresDisponibles > 0) {
+					fechas.add('"'+date.toString()+'"');
+					System.out.print(date.toString());
+					System.out.print(" disponible");
+				} else System.out.print("no disponible: "+date.toString());
+				ejemplaresDisponibles = 0;
+				date=date.plusDays(1);
+			}
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+			System.out.println("Fin");
+		}
+		return fechas;
 	}
 }

@@ -1,6 +1,7 @@
 package logic;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,6 +10,7 @@ import data.PoliticaSancionDAO;
 import data.ReservaDAO;
 import data.SancionDAO;
 import data.SocioDAO;
+import model.LibroReserva;
 import model.PoliticaSancion;
 import model.Prestamo;
 import model.Reserva;
@@ -113,8 +115,22 @@ public class SocioLogic {
 				throw new BusinessLogicException("La cantidad ingresada sumada a los libros pendientes de devolución supera el límite establecido.");
 			}
 			else {
-				pLogic.insert(pres);
 				rl = new ReservaLogic();
+				ReservaDAO rDAO = new ReservaDAO();
+				Date fechaInicio = pres.getFechaPrestamo();
+				LocalDateTime fechaFin = LocalDateTime.from(fechaInicio.toInstant()).plusDays(pres.getDiasPrestamo());
+				LocalDateTime date =  LocalDateTime.from(fechaInicio.toInstant()).plusDays(1);
+				ArrayList<String> fechas = new ArrayList<String>();
+				while (date.isBefore(fechaFin)) {
+					fechas.add('"'+date.toString()+'"');
+					date=date.plusDays(1);
+				}
+				for (LibroReserva l: reserva.getLibros()) {
+					if (!rDAO.getFechasDisponible(l.getLibro(), 2).containsAll(fechas)) {
+						throw new BusinessLogicException("El libro \""+l.getLibro().getTitulo()+"\" no está disponible para la fecha y días de préstamo ingresados.");
+					}
+				}
+				pLogic.insert(pres);
 				rl.entregarReserva(reserva);
 			}
 		}
@@ -133,6 +149,11 @@ public class SocioLogic {
 			}
 			else {
 				ReservaDAO rDAO = new ReservaDAO();
+				for (LibroReserva l: res.getLibros()) {
+					if (!rDAO.getFechasDisponible(l.getLibro(), 2).contains('"'+res.getFechaReserva().toString()+'"')) {
+						throw new BusinessLogicException("El libro \""+l.getLibro().getTitulo()+"\" no está disponible para la fecha ingresada.");
+					}
+				}
 				rDAO.insert(res);
 			}
 		}

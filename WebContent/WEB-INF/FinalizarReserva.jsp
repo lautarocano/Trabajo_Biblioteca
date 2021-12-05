@@ -84,17 +84,27 @@ for (Libro l : listaLibro) {
 
  </script>
 <%} %> 
+
+  <script>
+  $(document).ready(function() {
+	    $("input[name$='tipo']").click(function() {
+	        var test = $(this).val();
+
+	        $("div.desc").hide();
+	        $("#"+test).show();
+	    });
+	});
+  </script>
+
 </head>
 <body>
-disabledDays
-
 <div class="table">
 		<div class="theader">
 		    <div class="tr">
-		        <span class="td">Tï¿½tulo</span>
+		        <span class="td">Titulo</span>
 		        <span class="td">Autor</span>
-		        <span class="td">Nro de Ediciï¿½n</span>
-		        <span class="td">Fecha de Ediciï¿½n</span>
+		        <span class="td">Nro de Edición</span>
+		        <span class="td">Fecha de Edición</span>
 		        <span class="td">Genero</span>
 		        <span class="td"></span>
 		        <span class="td"></span>
@@ -135,8 +145,7 @@ disabledDays
 <form action="FinalizarReservaServlet" method="POST" name="FinalizarReserva">
 <p>Tipo de reserva:</p>
 <div>
-  <input type="radio" id="individual" name="tipo" value="individual"
-         checked>
+  <input type="radio" id="individual" name="tipo" value="individual" checked>
   <label for="individual">Individual</label>
 </div>
 
@@ -144,10 +153,14 @@ disabledDays
   <input type="radio" id="conjunta" name="tipo" value="conjunta">
   <label for="conjunta">Conjunta</label>
 </div>
+
+<div id="conjunta" class="desc">
 <input name="fecha" type="text" class="form-control" id="datepicker" placeholder="Fecha de retiro" >
+</div>
+
 <span ><button type="submit" name="action-type" value="finalizar" class="btn btn-primary btn-block" >Finalizar Reservas</button> </span>
 <h1>O reserva tus libros individualmente:</h1>
-<div class="card-deck">
+<div id="individual" class="desc card-deck" style="display: none">
 <%
 for (Libro l : listaLibro) {
 %>
