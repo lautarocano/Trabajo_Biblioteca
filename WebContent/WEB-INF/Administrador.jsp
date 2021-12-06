@@ -52,19 +52,23 @@
       </nav>
 
       <div class="container-fluid">
-      <%if (request.getAttribute("mensaje")!=null) {
-      		if (request.getAttribute("clase-mensaje")!=null) {%>
-      	<div <%=request.getAttribute("clase-mensaje")%> role="alert">
+      <%String idMensaje = "mensaje";
+      int numero = 0;
+      while (request.getAttribute(idMensaje)!=null) {
+      		if (request.getAttribute("clase-"+idMensaje)!=null) {%>
+      	<div <%=request.getAttribute("clase-"+idMensaje)%> role="alert">
       	<% 	}
       		else {%>
       	<div class="alert alert-warning alert-dismissible fade show" role="alert">
       	<%	} %>
-		  <%=request.getAttribute("mensaje")%>
+		  <%=request.getAttribute(idMensaje)%>
 		  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		    <span aria-hidden="true">&times;</span>
 		  </button>
 		</div>
-      <%}
+      <%	numero++;
+      		idMensaje = "mensaje"+numero;
+      }
       	if (request.getAttribute("JSP")=="ABMLibro") { %>
        <%@ include file="/WEB-INF/ABMLibro.jsp"%>
        <%} 

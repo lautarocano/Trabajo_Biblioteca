@@ -12,6 +12,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+
 import logic.GeneroLogic;
 import logic.LibroLogic;
 import model.Libro;
@@ -23,6 +28,10 @@ import model.Usuario;
 @WebServlet("/ABMLibroServlet")
 public class ABMLibroServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+    private static final String AWS_ACCESS_KEY_ID = "AKIA6NS42AHIMPYBU7EU";
+    private static final String AWS_SECRET_ACCESS_KEY = "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";
+    private static final String BUCKET_NAME = "imagenesbibliotecabucket";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -94,13 +103,26 @@ public class ABMLibroServlet extends HttpServlet {
 				else if (request.getParameter("action-type").equals("eliminar")) {	
 					Libro libro=null;
 					LibroLogic ll=new LibroLogic();
+					System.setProperty("aws.accessKeyId", AWS_ACCESS_KEY_ID);
+		            System.setProperty("aws.secretKey", AWS_SECRET_ACCESS_KEY);
+					final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.SA_EAST_1).build();
 					try {
 						libro = ll.getOne(Integer.parseInt(request.getParameter("id"))); 
-						if(libro!=null) {					
+						if(libro!=null) {
+							String aFileName = new String(request.getParameter("image").getBytes( 
+							        "iso8859-1"), "gbk"); 
+							try {
+							    s3.deleteObject(BUCKET_NAME, aFileName);
+							    request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+								request.setAttribute("mensaje", "Imagen eliminada.");
+							} catch (AmazonServiceException ase) {
+								Servlet.log(Level.SEVERE, ase, request);
+								System.out.println(aFileName + ":error:" + ase.getMessage());
+								request.setAttribute("mensaje", "No se pudo eliminar la imagen del libro.");
+							}
 							ll.delete(libro);
-							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-							request.setAttribute("mensaje", "Libro eliminado correctamente");
-							request.getRequestDispatcher("ImagesServlet").forward(request, response);
+							request.setAttribute("clase-mensaje1", "class=\"alert alert-success alert-dismissible fade show\"");
+							request.setAttribute("mensaje1", "Libro eliminado correctamente");
 						}
 						else
 						{
@@ -162,12 +184,10 @@ public class ABMLibroServlet extends HttpServlet {
 					}
 				}
 			}
-			if (request.getParameter("action-type")!=null && request.getParameter("action-type").equals("eliminar")) {
-				
-			}
-			else this.doGet(request, response);
+			this.doGet(request, response);
 		}
 	}
+	
 	private static Boolean ValidarDatos (HttpServletRequest request) {
 		if (Servlet.parameterNotNullOrBlank(request.getParameter("titulo")) && Servlet.parameterNotNullOrBlank(request.getParameter("autor")) && 
 				Servlet.parameterNotNullOrBlank(request.getParameter("fecha-edicion")) && Servlet.parameterNotNullOrBlank(request.getParameter("numero-edicion"))&&

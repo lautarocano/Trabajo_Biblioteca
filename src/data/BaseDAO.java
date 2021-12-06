@@ -10,21 +10,21 @@ import java.util.Properties;
 
 public abstract class BaseDAO {
 	protected static Connection conn;
-	
+	/*
 	private static String driver = "com.mysql.jdbc.Driver";
 	private static String url = "jdbc:mysql://localhost:3306/biblioteca";
 	private static String user = "root";
 	private static String password = "1111";
 	private static String serverTimezone  = "UTC";
+	*/
 	
 	
-	/*
 	private static String driver = "com.mysql.jdbc.Driver";
 	private static String url = "jdbc:mysql://lyn7gfxo996yjjco.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/r5wpcujxuwi2fbpn";
 	private static String user = "h1xsm87yosp5n4sr";
 	private static String password = "ca8ay3d3dl6ef4qm";
 	private static String serverTimezone  = "UTC";
-	*/
+	
 	protected void openConnection() throws SQLException {
 		try {
 			Class.forName(driver);
