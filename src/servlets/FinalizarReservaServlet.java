@@ -46,13 +46,17 @@ public class FinalizarReservaServlet extends HttpServlet {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Socio)) {
 			if (request.getSession().getAttribute("libros")!=null) {
 				ArrayList<Libro> libros=((ArrayList<Libro>)request.getSession().getAttribute("libros"));
+				ArrayList<ArrayList<String>> fechasDisponiblesTotal = new ArrayList<ArrayList<String>>();
+				ArrayList<String> fechasDisponiblesLibro;
 				if (libros.size() > 0) {
 					ReservaLogic rl = new ReservaLogic();
 					try {
-						request.setAttribute("availableDays", rl.getFechasDisponible(libros, 2));
 						for(Libro l : libros) {
-							request.setAttribute("availableDays"+l.getId(), rl.getFechasDisponible(l, 2));
+							fechasDisponiblesLibro = rl.getFechasDisponible(l, 2);
+							request.setAttribute("availableDays"+l.getId(), fechasDisponiblesLibro);
+							fechasDisponiblesTotal.add(fechasDisponiblesLibro);
 						}
+						request.setAttribute("availableDays", rl.getFechasDisponible(fechasDisponiblesTotal, 2));
 					} catch (SQLException e) {
 	        			Servlet.log(Level.SEVERE,e, request);
 						request.setAttribute(this.getIdMensaje(), "Error en la base de datos, inténtelo nuevamente en unos minutos.");

@@ -15,7 +15,7 @@
 ArrayList<Reserva> listaReserva=(ArrayList<Reserva>)request.getAttribute("listaReserva");
 if (listaReserva.isEmpty()) {
 %>
-<h1>No tenés eservas pendientes de entrega</h1>
+<h1>No tenés reservas pendientes de entrega</h1>
 <%	
 }
 else {

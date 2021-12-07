@@ -1,5 +1,6 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="model.Usuario"%>
+<%@page import="model.Usuario.tipoUsuario"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -45,12 +46,19 @@
 	        <form class="tr" action="ABMUsuarioServlet" method="POST" name="ABMUsuario">
 	        	<input name="id" type="hidden" class="form-control" id="id" placeholder="id" value=<%=u.getId() %> required>
 	        	<span class="td"><%=u.getId() %> </span>
+	        	<%if (u.getTipo() != tipoUsuario.Socio) { %>
 	        	<span class="td">
 		    		<select name="tipo" class="form-control" id="tipo">
 	        			<option value="1"> Bibliotecario </option>
 	        			<option value="2"> Administrador </option>
 	        		</select>
 		    	</span>
+		    	<%} 
+	    		else {
+		        %>
+		        <span class="td"> Socio </span>
+		        <%} 
+		        %>
 	        	<span class="td">
 	        		<input name="user" type="text" class="form-control" id="user" placeholder="Nombre usuario" value=<%=u.getNombreUsuario() %> required>
 		    	</span>

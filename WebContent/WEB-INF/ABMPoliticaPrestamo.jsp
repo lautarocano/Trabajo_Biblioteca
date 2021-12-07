@@ -44,14 +44,6 @@
   </script>
 </head>
 <body>
-<%
-@SuppressWarnings("unchecked")
-ArrayList<PoliticaPrestamo> ListaPoliticasPrestamos=(ArrayList<PoliticaPrestamo>)request.getAttribute("ListaPoliticasPrestamos");
-if (ListaPoliticasPrestamos == null || ListaPoliticasPrestamos.isEmpty()) { %>
-<p style="font-size: 16px;">No hay resultados</p>
-<%}
-else {
-%>
 <div class="d-flex">
 	<div class="table">
 		<div class="theader">
@@ -62,6 +54,14 @@ else {
 		        <span class="td">Cantidad Dias Prestamo</span>     
 		    </div>
 	    </div>
+<%
+@SuppressWarnings("unchecked")
+ArrayList<PoliticaPrestamo> ListaPoliticasPrestamos=(ArrayList<PoliticaPrestamo>)request.getAttribute("ListaPoliticasPrestamos");
+if (ListaPoliticasPrestamos == null || ListaPoliticasPrestamos.isEmpty()) { %>
+<p style="font-size: 16px;">No hay resultados</p>
+<%}
+else {
+%>
 	    <div class="tbody">
 	    	<%
 	    	if (request.getParameter("editId") != null) {
@@ -115,6 +115,8 @@ else {
 	        <%	} 
 	    	}%>
 	    </div>
+<%}
+%>	    
 	    <div class="tfoot">
 		    	<form class="tr" action="ABMPoliticaPrestamoServlet" method="POST" name="ABMPoliticaPrestamo">
 		    		<span class="td"></span>
@@ -142,8 +144,6 @@ else {
 		    	</form>
 	    </div>
 	</div>
-<%}
-%>
 </div>
 </body>
 </html>

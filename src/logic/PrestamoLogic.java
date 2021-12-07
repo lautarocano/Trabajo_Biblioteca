@@ -19,8 +19,6 @@ private PrestamoDAO _PrestamoDAO;
 	
 	public void insert(Prestamo pres) throws SQLException {
 		try {
-			PoliticaPrestamoLogic ppl = new PoliticaPrestamoLogic();
-			pres.setDiasPrestamo(ppl.getActual().getDiasPrestamo());
 			this._PrestamoDAO.insert(pres);
 		}
 		catch (SQLException exception) {

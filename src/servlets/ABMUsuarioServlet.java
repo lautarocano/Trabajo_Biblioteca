@@ -59,9 +59,6 @@ public class ABMUsuarioServlet extends HttpServlet {
 							usuario.setPassword(request.getParameter("password"));
 							usuario.setEstado(Boolean.parseBoolean(request.getParameter("estado")));
 							switch(Integer.parseInt(request.getParameter("tipo"))) {
-							case (0):
-								usuario.setTipo(tipoUsuario.Socio);
-								break;
 							case (1):
 								usuario.setTipo(tipoUsuario.Bibliotecario);
 								break;
@@ -113,23 +110,21 @@ public class ABMUsuarioServlet extends HttpServlet {
 						try {
 							usuario=ul.getOne(Integer.parseInt(request.getParameter("id")));
 							if(usuario!=null) {
-								usuario.setId(Integer.parseInt(request.getParameter("id")));
 								usuario.setNombreUsuario(request.getParameter("user"));
 								usuario.setPassword(request.getParameter("password"));
 								usuario.setEstado(Boolean.parseBoolean(request.getParameter("estado")));
-								switch(Integer.parseInt(request.getParameter("tipo"))) {
-								case (0):
-									usuario.setTipo(tipoUsuario.Socio);
-									break;
-								case (1):
-									usuario.setTipo(tipoUsuario.Bibliotecario);
-									break;
-								case (2):
-									usuario.setTipo(tipoUsuario.Administrador);
-									break;
-								default:
-									throw new Exception("Tipo de usuario inválido.");
-								}
+								if (usuario.getTipo() != tipoUsuario.Socio) {
+									switch(Integer.parseInt(request.getParameter("tipo"))) {
+									case (1):
+										usuario.setTipo(tipoUsuario.Bibliotecario);
+										break;
+									case (2):
+										usuario.setTipo(tipoUsuario.Administrador);
+										break;
+									default:
+										throw new Exception("Tipo de usuario inválido.");
+									}
+								}								
 								ul.update(usuario);
 								request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 								request.setAttribute("mensaje", "Usuario actualizado correctamente");

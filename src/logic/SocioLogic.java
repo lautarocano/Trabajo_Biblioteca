@@ -1,7 +1,6 @@
 package logic;
 
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -101,10 +100,14 @@ public class SocioLogic {
 	//Falta agregar validación de disponibilidad de libros y de fecha de reserva
 	public void retiraReservaYRealizaPrestamo(Prestamo pres, Reserva reserva) throws SQLException, BusinessLogicException {
 		int cantMaxLibrosPend;
+		int diasPoliticaPrestamo;
+		int diasMaximoLibro;
 		try {
 			PrestamoLogic pLogic = new PrestamoLogic();
+			PoliticaPrestamoLogic ppl = new PoliticaPrestamoLogic();
 			ReservaLogic rl = null;
 			cantMaxLibrosPend = pLogic.getLimiteLibrosPendientes();
+			diasPoliticaPrestamo = ppl.getActual().getDiasPrestamo();
 			if (this._SocioDAO.isSancionado(pres.getSocio())) {
 				throw new BusinessLogicException("El socio no puede retirar libros debido a que está sancionado.");
 			}
@@ -116,18 +119,14 @@ public class SocioLogic {
 			}
 			else {
 				rl = new ReservaLogic();
-				ReservaDAO rDAO = new ReservaDAO();
-				Date fechaInicio = pres.getFechaPrestamo();
-				LocalDateTime fechaFin = LocalDateTime.from(fechaInicio.toInstant()).plusDays(pres.getDiasPrestamo());
-				LocalDateTime date =  LocalDateTime.from(fechaInicio.toInstant()).plusDays(1);
-				ArrayList<String> fechas = new ArrayList<String>();
-				while (date.isBefore(fechaFin)) {
-					fechas.add('"'+date.toString()+'"');
-					date=date.plusDays(1);
-				}
+				pres.setDiasPrestamo(diasPoliticaPrestamo);
 				for (LibroReserva l: reserva.getLibros()) {
-					if (!rDAO.getFechasDisponible(l.getLibro(), 2).containsAll(fechas)) {
-						throw new BusinessLogicException("El libro \""+l.getLibro().getTitulo()+"\" no está disponible para la fecha y días de préstamo ingresados.");
+					diasMaximoLibro = rl.getDiasMaximoPrestamo(l.getLibro(), diasPoliticaPrestamo, reserva);
+					if (diasMaximoLibro == 0) {
+						throw new BusinessLogicException("El libro \""+l.getLibro().getTitulo()+"\" no está disponible.");
+					}
+					else if (diasMaximoLibro < pres.getDiasPrestamo()) {
+						pres.setDiasPrestamo(diasMaximoLibro);
 					}
 				}
 				pLogic.insert(pres);

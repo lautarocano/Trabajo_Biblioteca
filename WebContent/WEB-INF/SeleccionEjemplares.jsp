@@ -25,7 +25,10 @@
 if (request.getAttribute("ejemplares")!=null) {
 	@SuppressWarnings("unchecked")
 	ArrayList<ArrayList<Ejemplar>> listaEjemplares=(ArrayList<ArrayList<Ejemplar>>)request.getAttribute("ejemplares");
+	if (request.getAttribute("diasMaximoPrestamo")!=null) {;
 %>
+<p>Plazo máximo de devolución para el préstamo: <%=request.getAttribute("diasMaximoPrestamo")%></p>
+<%} %>
 <form class="card-deck" action="SeleccionEjemplaresServlet" method="POST" name="SeleccionEjemplares">
 <input name="reserva" type="hidden" class="form-control" id="id_reserva" value=<%=request.getParameter("id_reserva") %> required>
 <%	for (ArrayList<Ejemplar> ejemplares : listaEjemplares) {

@@ -52,7 +52,9 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 						for (LibroReserva lr : reserva.getLibros()) {
 							disponibles.add(el.getAllDisponibles(lr.getLibro()));
 						}
+						request.setAttribute("diasMaximoPrestamo", rl.getDiasMaximoPrestamo(reserva));
 						request.setAttribute("ejemplares", disponibles);
+						
 						request.setAttribute("JSP", "SeleccionEjemplar");
 						request.getRequestDispatcher("WEB-INF/Bibliotecario.jsp").forward(request, response);
 					}
