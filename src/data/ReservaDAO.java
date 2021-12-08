@@ -232,9 +232,9 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 			rs = pst.executeQuery();
 			if (rs.next()) {
 				res = this.mapearReserva(rs);
+				res.setLibros(this.getAllLibroReserva(res, pst, rs));
 			}
 			rs.close();
-			res.setLibros(this.getAllLibroReserva(res, pst, rs));
 		}
 		catch (SQLException e){
 			e.printStackTrace();
@@ -401,22 +401,21 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 	}
 	
 	public int getDiasMaximoPrestamo(Libro lib, int diasPoliticaPrestamo, Reserva reserva) throws SQLException {
-		LocalDate date = LocalDate.now();
-		date = date.plusDays(1);
+		LocalDate date = LocalDate.now().plusDays(1);
 		PreparedStatement pst = null;
 		ResultSet rs = null;
 		int ejemplaresDisponibles = 0;
 		int dias = 0;
 		try {
 			this.openConnection();
-			while (date.isBefore(LocalDate.now().plusDays(diasPoliticaPrestamo))) {
+			while (date.isBefore(LocalDate.now().plusDays(diasPoliticaPrestamo+1))) {
 				System.out.println(date);
 				pst = conn.prepareStatement("SELECT e.id_ejemplar FROM ejemplares e WHERE e.id_libro = ? "
 						+ "AND NOT EXISTS ( SELECT * FROM lineasdeprestamo lp "
 						+ "INNER JOIN prestamos p ON p.id_prestamo = lp.id_prestamo "
-						+ "WHERE lp.id_ejemplar = e.id_ejemplar AND ("
-						+ "(date_add(p.fecha_prestamo, INTERVAL p.dias_prestamo DAY) >= ?) "
-						+ "OR (date_add(p.fecha_prestamo, INTERVAL p.dias_prestamo DAY) < now() AND lp.devuelto = 0)))");
+						+ "WHERE lp.id_ejemplar = e.id_ejemplar AND lp.devuelto = 0 AND ("
+						+ "date_add(p.fecha_prestamo, INTERVAL p.dias_prestamo DAY) >= ? "
+						+ "OR date_add(p.fecha_prestamo, INTERVAL p.dias_prestamo DAY) < now()))");
 				pst.setInt(1, lib.getId());
 				pst.setObject(2, date);
 				rs=pst.executeQuery();
@@ -429,7 +428,8 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 				pst.close();
 				pst = conn.prepareStatement("SELECT count(lr.id_libro) AS cantreservas FROM reservas r "
 						+ "INNER JOIN libro_reserva lr ON lr.id_reserva = r.id_reserva "
-						+ "WHERE r.id_reserva <> ? AND r.entregada = FALSE AND r.fecha_reserva >= ? AND lr.id_libro = ? AND ? BETWEEN r.fecha_reserva AND date_add(r.fecha_reserva, INTERVAL (select cant_dias_prestamo from politicaprestamo where fecha_politica_prestamo in ( select max(fecha_politica_prestamo) from politicaprestamo where fecha_politica_prestamo <= ?)) DAY) ");
+						+ "WHERE r.id_reserva <> ? AND r.entregada = FALSE AND r.fecha_reserva >= ? AND lr.id_libro = ? AND ? "
+						+ "BETWEEN r.fecha_reserva AND date_add(r.fecha_reserva, INTERVAL (select cant_dias_prestamo from politicaprestamo where fecha_politica_prestamo in ( select max(fecha_politica_prestamo) from politicaprestamo where fecha_politica_prestamo <= ?)) DAY) ");
 				pst.setInt(1, reserva.getId());
 				pst.setDate(2, (Date)reserva.getFechaReserva());
 				pst.setInt(3, lib.getId());

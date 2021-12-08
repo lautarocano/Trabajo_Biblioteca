@@ -46,7 +46,7 @@ public class ReservaServlet extends HttpServlet {
 			LibroLogic ll = new LibroLogic();
 			GeneroLogic gl = new GeneroLogic();
 			Genero genero = null;
-			ArrayList<Libro> listaLibros = null;
+			ArrayList<Libro> listaLibros = new ArrayList<Libro>();
 			try {
 				if (request.getParameter("genero")!=null) {
 					try {

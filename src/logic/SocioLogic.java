@@ -1,6 +1,7 @@
 package logic;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -108,7 +109,12 @@ public class SocioLogic {
 			ReservaLogic rl = null;
 			cantMaxLibrosPend = pLogic.getLimiteLibrosPendientes();
 			diasPoliticaPrestamo = ppl.getActual().getDiasPrestamo();
-			if (this._SocioDAO.isSancionado(pres.getSocio())) {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+			Date date = new Date();
+			if (!sdf.format(reserva.getFechaReserva()).equals(sdf.format(date))) {
+				throw new BusinessLogicException("Las reservas se retiran únicamente el día de la fecha pactada. Sin excepción");
+			}
+			else if (this._SocioDAO.isSancionado(pres.getSocio())) {
 				throw new BusinessLogicException("El socio no puede retirar libros debido a que está sancionado.");
 			}
 			else if (this._SocioDAO.hasOverdueLoan(pres.getSocio())) {

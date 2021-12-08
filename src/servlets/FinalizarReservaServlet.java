@@ -168,8 +168,15 @@ public class FinalizarReservaServlet extends HttpServlet {
 					}
 					request.getRequestDispatcher("ReservaServlet").forward(request,response);
 				}
+				else {
+					request.setAttribute(this.getIdMensaje(), "Error en los datos suministrados.");
+					this.doGet(request, response);
+				}
 			}
-			else this.doGet(request, response);
+			else {
+				request.setAttribute(this.getIdMensaje(), "Error en los datos suministrados.");
+				this.doGet(request, response);
+			}
 		}
 	}
 	

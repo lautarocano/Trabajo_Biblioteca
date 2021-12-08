@@ -143,6 +143,9 @@ for (Libro l : listaLibro) {
 				</div>
 </div>
 <form action="FinalizarReservaServlet" method="POST" name="FinalizarReserva">
+<%
+if (listaLibro.size() > 1) {
+%>
 <p>Tipo de reserva:</p>
 <div>
   <input type="radio" id="conjunta" name="tipo" value="conjunta" checked>
@@ -154,9 +157,6 @@ for (Libro l : listaLibro) {
   <label for="individual">Individual</label>
 </div>
 
-<div id="conjunta" class="desc">
-<input name="fecha" type="text" class="form-control" id="datepicker" placeholder="Fecha de retiro" >
-</div>
 <div id="individual" class="desc card-deck" style="display: none">
 <%
 for (Libro l : listaLibro) {
@@ -172,6 +172,13 @@ for (Libro l : listaLibro) {
   </div>
 </div>
 <%} %>
+</div>
+<%}
+else {%>
+<input type="hidden" id="conjunta" name="tipo" value="conjunta">
+<%} %>
+<div id="conjunta" class="desc">
+<input name="fecha" type="text" class="form-control" id="datepicker" placeholder="Fecha de retiro" >
 </div>
 <span ><button type="submit" name="action-type" value="finalizar" class="btn btn-primary btn-block" >Finalizar Reservas</button> </span>
 </form>

@@ -97,7 +97,7 @@ public class ImagesServlet extends HttpServlet {
 						}
 					} catch (NumberFormatException e) {
 						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
-						request.setAttribute("mensaje", "Id de libro invï¿½lida");
+						request.setAttribute("mensaje", "Id de libro inválida");
 					} catch (SQLException e) {
 						Servlet.log(Level.SEVERE, e, request);
 						request.setAttribute("mensaje", "No se pudo eliminar la imagen");

@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
@@ -45,6 +46,7 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 			if (request.getParameter("id_reserva")!=null) {
 				ReservaLogic rl = new ReservaLogic();
 				EjemplarLogic el = new EjemplarLogic();
+				int diasMaximoPrestamo;
 				try {
 					ArrayList<ArrayList<Ejemplar>> disponibles = new ArrayList<ArrayList<Ejemplar>>();
 					Reserva reserva = rl.getOne(Integer.parseInt(request.getParameter("id_reserva")));
@@ -52,7 +54,8 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 						for (LibroReserva lr : reserva.getLibros()) {
 							disponibles.add(el.getAllDisponibles(lr.getLibro()));
 						}
-						request.setAttribute("diasMaximoPrestamo", rl.getDiasMaximoPrestamo(reserva));
+						diasMaximoPrestamo = rl.getDiasMaximoPrestamo(reserva);
+						request.setAttribute("diasMaximoPrestamo", diasMaximoPrestamo+" día/s. ("+LocalDate.now().plusDays(diasMaximoPrestamo)+")");
 						request.setAttribute("ejemplares", disponibles);
 						
 						request.setAttribute("JSP", "SeleccionEjemplar");
@@ -60,13 +63,19 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 					}
 					else {
 						request.setAttribute("mensaje", "No se pudo obtener los ejemplares. La reserva no existe.");
-						response.sendRedirect("RetiroServlet");
+						request.getRequestDispatcher("RetiroServlet").forward(request, response);
 					}
 				} catch (NumberFormatException e) {
-					request.setAttribute("mensaje", "No se pudo obtener los ejemplares");
+					request.setAttribute("mensaje", "No se pudo obtener los ejemplares debido a un error en los datos suministrados.");
+					request.getRequestDispatcher("RetiroServlet").forward(request, response);
 				} catch (SQLException e) {
         			Servlet.log(Level.SEVERE,e, request);
-					request.setAttribute("mensaje", "No se pudo obtener los ejemplares");
+					request.setAttribute("mensaje", "No se pudo obtener los ejemplares. Error de base de datos.");
+					request.getRequestDispatcher("RetiroServlet").forward(request, response);
+				} catch (Exception e) {
+					Servlet.log(Level.SEVERE,e, request);
+					request.setAttribute("mensaje", "Lo sentimos, ha ocurrido un error.");
+					request.getRequestDispatcher("RetiroServlet").forward(request, response);
 				}
 			}
 			else response.sendRedirect("RetiroServlet");
@@ -106,20 +115,25 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 					if(!lineasdp.isEmpty()) {
 						prestamo.setLineasPrestamo(lineasdp);
 						sl.retiraReservaYRealizaPrestamo(prestamo, reserva);
+						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+						request.setAttribute("mensaje", "Préstamo iniciado.");
 					}
 					else {
 						request.setAttribute("mensaje", "Error: reserva vacía o datos erróneos.");
 					}
 				} catch (NumberFormatException e) {
-					request.setAttribute("mensaje", "No se pudo obtener los ejemplares debido a un error en los datos suministrados.");
+					request.setAttribute("mensaje", "No se pudo realizar la operación debido a un error en los datos suministrados.");
 				} catch (BusinessLogicException ble) {
 					request.setAttribute("mensaje", ble.getMessage());
 				} catch (SQLException e) {
         			Servlet.log(Level.SEVERE,e, request);
-					request.setAttribute("mensaje", "No se pudo obtener los ejemplares debido a un error en la base de datos.");
+					request.setAttribute("mensaje", "Ha ocurrido un error de base de datos. Por favor verifique las reservas y préstamos.");
+				} catch (Exception e) {
+					Servlet.log(Level.SEVERE,e, request);
+					request.setAttribute("mensaje", "Lo sentimos, ha ocurrido un error.");
 				}
 			}
-			response.sendRedirect("RetiroServlet");
+			request.getRequestDispatcher("RetiroServlet").forward(request, response);
 		}
 	}
 
