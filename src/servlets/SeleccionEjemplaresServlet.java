@@ -74,7 +74,7 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 					request.getRequestDispatcher("RetiroServlet").forward(request, response);
 				} catch (Exception e) {
 					Servlet.log(Level.SEVERE,e, request);
-					request.setAttribute("mensaje", "Lo sentimos, ha ocurrido un error.");
+					request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 					request.getRequestDispatcher("RetiroServlet").forward(request, response);
 				}
 			}
@@ -130,7 +130,7 @@ public class SeleccionEjemplaresServlet extends HttpServlet {
 					request.setAttribute("mensaje", "Ha ocurrido un error de base de datos. Por favor verifique las reservas y préstamos.");
 				} catch (Exception e) {
 					Servlet.log(Level.SEVERE,e, request);
-					request.setAttribute("mensaje", "Lo sentimos, ha ocurrido un error.");
+					request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 				}
 			}
 			request.getRequestDispatcher("RetiroServlet").forward(request, response);

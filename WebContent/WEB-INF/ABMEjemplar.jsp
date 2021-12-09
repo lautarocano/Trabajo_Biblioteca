@@ -25,7 +25,16 @@
 </head>
 <body>
 <div class="d-flex">
-<h2>Lista de ejemplares del libro "<%=((Libro)request.getAttribute("libro")).getTitulo()%>"</h2>
+<%
+@SuppressWarnings("unchecked")
+ArrayList<Ejemplar> listaEjemplar=(ArrayList<Ejemplar>)request.getAttribute("ListaEjemplares");
+Libro libro = ((Libro)request.getAttribute("libro"));
+if (libro == null || listaEjemplar == null || listaEjemplar.isEmpty()) { %>
+<p style="font-size: 16px;">No hay resultados</p>
+<%}
+else {
+%>
+<h2>Lista de ejemplares del libro "<%=libro.getTitulo() %>"</h2>
 	<div class="table">
 		<div class="theader">
 		    <div class="tr">
@@ -34,8 +43,6 @@
 	    </div>
 	    <div class="tbody">
 	    	<%
-	    	@SuppressWarnings("unchecked")
-	    	ArrayList<Ejemplar> listaEjemplar=(ArrayList<Ejemplar>)request.getAttribute("ListaEjemplares");
 		    for (Ejemplar e : listaEjemplar) {
 	        %><form class="tr" action="ABMEjemplarServlet" method="POST" name="ABMEjemplar">
 	        	<input name="id" type="hidden" class="form-control" id="id" placeholder="id" value=<%=e.getId() %> required>
@@ -55,9 +62,7 @@
 		    	</form>
 	    </div>
 	</div>
-	<% if (listaEjemplar.isEmpty()) { %>
-							<p style="font-size: 16px;">No hay resultados</p>
-						<%} %>
+<%} %>
 </div>
 </body>
 </html>

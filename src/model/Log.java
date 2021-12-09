@@ -1,12 +1,12 @@
 package model;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Log extends Entidad {
 
 	private String _level;
 	private String _stack;
-	private Date _fecha;
+	private Timestamp _fecha;
 
 	public String getLevel() {
 		return _level;
@@ -22,10 +22,10 @@ public class Log extends Entidad {
 		this._stack = stack;
 	}
 	
-	public Date getFecha() {
+	public Timestamp getFecha() {
 		return _fecha;
 	}
-	public void setFecha(Date fecha) {
+	public void setFecha(Timestamp fecha) {
 		this._fecha = fecha;
 	}
 	

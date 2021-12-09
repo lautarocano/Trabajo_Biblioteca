@@ -35,7 +35,10 @@
 	    	<%
 	    	@SuppressWarnings("unchecked")
 	    	ArrayList<Genero> listaGenero=(ArrayList<Genero>)request.getAttribute("ListaGeneros");
-	    	if (request.getParameter("editId") != null) {
+	    	if (listaGenero == null || listaGenero.isEmpty()) { %>
+	    	<p style="font-size: 16px;">No hay resultados</p>
+	    	<%}
+	    		else if (request.getParameter("editId") != null) {
 		    	for (Genero g : listaGenero) {
 		    		if (Integer.parseInt(request.getParameter("editId")) == g.getId()) {
 	        %>
@@ -84,9 +87,6 @@
 		    	</form>
 	    </div>
 	</div>
-	<% if (listaGenero.isEmpty()) { %>
-							<p style="font-size: 16px;">No hay resultados</p>
-						<%} %>
  </div>						
 </body>
 </html>

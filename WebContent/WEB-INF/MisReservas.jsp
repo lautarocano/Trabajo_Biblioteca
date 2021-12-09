@@ -13,7 +13,7 @@
 <%
 @SuppressWarnings("unchecked")
 ArrayList<Reserva> listaReserva=(ArrayList<Reserva>)request.getAttribute("listaReserva");
-if (listaReserva.isEmpty()) {
+if (listaReserva == null || listaReserva.isEmpty()) {
 %>
 <h1>No tenés reservas pendientes de entrega</h1>
 <%	

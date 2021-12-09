@@ -50,7 +50,10 @@
 	    	ArrayList<Libro> listaLibro=(ArrayList<Libro>)request.getAttribute("ListaLibros");
 	    	@SuppressWarnings("unchecked")
 	    	ArrayList<Genero> listaGenero=(ArrayList<Genero>)request.getAttribute("ListaGeneros");
-	    	if (request.getParameter("editId") != null) {
+	    	if (listaLibro == null || listaLibro.isEmpty()) { %>
+	    	<p style="font-size: 16px;">No hay resultados</p>
+	    	<%}
+	    		else if (request.getParameter("editId") != null) {
 		    	for (Libro l : listaLibro) {
 		    		if (Integer.parseInt(request.getParameter("editId")) == l.getId()) {
 	        %>
@@ -81,14 +84,16 @@
 		    	</span>
 		    	<span class="td">
 		    		<select name="genero" class="form-control" id="genero">
-	        		<%for (Genero g : listaGenero) {
-	        			if (g.getId() == l.getGenero().getId()) {%>
-	        			<option value="<%=g.getId() %>" selected> <%=g.getDescripcion() %> </option>
-	        		<%	}
-	        			else {%>
-	        			<option value="<%=g.getId() %>" > <%=g.getDescripcion() %> </option>
-	        		<%	}
-	        		}%>
+	        		<%if (listaGenero != null) {
+		        		for (Genero g : listaGenero) {
+		        			if (g.getId() == l.getGenero().getId()) {%>
+		        			<option value="<%=g.getId() %>" selected> <%=g.getDescripcion() %> </option>
+		        		<%	}
+		        			else {%>
+		        			<option value="<%=g.getId() %>" > <%=g.getDescripcion() %> </option>
+		        		<%	}
+		        		}
+		        	}%>
 	        		</select>
 		    	</span>
 		    	<span class="td">
@@ -194,9 +199,11 @@
 					  </script>
 		    		<span class="td">
 		    			<select name="genero" class="form-control" id="genero">
-	        			<% for (Genero g : listaGenero) {%>
-	        				<option value="<%=g.getId() %>" > <%=g.getDescripcion() %> </option>
-	        			<%} %>
+	        			<% if (listaGenero != null) {
+		        			for (Genero g : listaGenero) {%>
+		        				<option value="<%=g.getId() %>" > <%=g.getDescripcion() %> </option>
+		        			<%}
+	        			}%>
 	        			</select>
 		    		</span>
 		    		<span class="td">
@@ -208,9 +215,6 @@
 		    	</form>
 	    </div>
 </div>
-	<% if (listaLibro.isEmpty()) { %>
-							<p style="font-size: 16px;">No hay resultados</p>
-						<%} %>
 </div>
 
 </body>

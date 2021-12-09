@@ -29,6 +29,10 @@
 	    	<%
 	    	@SuppressWarnings("unchecked")
 	    	ArrayList<Reserva> listaReserva=(ArrayList<Reserva>)request.getAttribute("listaReserva");
+	    	if (listaReserva == null || listaReserva.isEmpty()) { %>
+	    	<p style="font-size: 16px;">No hay resultados</p>
+	    	<%}
+	    	else {
 		    	for (Reserva r : listaReserva) {
 	        %>
 	        <form class="tr" action="SeleccionEjemplaresServlet">
@@ -83,8 +87,6 @@
 	    %>
 				</div>
 </div>
-	<% if (listaReserva.isEmpty()) { %>
-							<p style="font-size: 16px;">No hay resultados</p>
-						<%} %>
+<%} %>
 </body>
 </html>

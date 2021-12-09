@@ -39,6 +39,9 @@ public class ABMUsuarioServlet extends HttpServlet {
 			} catch (SQLException e) {
     			Servlet.log(Level.SEVERE,e, request);
 				request.setAttribute("mensaje", "No se pudo obtener el listado de usuarios");
+			} catch (Exception e) {
+				Servlet.log(Level.SEVERE,e, request);
+				request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 			}
 			request.setAttribute("JSP", "ABMUsuario");
 			request.getRequestDispatcher("WEB-INF/Administrador.jsp").forward(request, response);
@@ -50,6 +53,7 @@ public class ABMUsuarioServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
+			try {
 			if (request.getParameter("action-type")!=null) {
 				if (request.getParameter("action-type").equals("agregar")) {
 					if (ValidarDatos(request)) {
@@ -75,8 +79,6 @@ public class ABMUsuarioServlet extends HttpServlet {
 						} catch (SQLException e) {
 		        			Servlet.log(Level.SEVERE,e, request);
 							request.setAttribute("mensaje", "No se pudo agregar un usuario");
-						} catch (Exception e) {
-							request.setAttribute("mensaje", e.getMessage());
 						}
 					}
 				}
@@ -138,11 +140,13 @@ public class ABMUsuarioServlet extends HttpServlet {
 						} catch (SQLException e) {
 		        			Servlet.log(Level.SEVERE,e, request);
 							request.setAttribute("mensaje", "No se pudo actualizar un usuario");
-						} catch (Exception e) {
-							request.setAttribute("mensaje", e.getMessage());
 						}
 					}
 				}
+			}
+			} catch (Exception e) {
+				Servlet.log(Level.SEVERE,e, request);
+				request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 			}
 			this.doGet(request, response);
 		}

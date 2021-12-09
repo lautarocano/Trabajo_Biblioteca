@@ -43,10 +43,13 @@ public class ABMEjemplarServlet extends HttpServlet {
 				try {
 					libro = ll.getOne(Integer.parseInt(request.getParameter("IdLibro")));
 				} catch (NumberFormatException e) {
-					
+					request.setAttribute("mensaje", "No se pudo realizar la operación debido a un error en los datos suministrados");
 				} catch (SQLException e) {
         			Servlet.log(Level.SEVERE,e, request);
 					request.setAttribute("mensaje", "No se pudieron obtener los ejemplares");
+				} catch (Exception e) {
+					Servlet.log(Level.SEVERE,e, request);
+					request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 				}
 				if (libro != null) {
 					request.setAttribute("libro", libro);
@@ -55,6 +58,9 @@ public class ABMEjemplarServlet extends HttpServlet {
 					} catch (SQLException e) {
 	        			Servlet.log(Level.SEVERE,e, request);
 						request.setAttribute("mensaje", "No se pudieron obtener los ejemplares");
+					} catch (Exception e) {
+						Servlet.log(Level.SEVERE,e, request);
+						request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 					}
 					request.setAttribute("JSP", "ABMEjemplar");
 					request.getRequestDispatcher("WEB-INF/Administrador.jsp").forward(request, response);
@@ -62,12 +68,10 @@ public class ABMEjemplarServlet extends HttpServlet {
 				else {
 					request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
 					request.setAttribute("mensaje", "Id de libro inválida");
-					ABMLibroServlet abmlServlet = new ABMLibroServlet();
-					abmlServlet.doGet(request, response);
+					request.getRequestDispatcher("ABMLibroServlet").forward(request, response);
 				}
 			} else {
-				ABMLibroServlet abmlServlet = new ABMLibroServlet();
-				abmlServlet.doGet(request, response);
+				request.getRequestDispatcher("ABMLibroServlet").forward(request, response);
 			}
 		}
 	}
@@ -77,6 +81,7 @@ public class ABMEjemplarServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
+			try {
 			if (request.getParameter("action-type")!=null) {
 				if (request.getParameter("action-type").equals("agregar")) {	
 					Ejemplar ejemplar = new Ejemplar();
@@ -94,7 +99,7 @@ public class ABMEjemplarServlet extends HttpServlet {
 							request.setAttribute("mensaje", "Ejemplar agregado correctamente");
 						}
 					} catch (NumberFormatException e) {
-						request.setAttribute("mensaje", "Error en los datos ingresados");
+						request.setAttribute("mensaje", "No se pudo realizar la operación debido a un error en los datos suministrados");
 					} catch (SQLException e) {
 	        			Servlet.log(Level.SEVERE,e, request);
 						request.setAttribute("mensaje", "No se pudo agregar el ejemplar");
@@ -114,12 +119,18 @@ public class ABMEjemplarServlet extends HttpServlet {
 							request.setAttribute("mensaje", "Id de ejemplar inválida");
 						}
 					} catch (NumberFormatException e) {
-						request.setAttribute("mensaje", "Error en los datos ingresados");
+						request.setAttribute("mensaje", "No se pudo realizar la operación debido a un error en los datos suministrados");
 					} catch (SQLException e) {
 	        			Servlet.log(Level.SEVERE,e, request);
 						request.setAttribute("mensaje", "No se pudo eliminar el ejemplar");
 					}
+				} else {
+					request.setAttribute("mensaje", "Error en los datos suministrados");
 				}
+			}
+			} catch (Exception e) {
+				Servlet.log(Level.SEVERE,e, request);
+				request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 			}
 			this.doGet(request, response);
 		}

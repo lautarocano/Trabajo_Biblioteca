@@ -67,6 +67,9 @@ if (request.getAttribute("ejemplares")!=null) {
 <button type="submit" class="btn btn-success btn-block" >Iniciar Préstamo</button>
 <a class="btn btn-danger btn-block" href="RetiroServlet">Cancelar</a>
 </form>
-<%} %>
+<%} 
+else { %>
+  	<p style="font-size: 16px;">No hay resultados.</p>
+<%}%>
 </body>
 </html>

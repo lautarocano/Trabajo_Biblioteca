@@ -13,7 +13,7 @@
 <%
 @SuppressWarnings("unchecked")
 ArrayList<Prestamo> listaPrestamo=(ArrayList<Prestamo>)request.getAttribute("ListaPrestamo");
-if (listaPrestamo.isEmpty()) {
+if (listaPrestamo == null || listaPrestamo.isEmpty()) {
 %>
 <h1>No tienes préstamos en curso</h1>
 <%

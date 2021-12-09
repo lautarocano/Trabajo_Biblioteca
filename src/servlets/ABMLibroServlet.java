@@ -47,6 +47,7 @@ public class ABMLibroServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
+			//Las líneas sobre cache se ponen intentando que las mismas se actualicen en caso de haber cambios en el bucket de S3
 			// Set standard HTTP/1.1 no-cache headers.
 			response.setHeader("Cache-Control", "private, no-store, no-cache, must-revalidate");
 
@@ -58,6 +59,7 @@ public class ABMLibroServlet extends HttpServlet {
 				request.setAttribute("ListaLibros", ll.getAll());
 				request.setAttribute("ListaGeneros", gl.getAll());
 			} catch (SQLException e) {
+				Servlet.log(Level.SEVERE, e, request);
 				request.setAttribute("mensaje", "No se pudieron obtener los libros");
 			}
 			request.setAttribute("JSP", "ABMLibro");
@@ -70,6 +72,7 @@ public class ABMLibroServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
+			try {
 			if (request.getParameter("action-type")!=null) {
 				if (request.getParameter("action-type").equals("agregar")) {	
 					if (ValidarDatos(request)) {
@@ -84,19 +87,19 @@ public class ABMLibroServlet extends HttpServlet {
 						try {
 							libro.setGenero(gl.getOne(idGenero));
 						} catch (SQLException e) {
-							// TODO Auto-generated catch block
 							Servlet.log(Level.SEVERE, e, request);
-							request.setAttribute("mensaje", "No se pudo encontrar el genero indicado");
+							request.setAttribute("mensaje", "No se pudo encontrar el género indicado");
 						}
 						LibroLogic ll = new LibroLogic();
-						try {
-							ll.insert(libro);
-							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-							request.setAttribute("mensaje", "Libro agregado correctamente");
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							Servlet.log(Level.SEVERE, e, request);
-							request.setAttribute("mensaje", "No se pudo agregar un libro");
+						if (request.getParameter("mensaje") == null) {
+							try {
+								ll.insert(libro);
+								request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+								request.setAttribute("mensaje", "Libro agregado correctamente");
+							} catch (SQLException e) {
+								Servlet.log(Level.SEVERE, e, request);
+								request.setAttribute("mensaje", "No se pudo agregar un libro");
+							}
 						}
 					}
 				}
@@ -133,10 +136,9 @@ public class ABMLibroServlet extends HttpServlet {
 					} 
 					catch (NumberFormatException e) {
 						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
-						request.setAttribute("mensaje", "Id de libro invalida");
+						request.setAttribute("mensaje", "No se pudo realizar la operación debido a un error en los datos suministrados");
 					}
 					catch (SQLException e) {
-						// TODO Auto-generated catch block
 						Servlet.log(Level.SEVERE, e, request);
 						request.setAttribute("mensaje", "No se pudo eliminar un libro");
 					}
@@ -158,9 +160,8 @@ public class ABMLibroServlet extends HttpServlet {
 								try {
 									libro.setGenero(gl.getOne(idGenero));
 								} catch (SQLException e) {
-									// TODO Auto-generated catch block
 									Servlet.log(Level.SEVERE, e, request);
-									request.setAttribute("mensaje", "No se pudo encontrar el genero indicado");
+									request.setAttribute("mensaje", "No se pudo encontrar el género indicado");
 								}
 								ll.update(libro);
 								request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
@@ -168,21 +169,23 @@ public class ABMLibroServlet extends HttpServlet {
 							}
 							else {
 								request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
-								request.setAttribute("mensaje", "Id de libro invalida");
+								request.setAttribute("mensaje", "Id de libro inválida");
 							}
 						}
 						 catch (NumberFormatException e) {
 							request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
-							request.setAttribute("mensaje", "Id de socio invalida");
+							request.setAttribute("mensaje", "No se pudo realizar la operación debido a un error en los datos suministrados");
 						}
 						catch (SQLException e) {
-						
-						// TODO Auto-generated catch block
 							Servlet.log(Level.SEVERE, e, request);
 							request.setAttribute("mensaje", "No se pudo actualizar un libro");
 						}
 					}
 				}
+			}
+			} catch (Exception e) {
+				Servlet.log(Level.SEVERE,e, request);
+				request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 			}
 			this.doGet(request, response);
 		}
@@ -191,12 +194,15 @@ public class ABMLibroServlet extends HttpServlet {
 	private static Boolean ValidarDatos (HttpServletRequest request) {
 		if (Servlet.parameterNotNullOrBlank(request.getParameter("titulo")) && Servlet.parameterNotNullOrBlank(request.getParameter("autor")) && 
 				Servlet.parameterNotNullOrBlank(request.getParameter("fecha-edicion")) && Servlet.parameterNotNullOrBlank(request.getParameter("numero-edicion"))&&
-				Servlet.parameterNotNullOrBlank(request.getParameter("genero"))/*&& Servlet.parameterNotNullOrBlank(request.getParameter("cant-ejemplares"))*/) {
+				Servlet.parameterNotNullOrBlank(request.getParameter("genero"))&& 
+				(Servlet.parameterNotNullOrBlank(request.getParameter("cant-ejemplares")) || (request.getParameter("action-type").equals("editar")))) {
 				try {
 					Integer.parseInt(request.getParameter("numero-edicion"));
 					Integer.parseInt(request.getParameter("genero"));
-					/*Integer.parseInt(request.getParameter("cant-ejemplares"));*/
 					LocalDate.parse(request.getParameter("fecha-edicion"));
+					if (request.getParameter("action-type").equals("agregar")) {
+						Integer.parseInt(request.getParameter("cant-ejemplares"));
+					}
 					return true;
 				}
 				catch (NumberFormatException e) {

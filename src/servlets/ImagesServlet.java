@@ -70,6 +70,7 @@ public class ImagesServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if(Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
+			try {
             System.setProperty("aws.accessKeyId", AWS_ACCESS_KEY_ID);
             System.setProperty("aws.secretKey", AWS_SECRET_ACCESS_KEY);
 			final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.SA_EAST_1).build();
@@ -114,55 +115,52 @@ public class ImagesServlet extends HttpServlet {
 				 
 				        String uuidValue = "";
 				        FileItem itemFile = null;
-				 
-				        try {
-				            // parses the request's content to extract file data
-				            List<FileItem> formItems = upload.parseRequest(request);
-				            Iterator<FileItem> iter = formItems.iterator();
-				 
-				            // iterates over form's fields to get UUID Value
-				            while (iter.hasNext()) {
-				                FileItem item = (FileItem) iter.next();
-				                if (item.isFormField()) {
-				                    if (item.getFieldName().equalsIgnoreCase(UUID_STRING)) {
-				                        uuidValue = item.getString();
-				                    }
-				                }
-				                // processes only fields that are not form fields
-				                if (!item.isFormField()) {
-				                    itemFile = item;
-				                }
-				            }
-				 
-				            if (itemFile != null) {
-				                // get item inputstream to upload file into s3 aws
-				                try {
-				                    ObjectMetadata om = new ObjectMetadata();
-				                    om.setContentLength(itemFile.getSize());
-				                    String keyName = uuidValue + ".jpg";
-				 
-				                    s3.putObject(new PutObjectRequest(BUCKET_NAME, keyName, itemFile.getInputStream(), om));
-				                    s3.setObjectAcl(BUCKET_NAME, keyName, CannedAccessControlList.PublicRead);
-				 
-				                } catch (AmazonServiceException ase) {
-				        			Servlet.log(Level.SEVERE, ase, request);
-				                    System.out.println(uuidValue + ":error:" + ase.getMessage());
-				 
-				                } catch (AmazonClientException ace) {
-				        			Servlet.log(Level.SEVERE, ace, request);
-				                	System.out.println(uuidValue + ":error:" + ace.getMessage());
-				                }				 
-				            } else {
-				            	System.out.println(uuidValue + ":error:" + "No Upload file");
-				            }
-				 
-				        } catch (Exception ex) {
-		        			Servlet.log(Level.SEVERE,ex, request);
-				        	System.out.println(uuidValue + ":" + ":error: " + ex.getMessage());
-				        }
-				        System.out.println(uuidValue + ":Upload done");
+
+			            // parses the request's content to extract file data
+			            List<FileItem> formItems = upload.parseRequest(request);
+			            Iterator<FileItem> iter = formItems.iterator();
+			 
+			            // iterates over form's fields to get UUID Value
+			            while (iter.hasNext()) {
+			                FileItem item = (FileItem) iter.next();
+			                if (item.isFormField()) {
+			                    if (item.getFieldName().equalsIgnoreCase(UUID_STRING)) {
+			                        uuidValue = item.getString();
+			                    }
+			                }
+			                // processes only fields that are not form fields
+			                if (!item.isFormField()) {
+			                    itemFile = item;
+			                }
+			            }
+			 
+			            if (itemFile != null) {
+			                // get item inputstream to upload file into s3 aws
+			                try {
+			                    ObjectMetadata om = new ObjectMetadata();
+			                    om.setContentLength(itemFile.getSize());
+			                    String keyName = uuidValue + ".jpg";
+			 
+			                    s3.putObject(new PutObjectRequest(BUCKET_NAME, keyName, itemFile.getInputStream(), om));
+			                    s3.setObjectAcl(BUCKET_NAME, keyName, CannedAccessControlList.PublicRead);
+			 
+			                } catch (AmazonServiceException ase) {
+			        			Servlet.log(Level.SEVERE, ase, request);
+			                    System.out.println(uuidValue + ":error:" + ase.getMessage());
+			 
+			                } catch (AmazonClientException ace) {
+			        			Servlet.log(Level.SEVERE, ace, request);
+			                	System.out.println(uuidValue + ":error:" + ace.getMessage());
+			                }				 
+			            } else {
+			            	System.out.println(uuidValue + ":error:" + "No Upload file");
+			            }
 			        }
 				}
+			} catch (Exception e) {
+				Servlet.log(Level.SEVERE,e, request);
+				request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
+			}
 			request.getRequestDispatcher("ABMLibroServlet").forward(request, response);
 		}
 	}

@@ -80,8 +80,9 @@ public class ReservaServlet extends HttpServlet {
 				request.setAttribute("mensaje", "Error en la base de datos.");
 				String rootDirectory = request.getSession().getServletContext().getRealPath("/");
 				Bitacora.log(Level.SEVERE, Bitacora.getStackTrace(e), rootDirectory);
-				request.setAttribute("ListaLibros", new ArrayList<Libro>());
-				request.setAttribute("ListaGeneros", new ArrayList<Genero>());
+			} catch (Exception e) {
+				Servlet.log(Level.SEVERE,e, request);
+				request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 			}
 			request.setAttribute("JSP", "Reserva");
 			request.getRequestDispatcher("WEB-INF/Socio.jsp").forward(request, response);
@@ -117,6 +118,9 @@ public class ReservaServlet extends HttpServlet {
 				} catch (SQLException e) {
         			Servlet.log(Level.SEVERE,e, request);
 					request.setAttribute("mensaje", "Error en la base de datos.");
+				} catch (Exception e) {
+					Servlet.log(Level.SEVERE,e, request);
+					request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 				}
 			}
 			this.doGet(request, response);

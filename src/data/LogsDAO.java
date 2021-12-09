@@ -1,6 +1,5 @@
 package data;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -13,10 +12,9 @@ public class LogsDAO extends BaseDAO{
 		try {
 			this.openConnection();
 			pst = conn.prepareStatement("INSERT INTO logs(level,stacktrace,fecha)"
-					+ "  VALUES(?,?,?)");
+					+ "  VALUES(?,?,date_add(current_timestamp(),interval -3 hour))");
 			pst.setString(1, log.getLevel());
 			pst.setString(2, log.getStack());
-			pst.setDate(3, (Date) log.getFecha());
 			pst.executeUpdate();
 			this.closeConnection(pst);
 		}

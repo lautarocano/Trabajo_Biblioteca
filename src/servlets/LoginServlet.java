@@ -43,22 +43,25 @@ public class LoginServlet extends HttpServlet {
 				UsuarioLogic ul = new UsuarioLogic();
 				try {
 					Socio socio = sl.getOneByEmail(email);
-					if (socio!=null){
-					try {
-						Usuario usuario = ul.getOneBySocio(socio.getId());
-						Servlet.enviarConGMail(socio.getEmail(), "Recuperación de usuario", "Su usuario es: "+usuario.getNombreUsuario()+"\nSu contraseña es: "+usuario.getPassword(), request);
-						request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
-						request.setAttribute("mensaje", "Información de recuperación enviada.");
-					} catch (SQLException e) {
-						request.setAttribute("mensaje", "No existe socio con ese email.");
-					}
+					if (socio!=null) {
+						try {
+							Usuario usuario = ul.getOneBySocio(socio.getId());
+							Servlet.enviarConGMail(socio.getEmail(), "Recuperación de usuario", "Su usuario es: "+usuario.getNombreUsuario()+"\nSu contraseña es: "+usuario.getPassword(), request);
+							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+							request.setAttribute("mensaje", "Información de recuperación enviada.");
+						} catch (SQLException e) {
+							request.setAttribute("mensaje", "No existe socio con ese email.");
+						}
 					}
 					else {
 						request.setAttribute("mensaje", "No existe socio con ese email.");	
 					}
-				}
-				catch (SQLException e) {	
+				} catch (SQLException e) {
+					Servlet.log(Level.SEVERE,e, request);
 					request.setAttribute("mensaje", "No existe un socio con ese mail");
+				} catch (Exception e) {
+					Servlet.log(Level.SEVERE,e, request);
+					request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 				}
 			}
 		}
@@ -75,13 +78,13 @@ public class LoginServlet extends HttpServlet {
 					response.sendRedirect("ABMLibroServlet");
 				}
 			}
-			else
-			{
+			else {
 				request.setAttribute("mensaje", "Usuario dado de baja");
 				request.getRequestDispatcher("WEB-INF/Login.jsp").forward(request, response);
 			}
 		}
 		catch(Exception e) {
+			Servlet.log(Level.SEVERE,e, request);
 			request.getRequestDispatcher("WEB-INF/Login.jsp").forward(request, response);
 		}
 	}
@@ -110,6 +113,9 @@ public class LoginServlet extends HttpServlet {
 				} catch (SQLException e) {
         			Servlet.log(Level.SEVERE,e, request);
 					request.setAttribute("mensaje", "Error en la base de datos.");
+				} catch (Exception e) {
+					Servlet.log(Level.SEVERE,e, request);
+					request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 				}		
 			} else request.setAttribute("mensaje", "Campos incompletos.");
 		}

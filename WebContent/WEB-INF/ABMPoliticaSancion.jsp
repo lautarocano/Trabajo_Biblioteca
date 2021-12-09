@@ -38,7 +38,10 @@
 	    	<%
 	    	@SuppressWarnings("unchecked")
 	    	ArrayList<PoliticaSancion> listaPoliticaSancion=(ArrayList<PoliticaSancion>)request.getAttribute("ListaPoliticasSanciones");
-	    	if (request.getParameter("editId") != null) {
+	    	if (listaPoliticaSancion == null || listaPoliticaSancion.isEmpty()) { %>
+	    	<p style="font-size: 16px;">No hay resultados</p>
+	    	<%}
+	    		else if (request.getParameter("editId") != null) {
 		    	for (PoliticaSancion ps : listaPoliticaSancion) {
 		    		if (Integer.parseInt(request.getParameter("editId")) == ps.getId()) {
 	        %>

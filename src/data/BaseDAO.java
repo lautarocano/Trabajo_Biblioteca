@@ -14,7 +14,6 @@ public abstract class BaseDAO {
 			conn = DbConnector.getInstancia().getConn();
 		}
 		catch(SQLException e) {
-			e.printStackTrace();
 			throw e;
 		} 
 		catch (ClassNotFoundException e) {
@@ -34,7 +33,6 @@ public abstract class BaseDAO {
 		catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

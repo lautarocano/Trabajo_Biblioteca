@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.logging.Level;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -39,9 +41,9 @@ public class LogoutServlet extends HttpServlet {
 				sesion.setAttribute("libros", null);
 			}
 			sesion.setAttribute("usuario", null);
-		}
-		catch(java.lang.NullPointerException e) {
-			request.setAttribute("mensaje", "No se pudo cerrar sesión");
+		} catch (Exception e) {
+			Servlet.log(Level.SEVERE,e, request);
+			request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 		}
 		request.getRequestDispatcher("WEB-INF/Login.jsp").forward(request, response);
 	}

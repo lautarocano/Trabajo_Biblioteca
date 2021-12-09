@@ -41,7 +41,10 @@
 	    	<%
 	    	@SuppressWarnings("unchecked")
 	    	ArrayList<Socio> listaSocio = (ArrayList<Socio>)request.getAttribute("ListaSocios");
-	    	if (request.getParameter("editId") != null) {
+	    	if (listaSocio == null || listaSocio.isEmpty()) { %>
+	    	<p style="font-size: 16px;">No hay resultados</p>
+	    	<%}
+	    	else if (request.getParameter("editId") != null) {
 		    	for (Socio s : listaSocio) {
 		    		if (Integer.parseInt(request.getParameter("editId")) == s.getId()) {
 	        %>

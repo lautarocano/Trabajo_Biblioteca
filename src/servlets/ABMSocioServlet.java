@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,7 +41,11 @@ public class ABMSocioServlet extends HttpServlet {
 			try {
 				request.setAttribute("ListaSocios", sl.getAll());
 			} catch (SQLException e) {
+				Servlet.log(Level.SEVERE,e, request);
 				request.setAttribute("mensaje", "No se pudo obtener el listado de socios");
+			} catch (Exception e) {
+				Servlet.log(Level.SEVERE,e, request);
+				request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 			}
 			request.setAttribute("JSP", "ABMSocio");
 			request.getRequestDispatcher("WEB-INF/Administrador.jsp").forward(request, response);		}
@@ -51,6 +56,7 @@ public class ABMSocioServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
+			try {
 			if (request.getParameter("action-type") != null) {
 				if (request.getParameter("action-type").equals("agregar")) {	
 					if (ValidarDatos(request)) {
@@ -75,10 +81,8 @@ public class ABMSocioServlet extends HttpServlet {
 							request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
 							request.setAttribute("mensaje", "Socio agregado correctamente");
 						} catch (SQLException e) {
+							Servlet.log(Level.SEVERE,e, request);
 							request.setAttribute("mensaje", "No se pudo agregar un socio");
-						}
-						catch (Exception e) {
-							request.setAttribute("mensaje", e.getMessage());
 						}
 					}
 				}
@@ -100,6 +104,7 @@ public class ABMSocioServlet extends HttpServlet {
 						request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
 						request.setAttribute("mensaje", "Id de socio inválida");
 					} catch (SQLException e) {
+						Servlet.log(Level.SEVERE,e, request);
 						request.setAttribute("mensaje", "No se pudo eliminar un socio");
 					}
 				}
@@ -129,10 +134,15 @@ public class ABMSocioServlet extends HttpServlet {
 							request.setAttribute("clase-mensaje", "class=\"alert alert-danger alert-dismissible fade show\"");
 							request.setAttribute("mensaje", "Id de socio inválida");
 						} catch (SQLException e) {
+							Servlet.log(Level.SEVERE,e, request);
 							request.setAttribute("mensaje", "No se pudo actualizar un socio");
 						}
 					}
 				}
+			}
+			} catch (Exception e) {
+				Servlet.log(Level.SEVERE,e, request);
+				request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 			}
 			this.doGet(request, response);
 		}

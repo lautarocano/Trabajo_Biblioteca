@@ -49,7 +49,7 @@ public class Servlet extends HttpServlet {
 	public static Boolean VerificarUsuario(HttpServletRequest request,HttpServletResponse response,Usuario.tipoUsuario tipoUsuario) throws IOException, ServletException{
 		//Si el Usuario es un tipo de usuario incorrecto se lo manda a la pagina de inicio.
 		HttpSession sesion = request.getSession();
-		if(((Usuario)(sesion.getAttribute("usuario")))==null) {
+		if(sesion.getAttribute("usuario")==null) {
 			response.sendRedirect("LoginServlet");
 			return false;
 		}
@@ -72,18 +72,30 @@ public class Servlet extends HttpServlet {
 		else return true;
 	}
 
-	public static Boolean VerificarSesionYUsuario(HttpServletRequest request, HttpServletResponse response, Usuario.tipoUsuario tipoUsuario) throws ServletException, IOException {			
-		if (VerificarSesion(request, response)) {
-			return VerificarUsuario(request, response, tipoUsuario);
+	public static Boolean VerificarSesionYUsuario(HttpServletRequest request, HttpServletResponse response, Usuario.tipoUsuario tipoUsuario) throws ServletException, IOException {
+		try {
+			if (VerificarSesion(request, response)) {
+				return VerificarUsuario(request, response, tipoUsuario);
+			}
+			else return false;
+		} catch (Exception e) {
+			Servlet.log(Level.SEVERE,e, request);
+			request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
+			return false;
 		}
-		else return false;
 	}
 	
 	public static Boolean VerificarSesionYUsuario(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {			
-		if (VerificarSesion(request, response)) {
-			return VerificarUsuario(request, response);
+		try {
+			if (VerificarSesion(request, response)) {
+				return VerificarUsuario(request, response);
+			}
+			else return false;
+		} catch (Exception e) {
+			Servlet.log(Level.SEVERE,e, request);
+			request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
+			return false;
 		}
-		else return false;
 	}
 	
 	public static void enviarConGMail(String destinatario, String asunto, String cuerpo) {
@@ -113,7 +125,7 @@ public class Servlet extends HttpServlet {
 	        transport.sendMessage(message, message.getAllRecipients());
 	        transport.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Bitacora.log(Level.SEVERE, Bitacora.getStackTrace(e));
 		}
 		//Otra forma:
 		/*Properties props = new Properties();
@@ -203,11 +215,10 @@ public class Servlet extends HttpServlet {
 	}
 	
 	public static Boolean parameterNotNullOrBlank(String parametro) {
-		if (parametro != null) {
-			/*if (parametro.isBlank()) return false;
-			else*/ return true;
+		if (parametro == null || parametro.isBlank()) {
+			return false;
 		}
-		else return false;
+		else return true;
 	}
 	
 	public static void log(java.util.logging.Level level, Exception e, HttpServletRequest request) {

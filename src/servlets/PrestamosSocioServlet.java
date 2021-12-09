@@ -41,6 +41,9 @@ public class PrestamosSocioServlet extends HttpServlet {
 			} catch (SQLException e) {
     			Servlet.log(Level.SEVERE,e, request);
 				request.setAttribute("mensaje", "No se pudo obtener la lista de prestamos pendientes para ese socio");
+			} catch (Exception e) {
+				Servlet.log(Level.SEVERE,e, request);
+				request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 			}
 			request.setAttribute("JSP", "MisPrestamos");
 			request.getRequestDispatcher("WEB-INF/Socio.jsp").forward(request, response);

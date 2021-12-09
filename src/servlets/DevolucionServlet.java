@@ -36,36 +36,39 @@ public class DevolucionServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Bibliotecario)) {
-			PrestamoLogic pl = new PrestamoLogic();
-			SocioLogic sl = new SocioLogic();
-			Socio socio = null;
-			if (request.getParameter("id-socio")!=null) {
-				try {
-					socio = sl.getOne(Integer.parseInt(request.getParameter("id-socio")));
-					if (socio != null) {
-						request.setAttribute("ListaPrestamo", pl.getAllPendientesBySocio(socio));
+			try {
+				PrestamoLogic pl = new PrestamoLogic();
+				SocioLogic sl = new SocioLogic();
+				Socio socio = null;
+				if (request.getParameter("id-socio")!=null) {
+					try {
+						socio = sl.getOne(Integer.parseInt(request.getParameter("id-socio")));
+						if (socio != null) {
+							request.setAttribute("ListaPrestamo", pl.getAllPendientesBySocio(socio));
+						}
+						else {
+							request.setAttribute("ListaPrestamo", pl.getAllPendientes());
+							request.setAttribute("mensaje", "No existe socio para la id ingresada");
+						}
+					} catch (NumberFormatException e) {
+						request.setAttribute("mensaje", "Id de socio debe ser un número.");
 					}
-					else {
+					catch (SQLException e) {
+	        			Servlet.log(Level.SEVERE,e, request);
+						request.setAttribute("mensaje", "No se pudo obtener la lista de prestamos pendientes para ese socio");
+					}
+				}
+				else {
+					try {
 						request.setAttribute("ListaPrestamo", pl.getAllPendientes());
-						request.setAttribute("mensaje", "No existe socio para la id ingresada");
+					} catch (SQLException e) {
+	        			Servlet.log(Level.SEVERE,e, request);
+						request.setAttribute("mensaje", "No se pudo obtener la lista de prestamos pendientes");
 					}
-				} catch (NumberFormatException e) {
-					request.setAttribute("mensaje", "Id de socio debe ser un número.");
 				}
-				catch (SQLException e) {
-					// TODO Auto-generated catch block
-        			Servlet.log(Level.SEVERE,e, request);
-					request.setAttribute("mensaje", "No se pudo obtener la lista de prestamos pendientes para ese socio");
-				}
-			}
-			else {
-				try {
-					request.setAttribute("ListaPrestamo", pl.getAllPendientes());
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-        			Servlet.log(Level.SEVERE,e, request);
-					request.setAttribute("mensaje", "No se pudo obtener la lista de prestamos pendientes");
-				}
+			} catch (Exception e) {
+				Servlet.log(Level.SEVERE,e, request);
+				request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 			}
 			request.setAttribute("JSP", "Devolucion");
 			request.getRequestDispatcher("WEB-INF/Bibliotecario.jsp").forward(request, response);
@@ -101,6 +104,9 @@ public class DevolucionServlet extends HttpServlet {
 				} catch (SQLException e) {
         			Servlet.log(Level.SEVERE,e, request);
 					request.setAttribute("mensaje", "Error en la base de datos.");
+				} catch (Exception e) {
+					Servlet.log(Level.SEVERE,e, request);
+					request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 				}
 			}
 			this.doGet(request, response);

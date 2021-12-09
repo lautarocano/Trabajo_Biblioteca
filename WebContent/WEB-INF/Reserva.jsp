@@ -20,6 +20,10 @@ if (request.getParameter("libro")!=null) {
 	busqueda = "?libro="+request.getParameter("libro");
 	andBusqueda = "&libro="+request.getParameter("libro");
 }
+if (listaLibro == null ||listaGenero == null || listaLibro.isEmpty()) { %>
+<p style="font-size: 16px;">No hay resultados</p>
+<%}
+else {
 %>
 <div class="row">
 	
@@ -140,5 +144,6 @@ if (request.getParameter("libro")!=null) {
 	
 </div>
 <!-- /.row -->
+<%} %>
 </body>
 </html>

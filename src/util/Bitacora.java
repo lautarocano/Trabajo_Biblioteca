@@ -5,7 +5,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,27 +39,25 @@ public class Bitacora {
     }
     
     public static void log(java.util.logging.Level level, String mensaje, String rootDirectory) {
-    	getBitacora(rootDirectory).log(level, mensaje);
-    	log(level,mensaje);
+    	try {
+    		getBitacora(rootDirectory).log(level, mensaje);
+        	log(level,mensaje);
+    	} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     
     public static void log(java.util.logging.Level level, String mensaje) {
-
     	LogsDAO logsDAO=new LogsDAO();
     	Log log=new Log();
     	log.setLevel(level.toString());
     	log.setStack(mensaje);
-    	java.sql.Date sqlDate = new java.sql.Date(System.currentTimeMillis());
-    	log.setFecha(sqlDate);
     	try {
 			logsDAO.insert(log);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    	
-    	
     }
     /**
      * Esta funcion nos permite convertir el stackTrace en un String, necesario

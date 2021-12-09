@@ -38,7 +38,6 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -62,7 +61,6 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -87,7 +85,6 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -111,7 +108,6 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -137,7 +133,6 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -168,7 +163,6 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 			agregarEjemplares(lib);
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -182,7 +176,6 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 			eDAO.insert(lib);
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 	}
@@ -202,7 +195,6 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -220,7 +212,6 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -234,7 +225,6 @@ public class LibroDAO extends BaseDAO implements IBaseDAO<Libro>{
 			eDAO.deleteLibro(lib);
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 	}

@@ -38,6 +38,9 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 			} catch (SQLException e) {
 				Servlet.log(Level.SEVERE, e, request);
 				request.setAttribute("mensaje", "No se pudieron obtener las politicas de prestamo");
+			} catch (Exception e) {
+				Servlet.log(Level.SEVERE,e, request);
+				request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 			}
 			request.setAttribute("JSP", "ABMPoliticaPrestamo");
 			request.getRequestDispatcher("WEB-INF/Administrador.jsp").forward(request, response);
@@ -49,6 +52,7 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
+			try {
 			if (request.getParameter("action-type")!=null) {
 				if (request.getParameter("action-type").equals("agregar")) {	
 					if (ValidarDatos(request)) {
@@ -117,6 +121,10 @@ public class ABMPoliticaPrestamoServlet extends HttpServlet {
 						}
 					}
 				}
+			}
+			} catch (Exception e) {
+				Servlet.log(Level.SEVERE,e, request);
+				request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 			}
 			this.doGet(request, response);
 		}

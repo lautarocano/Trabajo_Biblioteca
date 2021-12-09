@@ -46,7 +46,11 @@
 	    	<%
 	    	@SuppressWarnings("unchecked")
 	    	ArrayList<Prestamo> listaPrestamo=(ArrayList<Prestamo>)request.getAttribute("ListaPrestamo");
-		    	for (Prestamo p : listaPrestamo) {
+	    	if (listaPrestamo == null || listaPrestamo.isEmpty()) { %>
+	    	<p style="font-size: 16px;">No hay resultados</p>
+	    	<%}
+	    	else {
+	    		for (Prestamo p : listaPrestamo) {
 	        %>
 	        <form class="tr" action="DevolucionServlet" method="POST" name="Devolucion">
 	        		
@@ -97,12 +101,10 @@
 	        <%
 	          	
 		    	} 
+	    	}
 	    %>
 	    
 				</div>
 </div>
-	<% if (listaPrestamo.isEmpty()) { %>
-							<p style="font-size: 16px;">No hay resultados</p>
-						<%} %>
 </body>
 </html>

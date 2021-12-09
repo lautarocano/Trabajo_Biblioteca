@@ -38,9 +38,11 @@ public class ABMPoliticaSancionServlet extends HttpServlet {
 			try {
 				request.setAttribute("ListaPoliticasSanciones", psl.getAll());
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
     			Servlet.log(Level.SEVERE,e, request);
 				request.setAttribute("mensaje", "No se pudieron obtener las politicas de sanción");
+			} catch (Exception e) {
+				Servlet.log(Level.SEVERE,e, request);
+				request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 			}
 			request.setAttribute("JSP", "ABMPoliticaSancion");
 			request.getRequestDispatcher("WEB-INF/Administrador.jsp").forward(request, response);		
@@ -52,6 +54,7 @@ public class ABMPoliticaSancionServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		if (Servlet.VerificarSesionYUsuario(request, response, Usuario.tipoUsuario.Administrador)) {
+			try {
 			if (request.getParameter("action-type")!=null) {
 				if (request.getParameter("action-type").equals("agregar")) {
 					if (ValidarDatos(request)) {
@@ -122,6 +125,10 @@ public class ABMPoliticaSancionServlet extends HttpServlet {
 						}
 					}
 				}
+			}
+			} catch (Exception e) {
+				Servlet.log(Level.SEVERE,e, request);
+				request.setAttribute("mensaje", "Ha ocurrido un error durante la ejecución de la operación");
 			}
 			this.doGet(request, response);
 		}
