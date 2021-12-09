@@ -58,4 +58,7 @@ public class Socio extends Entidad {
 	public void setUsuario(Usuario usuario) {
 		this._usuario = usuario;
 	}
+	public String getNombreyApellido() {
+		return (_nombre+" "+_apellido);
+	}
 }

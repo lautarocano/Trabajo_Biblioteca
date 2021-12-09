@@ -1,6 +1,7 @@
 package logic;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,6 +10,7 @@ import data.PoliticaSancionDAO;
 import data.ReservaDAO;
 import data.SancionDAO;
 import data.SocioDAO;
+import model.LibroReserva;
 import model.PoliticaSancion;
 import model.Prestamo;
 import model.Reserva;
@@ -40,10 +42,30 @@ public class SocioLogic {
 		}
 	}
 	
-	public void insert(Socio socio) throws SQLException {
+	public Socio getOneByUser(int idUser) throws SQLException{
 		try {
-			if (!this.dniAlreadyExists(socio.getDni())) 
+			return this._SocioDAO.getOneByUser(idUser);
+		} catch (SQLException exception) {
+			throw exception;
+		}
+	}
+	
+	public Socio getOneByEmail(String email) throws SQLException{
+		try {
+			return this._SocioDAO.getOneByEmail(email);
+		} catch (SQLException exception) {
+			throw exception;
+		}
+	}
+	
+	public void insert(Socio socio) throws SQLException,Exception {
+		try {
+			if (!this.dniAlreadyExists(socio.getDni())) {
 				this._SocioDAO.insert(socio);
+			}
+			else {
+				throw new Exception("Ya existe un socio con el dni ingresado");
+			}
 		}
 		catch (SQLException exception) {
 			throw exception;
@@ -52,8 +74,7 @@ public class SocioLogic {
 	//Considerar agregar validaciones de campos en un futuro (Ejemplo: mail válido)
 	public void update(Socio socio) throws SQLException {
 		try {
-			if (!this.dniAlreadyExists(socio.getDni())) 
-				this._SocioDAO.update(socio);
+			this._SocioDAO.update(socio);
 		}
 		catch (SQLException exception) {
 			throw exception;
@@ -77,23 +98,45 @@ public class SocioLogic {
 			throw exception;
 		}
 	}
-	//Falta agregar validación de disponibilidad de libros
-	public void realizaPrestamo(Prestamo pres) throws SQLException {
+	//Falta agregar validación de disponibilidad de libros y de fecha de reserva
+	public void retiraReservaYRealizaPrestamo(Prestamo pres, Reserva reserva) throws SQLException, BusinessLogicException {
 		int cantMaxLibrosPend;
+		int diasPoliticaPrestamo;
+		int diasMaximoLibro;
 		try {
 			PrestamoLogic pLogic = new PrestamoLogic();
+			PoliticaPrestamoLogic ppl = new PoliticaPrestamoLogic();
+			ReservaLogic rl = null;
 			cantMaxLibrosPend = pLogic.getLimiteLibrosPendientes();
-			if (!this._SocioDAO.isSancionado(pres.getSocio())) {
-				
+			diasPoliticaPrestamo = ppl.getActual().getDiasPrestamo();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+			Date date = new Date();
+			if (!sdf.format(reserva.getFechaReserva()).equals(sdf.format(date))) {
+				throw new BusinessLogicException("Las reservas se retiran únicamente el día de la fecha pactada. Sin excepción");
 			}
-			else if (!this._SocioDAO.hasOverdueLoan(pres.getSocio())) {
-				
+			else if (this._SocioDAO.isSancionado(pres.getSocio())) {
+				throw new BusinessLogicException("El socio no puede retirar libros debido a que está sancionado.");
+			}
+			else if (this._SocioDAO.hasOverdueLoan(pres.getSocio())) {
+				throw new BusinessLogicException("El socio tiene préstamos atrasados pendientes de devolución.");
 			}
 			else if (this._SocioDAO.getNotReturnedBooks(pres.getSocio())+pres.getLineasPrestamo().size() > cantMaxLibrosPend) {
-				
+				throw new BusinessLogicException("La cantidad ingresada sumada a los libros pendientes de devolución supera el límite establecido.");
 			}
 			else {
+				rl = new ReservaLogic();
+				pres.setDiasPrestamo(diasPoliticaPrestamo);
+				for (LibroReserva l: reserva.getLibros()) {
+					diasMaximoLibro = rl.getDiasMaximoPrestamo(l.getLibro(), diasPoliticaPrestamo, reserva);
+					if (diasMaximoLibro == 0) {
+						throw new BusinessLogicException("El libro \""+l.getLibro().getTitulo()+"\" no está disponible.");
+					}
+					else if (diasMaximoLibro < pres.getDiasPrestamo()) {
+						pres.setDiasPrestamo(diasMaximoLibro);
+					}
+				}
 				pLogic.insert(pres);
+				rl.entregarReserva(reserva);
 			}
 		}
 		catch (SQLException exception) {
@@ -101,22 +144,21 @@ public class SocioLogic {
 		}
 	}
 	
-	public void realizaReserva(Reserva res) throws SQLException {
-		int cantMaxLibrosPend;
-		try {
-			PrestamoLogic pLogic = new PrestamoLogic();
-			cantMaxLibrosPend = pLogic.getLimiteLibrosPendientes();
-			if (!this._SocioDAO.isSancionado(res.getSocio())) {
-				
+	public void realizaReserva(Reserva res) throws SQLException, BusinessLogicException {
+		try {			
+			if (this._SocioDAO.isSancionado(res.getSocio())) {
+				throw new BusinessLogicException("No puede realizar reservas debido a que está sancionado.");
 			}
-			else if (!this._SocioDAO.hasOverdueLoan(res.getSocio())) {
-				
-			}
-			else if (this._SocioDAO.getNotReturnedBooks(res.getSocio())+res.getLibros().size() > cantMaxLibrosPend) {
-				
+			else if (this._SocioDAO.hasOverdueLoan(res.getSocio())) {
+				throw new BusinessLogicException("Usted tiene préstamos atrasados pendientes de devolución, entréguelos para poder realizar reservas.");
 			}
 			else {
 				ReservaDAO rDAO = new ReservaDAO();
+				for (LibroReserva l: res.getLibros()) {
+					if (!rDAO.getFechasDisponible(l.getLibro(), 2).contains('"'+res.getFechaReserva().toString()+'"')) {
+						throw new BusinessLogicException("El libro \""+l.getLibro().getTitulo()+"\" no está disponible para la fecha ingresada.");
+					}
+				}
 				rDAO.insert(res);
 			}
 		}
@@ -158,4 +200,5 @@ public class SocioLogic {
 			throw exception;
 		}
 	}
+	
 }

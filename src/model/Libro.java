@@ -1,13 +1,12 @@
 package model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Libro extends Entidad {
 	private String _autor;
 	private String _titulo;
 	private String _nroEdicion;
-	private Date _fechaEdicion;
-	private int _cantDiasMaxPrestamo;
+	private LocalDate _fechaEdicion;
 	private Genero _genero;
 	private int _cantidadEjemplares;
 
@@ -29,17 +28,11 @@ public class Libro extends Entidad {
 	public void setNroEdicion(String nroEdicion) {
 		this._nroEdicion = nroEdicion;
 	}
-	public Date getFechaEdicion() {
+	public LocalDate getFechaEdicion() {
 		return _fechaEdicion;
 	}
-	public void setFechaEdicion(Date fechaEdicion) {
+	public void setFechaEdicion(LocalDate fechaEdicion) {
 		this._fechaEdicion = fechaEdicion;
-	}
-	public int getCantDiasMaxPrestamo() {
-		return _cantDiasMaxPrestamo;
-	}
-	public void setCantDiasMaxPrestamo(int cantDiasMaxPrestamo) {
-		this._cantDiasMaxPrestamo = cantDiasMaxPrestamo;
 	}
 	public Genero getGenero() {
 		return _genero;

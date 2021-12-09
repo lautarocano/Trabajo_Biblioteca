@@ -1,7 +1,6 @@
 package data;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,22 +8,16 @@ import java.sql.Statement;
 
 public abstract class BaseDAO {
 	protected static Connection conn;
-	private static String driver = "com.mysql.jdbc.Driver";
-	private static String url = "jdbc:mysql://localhost:3306/biblioteca";
-	private static String user = "root";
-	private static String password = "1111";
-	
+
 	protected void openConnection() throws SQLException {
 		try {
-			Class.forName(driver);
-			conn = DriverManager.getConnection(url,user,password);
+			conn = DbConnector.getInstancia().getConn();
 		}
 		catch(SQLException e) {
-			e.printStackTrace();
 			throw e;
 		} 
 		catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			throw new SQLException("Error en la base de datos. No se encontró el driver");
 		}
 	}
 	
@@ -32,9 +25,14 @@ public abstract class BaseDAO {
 		try {
 			if(rs!=null) rs.close();
 			if(pst!=null) pst.close();
-			if(conn!=null) conn.close();
+			if(conn!=null) {
+				conn = null;
+				DbConnector.getInstancia().releaseConn();
+			}
 		}
 		catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}

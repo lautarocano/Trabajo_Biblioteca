@@ -31,6 +31,15 @@ private UsuarioDAO _UsuarioDAO;
 		}
 	}
 	
+	public Usuario getOneBySocio(int idSocio) throws SQLException {
+		try {
+			return this._UsuarioDAO.getOneBySocio(idSocio);
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}
+	}
+	
 	public void insert(Usuario usuario) throws SQLException {
 		try {
 			if (!this.userAlreadyExists(usuario.getNombreUsuario())) 
@@ -43,8 +52,7 @@ private UsuarioDAO _UsuarioDAO;
 	//Considerar agregar validaciones de campos en un futuro (Ejemplo: expresión regular para contraseña)
 	public void update(Usuario usuario) throws SQLException {
 		try {
-			if (!this.userAlreadyExists(usuario.getNombreUsuario())) 
-				this._UsuarioDAO.update(usuario);
+			this._UsuarioDAO.update(usuario);
 		}
 		catch (SQLException exception) {
 			throw exception;
@@ -68,4 +76,26 @@ private UsuarioDAO _UsuarioDAO;
 			throw exception;
 		}
 	}
+	
+	public Usuario insertAndReturn(Usuario usuario) throws SQLException {
+		Usuario user = new Usuario();
+		try {
+			if (!this.userAlreadyExists(usuario.getNombreUsuario())) 
+				user = this._UsuarioDAO.insertAndReturn(usuario);
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}
+		return user;
+	}
+	public Usuario login(String username, String password) throws SQLException {
+		try {
+			return this._UsuarioDAO.login(username,password);
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}
+	}
+	
+	
 }

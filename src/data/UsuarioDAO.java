@@ -26,7 +26,6 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 		case 2:
 			u.setTipo(tipoUsuario.Administrador);
 		}
-			
 		return u;
 	}
 	
@@ -75,6 +74,29 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 		return usu;
 	}
 	
+	public Usuario getOneBySocio(int idSocio) throws SQLException {
+		Usuario usu = null;
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("SELECT u.id_usuario,nombre_usuario,password,u.estado,tipo FROM socios s INNER JOIN usuarios u WHERE s.id_usuario=u.id_usuario AND id_socio=?");
+			pst.setInt(1, idSocio);
+			rs = pst.executeQuery();
+			if (rs.next()) {
+				usu = this.mapearUsuario(rs);
+			}
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+		return usu;
+	}
+	
 	public Usuario login(String username, String password) throws SQLException {
 		Usuario usu = null;
 		PreparedStatement pst = null;
@@ -104,20 +126,20 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 		try {
 			this.openConnection();
 			pst = conn.prepareStatement("INSERT INTO usuarios(nombre_usuario,password,estado,tipo)"
-					+ " VALUES(?,?,?,?,?)");
+					+ " VALUES(?,?,?,?)");
 			pst.setString(1, usu.getNombreUsuario());
 			pst.setString(2, usu.getPassword());
 			pst.setBoolean(3, usu.getEstado());
 			switch(usu.getTipo())
 			{
 			case Socio:
-				pst.setInt(5, 0);
+				pst.setInt(4, 0);
 				break;
 			case Bibliotecario:
-				pst.setInt(5, 1);
+				pst.setInt(4, 1);
 				break;
 			case Administrador:
-				pst.setInt(5, 2);
+				pst.setInt(4, 2);
 				break;
 			}
 			pst.executeUpdate();
@@ -129,6 +151,44 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 		finally {
 			this.closeConnection(pst);
 		}
+	}
+	
+	public Usuario insertAndReturn(Usuario usu) throws SQLException {
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		try {
+			this.openConnection();
+			pst = conn.prepareStatement("INSERT INTO usuarios(nombre_usuario,password,estado,tipo)"
+					+ " VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+			pst.setString(1, usu.getNombreUsuario());
+			pst.setString(2, usu.getPassword());
+			pst.setBoolean(3, usu.getEstado());
+			switch(usu.getTipo())
+			{
+			case Socio:
+				pst.setInt(4, 0);
+				break;
+			case Bibliotecario:
+				pst.setInt(4, 1);
+				break;
+			case Administrador:
+				pst.setInt(4, 2);
+				break;
+			}
+			pst.executeUpdate();
+			rs = pst.getGeneratedKeys();
+			if (rs.next()) {
+				usu.setId(rs.getInt(1));
+			}
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			this.closeConnection(pst, rs);
+		}
+		return usu;
 	}
 	
 	public void update(Usuario usu) throws SQLException {

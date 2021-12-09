@@ -20,36 +20,12 @@
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
         crossorigin="anonymous"></script>
         
-	<style>
-		DIV.table 
-		{
-		    display:table;
-		}
-		DIV.theader
-		{
-			display:table-header-group;
-		}
-		DIV.tbody
-		{
-			display:table-row-group;
-		}
-		DIV.tfoot
-		{
-			display:table-footer-group;
-		}
-		FORM.tr, DIV.tr
-		{
-		    display:table-row;
-		}
-		SPAN.td
-		{
-		    display:table-cell;
-		}
-	</style>
+    <link rel="stylesheet" type="text/css" href="CSS/table-style.css" >
 </head>
 <body>
+<div class="d-flex">
 	<div class="table">
-		<div class="thead">
+		<div class="theader">
 		    <div class="tr">
 		        <span class="td">ID Genero</span>
 		        <span class="td">Descripción</span>
@@ -59,14 +35,19 @@
 	    	<%
 	    	@SuppressWarnings("unchecked")
 	    	ArrayList<Genero> listaGenero=(ArrayList<Genero>)request.getAttribute("ListaGeneros");
-	    	if (request.getParameter("editId") != null) {
+	    	if (listaGenero == null || listaGenero.isEmpty()) { %>
+	    	<p style="font-size: 16px;">No hay resultados</p>
+	    	<%}
+	    		else if (request.getParameter("editId") != null) {
 		    	for (Genero g : listaGenero) {
 		    		if (Integer.parseInt(request.getParameter("editId")) == g.getId()) {
 	        %>
 	        <form class="tr" action="ABMGeneroServlet" method="POST" name="ABMGenero">
 	        	<input name="id" type="hidden" class="form-control" id="id" placeholder="id" value=<%=g.getId() %> required>
 	        	<span class="td"><%=g.getId() %> </span>
-	        	<input name="descripcion" type="text" class="form-control" id="descripcion" placeholder="descripcion" value=<%=g.getDescripcion() %> required>
+	        	<span class="td">
+	        		<input name="descripcion" type="text" class="form-control" id="descripcion" placeholder="descripcion" value="<%=g.getDescripcion() %>" required>
+		    	</span>
 	        	<span class="td"><button type="submit" name="action-type" value="editar" class="btn btn-success btn-block" >Aceptar</button> </span>
 	        	<span class="td"><a class="btn btn-danger btn-block" href="ABMGeneroServlet">Cancelar</a></span>
 	        </form>
@@ -106,8 +87,6 @@
 		    	</form>
 	    </div>
 	</div>
-	<% if (listaGenero.isEmpty()) { %>
-							<p style="font-size: 16px;">No hay resultados</p>
-						<%} %>
+ </div>						
 </body>
 </html>
