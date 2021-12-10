@@ -1,0 +1,24 @@
+.table 
+{
+	display:table;
+}
+.theader
+{
+	display:table-header-group;
+}
+.tbody
+{
+	display:table-row-group;
+}
+.tfoot
+{
+	display:table-footer-group;
+}
+.tr,.tr
+{
+	display:table-row;
+}
+.td
+{
+	display:table-cell;
+}
