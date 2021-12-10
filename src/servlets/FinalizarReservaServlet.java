@@ -132,7 +132,7 @@ public class FinalizarReservaServlet extends HttpServlet {
 								}
 								catch (IllegalArgumentException e ) {
 									e.printStackTrace();
-									request.setAttribute(this.getIdMensaje(), "El formato de fecha ingresado es inválido");
+									request.setAttribute(this.getIdMensaje(), "Fecha no disponible.");
 								}
 							}
 							else if (request.getParameter("tipo").equals("individual")) {
@@ -160,7 +160,7 @@ public class FinalizarReservaServlet extends HttpServlet {
 										}
 									}
 									catch (IllegalArgumentException e ) {
-										request.setAttribute(this.getIdMensaje(), "Reserva de "+l.getTitulo()+" : El formato de fecha ingresado es inválido");
+										request.setAttribute(this.getIdMensaje(), "Reserva de "+l.getTitulo()+" : Fecha no disponible.");
 									} finally {
 										this.idMensaje++;
 									}

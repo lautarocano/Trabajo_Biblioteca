@@ -50,8 +50,8 @@ public class ImagesServlet extends HttpServlet {
     private static final int MAX_FILE_SIZE = 1024 * 1024 * 140; // 140MB
     private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 150; // 150MB
     private static final String UUID_STRING = "uuid";
-    private static final String AWS_ACCESS_KEY_ID = "AKIA6NS42AHIMPYBU7EU";
-    private static final String AWS_SECRET_ACCESS_KEY = "";
+    private static final String AWS_ACCESS_KEY_ID = "AKIA6NS42AHIM2WF2A3C";
+    private static final String AWS_SECRET_ACCESS_KEY = "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";
     private static final String BUCKET_NAME = "imagenesbibliotecabucket";
 
 	/**
@@ -143,17 +143,20 @@ public class ImagesServlet extends HttpServlet {
 			 
 			                    s3.putObject(new PutObjectRequest(BUCKET_NAME, keyName, itemFile.getInputStream(), om));
 			                    s3.setObjectAcl(BUCKET_NAME, keyName, CannedAccessControlList.PublicRead);
+			                    
+			                    request.setAttribute("clase-mensaje", "class=\"alert alert-success alert-dismissible fade show\"");
+								request.setAttribute("mensaje", "Imagen cargada.");
 			 
 			                } catch (AmazonServiceException ase) {
 			        			Servlet.log(Level.SEVERE, ase, request);
-			                    System.out.println(uuidValue + ":error:" + ase.getMessage());
+			        			request.setAttribute("mensaje", "No se pudo agregar la imagen");
 			 
 			                } catch (AmazonClientException ace) {
 			        			Servlet.log(Level.SEVERE, ace, request);
-			                	System.out.println(uuidValue + ":error:" + ace.getMessage());
+			        			request.setAttribute("mensaje", "No se pudo agregar la imagen");
 			                }				 
 			            } else {
-			            	System.out.println(uuidValue + ":error:" + "No Upload file");
+			            	request.setAttribute("mensaje", "No se pudo agregar la imagen");
 			            }
 			        }
 				}

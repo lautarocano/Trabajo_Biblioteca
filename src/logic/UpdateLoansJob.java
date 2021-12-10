@@ -14,6 +14,7 @@ public class UpdateLoansJob implements Job {
 		PrestamoLogic pl = new PrestamoLogic();
 		try {
 			pl.updateLoans();
+			pl.notificarAtraso();
 			System.out.println("El estado de los préstamos ha sido actualizado en la base de datos.");
 		} catch (SQLException e) {
 			Bitacora.log(Level.SEVERE, Bitacora.getStackTrace(e));

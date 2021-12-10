@@ -60,6 +60,7 @@
 	    		else {
 		        %>
 		        <span class="td"> Socio </span>
+		        <input name="tipo" type="hidden" class="form-control" id="tipo" value=0>
 		        <%} 
 		        %>
 	        	<span class="td">

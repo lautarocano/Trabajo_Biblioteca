@@ -118,8 +118,20 @@ private PrestamoDAO _PrestamoDAO;
 					this._PrestamoDAO.actualizarEstado(pres);
 				}
 				else if (diferencia == 0) {
-					Servlet.enviarConGMail(pres.getSocio().getEmail(), "Préstamo biblioteca", "Hoy es el último día para entregar su préstamo. Número de préstamo: "+pres.getId());
+					Servlet.enviarConGMail(pres.getSocio().getEmail(), "Préstamo biblioteca", "Hoy es el último día para devolver los libros de su préstamo. Número de préstamo: "+pres.getId());
 				}
+			}
+		}
+		catch (SQLException exception) {
+			throw exception;
+		}	
+	}
+	
+	public void notificarAtraso() throws SQLException {
+		try {
+			ArrayList<Prestamo> prestamos = this._PrestamoDAO.getAllPrestamosAtrasados();
+			for (Prestamo pres : prestamos) {
+				Servlet.enviarConGMail(pres.getSocio().getEmail(), "Préstamo biblioteca atrasado", "Buenas noches, por favor recuerde que cuenta con un préstamo en curso cuya devolución está atrasada. Favor de acercar el libro cuanto antes. Muchas gracias. Número de préstamo: "+pres.getId());
 			}
 		}
 		catch (SQLException exception) {

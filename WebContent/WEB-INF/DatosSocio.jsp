@@ -43,9 +43,9 @@
 	        %>
 	        <form class="tr" action="DatosSocioServlet" method="POST" name="DatosSocio">
 	        	<input name="id" type="hidden" class="form-control" id="id" placeholder="id" value=<%=s.getId() %> required>
-				<input name="nombre" type="hidden" class="form-control" id="nombre" placeholder="Nombre" value=<%=s.getNombre() %> required>
+				<input name="nombre" type="hidden" class="form-control" id="nombre" placeholder="Nombre" value="<%=s.getNombre() %>" required>
 	        	<span class="td"><%=s.getNombre() %> </span>
-	        	<input name="apellido" type="hidden" class="form-control" id="apellido" placeholder="Apellido" value=<%=s.getApellido() %> required>
+	        	<input name="apellido" type="hidden" class="form-control" id="apellido" placeholder="Apellido" value="<%=s.getApellido() %>" required>
 	        	<span class="td"><%=s.getApellido() %> </span>
 	        	<input name="dni" type="hidden" class="form-control" id="dni" placeholder="dni" value=<%=s.getDni() %> required>
 	        	<span class="td"><%=s.getDni() %> </span>
@@ -53,10 +53,10 @@
 	        		<input name="email" type="email" class="form-control" id="email" placeholder="Email" value=<%=s.getEmail() %> required>
 		    	</span>
 		    	<span class="td">
-	        		<input name="domicilio" type="text" class="form-control" id="domicilio" placeholder="Domicilio" value=<%=s.getDomicilio() %> required>
+	        		<input name="domicilio" type="text" class="form-control" id="domicilio" placeholder="Domicilio" value="<%=s.getDomicilio() %>" required>
 		    	</span>
 		    	<span class="td">
-	        		<input name="telefono" type="number" class="form-control" id="telefono" placeholder="telefono" value=<%=s.getTelefono() %> required>
+	        		<input name="telefono" type="number" class="form-control" id="telefono" placeholder="telefono" value="<%=s.getTelefono() %>" required>
 		    	</span>
 				<input name="estado" type="hidden" class="form-control" id="estado" placeholder="Estado" <% if (s.getEstado()) { %> checked <%}%> value="True">
 

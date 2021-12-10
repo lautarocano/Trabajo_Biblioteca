@@ -215,7 +215,7 @@ public class Servlet extends HttpServlet {
 	}
 	
 	public static Boolean parameterNotNullOrBlank(String parametro) {
-		if (parametro == null || parametro.isBlank()) {
+		if (parametro == null || "".equals(parametro.trim())) {
 			return false;
 		}
 		else return true;
