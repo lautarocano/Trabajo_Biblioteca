@@ -94,10 +94,6 @@ else {
 						      	<p>Género: <%=l.getGenero().getDescripcion() %></p>
 						      </div>
 						    </div>
-						    <div class="row">
-						      <p>Sinopsis:</p>
-						      <p> </p>
-						    </div>
 						</div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>

@@ -12,14 +12,13 @@ public class LogsDAO extends BaseDAO{
 		try {
 			this.openConnection();
 			pst = conn.prepareStatement("INSERT INTO logs(level,stacktrace,fecha)"
-					+ "  VALUES(?,?,date_add(current_timestamp(),interval -3 hour))");
+					+ "  VALUES(?,?,current_timestamp())");
 			pst.setString(1, log.getLevel());
 			pst.setString(2, log.getStack());
 			pst.executeUpdate();
 			this.closeConnection(pst);
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {

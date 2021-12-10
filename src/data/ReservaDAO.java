@@ -44,7 +44,6 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -70,7 +69,6 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -91,7 +89,6 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -119,7 +116,6 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -149,7 +145,6 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -179,7 +174,6 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -209,7 +203,6 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -237,7 +230,6 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 			rs.close();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -266,7 +258,6 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 			rs.close();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -285,7 +276,6 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -382,20 +372,16 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 					ejemplaresDisponibles -= rs.getInt("cantreservas");
 				if (ejemplaresDisponibles > 0) {
 					fechas.add('"'+date.toString()+'"');
-					System.out.print(date.toString());
-					System.out.print(" disponible");
-				} else System.out.print("no disponible: "+date.toString());
+				}
 				ejemplaresDisponibles = 0;
 				date=date.plusDays(1);
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
 			this.closeConnection(pst, rs);
-			System.out.println("Fin");
 		}
 		return fechas;
 	}
@@ -409,7 +395,6 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 		try {
 			this.openConnection();
 			while (date.isBefore(LocalDate.now().plusDays(diasPoliticaPrestamo+1))) {
-				System.out.println(date);
 				pst = conn.prepareStatement("SELECT e.id_ejemplar FROM ejemplares e WHERE e.id_libro = ? "
 						+ "AND NOT EXISTS ( SELECT * FROM lineasdeprestamo lp "
 						+ "INNER JOIN prestamos p ON p.id_prestamo = lp.id_prestamo "
@@ -423,7 +408,6 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 				{
 				  ejemplaresDisponibles += 1;
 				}
-				System.out.println(ejemplaresDisponibles);
 				rs.close();
 				pst.close();
 				pst = conn.prepareStatement("SELECT count(lr.id_libro) AS cantreservas FROM reservas r "
@@ -438,9 +422,7 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 				rs=pst.executeQuery();
 				if (rs.next()) 
 					ejemplaresDisponibles -= rs.getInt("cantreservas");
-				System.out.println(ejemplaresDisponibles);
 				if (ejemplaresDisponibles > 0) {
-					System.out.println("Fin");
 					dias++;
 				} else break;
 				ejemplaresDisponibles = 0;
@@ -448,12 +430,10 @@ public class ReservaDAO extends BaseDAO implements IBaseDAO<Reserva> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
 			this.closeConnection(pst, rs);
-			System.out.println("Fin");
 		}
 		return dias;
 	}

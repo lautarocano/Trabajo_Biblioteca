@@ -31,7 +31,6 @@ public class PoliticaSancionDAO extends BaseDAO implements IBaseDAO<PoliticaSanc
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -54,7 +53,6 @@ public class PoliticaSancionDAO extends BaseDAO implements IBaseDAO<PoliticaSanc
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -78,7 +76,6 @@ public class PoliticaSancionDAO extends BaseDAO implements IBaseDAO<PoliticaSanc
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -99,7 +96,6 @@ public class PoliticaSancionDAO extends BaseDAO implements IBaseDAO<PoliticaSanc
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -120,7 +116,6 @@ public class PoliticaSancionDAO extends BaseDAO implements IBaseDAO<PoliticaSanc
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -137,7 +132,6 @@ public class PoliticaSancionDAO extends BaseDAO implements IBaseDAO<PoliticaSanc
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {

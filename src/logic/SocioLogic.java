@@ -16,6 +16,7 @@ import model.Prestamo;
 import model.Reserva;
 import model.Sancion;
 import model.Socio;
+import servlets.Servlet;
 
 public class SocioLogic {
 	private SocioDAO _SocioDAO;
@@ -194,6 +195,8 @@ public class SocioLogic {
 				sancion.setFechaSancion(Calendar.getInstance().getTime());
 				sancion.setSocio(socio);
 				_SancionDAO.insert(sancion);
+				Servlet.enviarConGMail(socio.getEmail(), "Sanción por préstamo atrasado", "Nos comunicamos con usted para informarle que debido a la entrega tardía de los libros prestados "
+						+ "estará imposibilitado de realizar nuevas reservas y/o retiros por "+sancion.getDiasSancion()+" días.");
 			}
 		}
 		catch (SQLException exception) {

@@ -29,8 +29,8 @@ import model.Usuario;
 public class ABMLibroServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-    private static final String AWS_ACCESS_KEY_ID = "AKIA6NS42AHIM2WF2A3C";
-    private static final String AWS_SECRET_ACCESS_KEY = "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";
+    private static final String AWS_ACCESS_KEY_ID = "";
+    private static final String AWS_SECRET_ACCESS_KEY = "";
     private static final String BUCKET_NAME = "imagenesbibliotecabucket";
        
     /**

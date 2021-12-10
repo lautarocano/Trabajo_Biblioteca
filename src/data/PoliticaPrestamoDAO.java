@@ -33,7 +33,6 @@ public class PoliticaPrestamoDAO extends BaseDAO implements IBaseDAO<PoliticaPre
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -56,7 +55,6 @@ public class PoliticaPrestamoDAO extends BaseDAO implements IBaseDAO<PoliticaPre
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -78,7 +76,6 @@ public class PoliticaPrestamoDAO extends BaseDAO implements IBaseDAO<PoliticaPre
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -98,7 +95,6 @@ public class PoliticaPrestamoDAO extends BaseDAO implements IBaseDAO<PoliticaPre
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -119,7 +115,6 @@ public class PoliticaPrestamoDAO extends BaseDAO implements IBaseDAO<PoliticaPre
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -136,7 +131,6 @@ public class PoliticaPrestamoDAO extends BaseDAO implements IBaseDAO<PoliticaPre
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {

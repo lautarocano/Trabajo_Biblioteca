@@ -31,7 +31,6 @@ public class EjemplarDAO  extends BaseDAO{
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -49,7 +48,6 @@ public class EjemplarDAO  extends BaseDAO{
 			pst.close();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -66,7 +64,6 @@ public class EjemplarDAO  extends BaseDAO{
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -88,7 +85,6 @@ public class EjemplarDAO  extends BaseDAO{
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -113,7 +109,6 @@ public class EjemplarDAO  extends BaseDAO{
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -138,7 +133,6 @@ public class EjemplarDAO  extends BaseDAO{
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -156,7 +150,6 @@ public class EjemplarDAO  extends BaseDAO{
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -184,7 +177,6 @@ public class EjemplarDAO  extends BaseDAO{
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {

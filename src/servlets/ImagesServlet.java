@@ -50,8 +50,8 @@ public class ImagesServlet extends HttpServlet {
     private static final int MAX_FILE_SIZE = 1024 * 1024 * 140; // 140MB
     private static final int MAX_REQUEST_SIZE = 1024 * 1024 * 150; // 150MB
     private static final String UUID_STRING = "uuid";
-    private static final String AWS_ACCESS_KEY_ID = "AKIA6NS42AHIM2WF2A3C";
-    private static final String AWS_SECRET_ACCESS_KEY = "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";
+    private static final String AWS_ACCESS_KEY_ID = "";
+    private static final String AWS_SECRET_ACCESS_KEY = "";
     private static final String BUCKET_NAME = "imagenesbibliotecabucket";
 
 	/**
@@ -88,7 +88,6 @@ public class ImagesServlet extends HttpServlet {
 								request.setAttribute("mensaje", "Imagen eliminada.");
 							} catch (AmazonServiceException ase) {
 								Servlet.log(Level.SEVERE, ase, request);
-								System.out.println(aFileName + ":error:" + ase.getMessage());
 								request.setAttribute("mensaje", "No se pudo eliminar la imagen del libro.");
 							}
 						}

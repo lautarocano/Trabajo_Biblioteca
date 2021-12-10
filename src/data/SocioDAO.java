@@ -40,7 +40,6 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -65,7 +64,6 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -90,7 +88,6 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -115,7 +112,6 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -138,7 +134,6 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			else return false;
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -164,7 +159,6 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -190,7 +184,6 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -207,7 +200,6 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -226,11 +218,10 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			pst.setInt(1, socio.getId());
 			rs = pst.executeQuery();
 			while (rs.next()) {
-				if(rs.getInt("diferencia")<rs.getInt("dias_sancion"))
+				if(rs.getInt("diferencia")<=rs.getInt("dias_sancion"))
 					sancionado = true;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -257,7 +248,6 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -286,7 +276,6 @@ public class SocioDAO extends BaseDAO implements IBaseDAO<Socio> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {

@@ -42,7 +42,6 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -65,7 +64,6 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -88,7 +86,6 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -112,7 +109,6 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -145,7 +141,6 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -182,7 +177,6 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -217,7 +211,6 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -234,7 +227,6 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -256,7 +248,6 @@ public class UsuarioDAO extends BaseDAO implements IBaseDAO<Usuario> {
 			else return false;
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {

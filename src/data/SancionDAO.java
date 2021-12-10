@@ -37,7 +37,6 @@ public class SancionDAO extends BaseDAO implements IBaseDAO<Sancion> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -64,7 +63,6 @@ public class SancionDAO extends BaseDAO implements IBaseDAO<Sancion> {
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -85,7 +83,6 @@ public class SancionDAO extends BaseDAO implements IBaseDAO<Sancion> {
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -107,7 +104,6 @@ public class SancionDAO extends BaseDAO implements IBaseDAO<Sancion> {
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -124,7 +120,6 @@ public class SancionDAO extends BaseDAO implements IBaseDAO<Sancion> {
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {

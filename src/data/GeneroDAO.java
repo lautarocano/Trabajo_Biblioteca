@@ -29,7 +29,6 @@ public class GeneroDAO extends BaseDAO implements IBaseDAO<Genero>{
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -52,7 +51,6 @@ public class GeneroDAO extends BaseDAO implements IBaseDAO<Genero>{
 			}
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -70,7 +68,6 @@ public class GeneroDAO extends BaseDAO implements IBaseDAO<Genero>{
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -88,7 +85,6 @@ public class GeneroDAO extends BaseDAO implements IBaseDAO<Genero>{
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -105,7 +101,6 @@ public class GeneroDAO extends BaseDAO implements IBaseDAO<Genero>{
 			pst.executeUpdate();
 		}
 		catch (SQLException e){
-			e.printStackTrace();
 			throw e;
 		}
 		finally {

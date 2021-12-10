@@ -57,7 +57,6 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -92,7 +91,6 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -113,7 +111,6 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			pst.executeUpdate();
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -142,7 +139,6 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -173,7 +169,6 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -204,7 +199,6 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -235,7 +229,6 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -263,7 +256,6 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -291,7 +283,6 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -318,7 +309,6 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -340,7 +330,6 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			}
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -426,7 +415,6 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			pst.executeUpdate();
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
@@ -444,7 +432,6 @@ public class PrestamoDAO extends BaseDAO implements IBaseDAO<Prestamo> {
 			pst.close();
 		}
 		catch (SQLException e) {
-			e.printStackTrace();
 			throw e;
 		}
 		finally {
